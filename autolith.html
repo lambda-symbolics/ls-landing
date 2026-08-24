@@ -186,12 +186,23 @@ $ <kbd>./bin/autolith</kbd></code></pre>
       <section class="doc-section" id="demos" aria-labelledby="demos-title">
         <h2 id="demos-title">Three captured sessions</h2>
 
-        <div class="demo-stack">
-          <figure class="window window--wide demo-cast-window">
-            <figcaption class="window-titlebar">Captured session · a corpus larger than the context window</figcaption>
-            <div class="window-body">
-              <div class="demo-cast" data-cast="casts/oversized-context.cast"></div>
-              <pre class="cast-poster" aria-hidden="true">
+        <div class="window window--wide demo-cast-window">
+          <div class="window-titlebar">Recorded against v0.35.0 · gpt-5.6-terra · Codex subscription</div>
+          <div class="demo-tab-row" role="tablist" aria-label="Captured sessions">
+          <button class="demo-tab demo-tab--active" type="button" role="tab"
+                  id="demo-tab-oversized" aria-controls="demo-panel-oversized"
+                  aria-selected="true">Oversized context</button>
+          <button class="demo-tab" type="button" role="tab"
+                  id="demo-tab-mutation" aria-controls="demo-panel-mutation"
+                  aria-selected="false">Break and recover</button>
+          <button class="demo-tab" type="button" role="tab"
+                  id="demo-tab-continuity" aria-controls="demo-panel-continuity"
+                  aria-selected="false">Persist and resume</button>
+          </div>
+        <div class="window-body demo-panel" role="tabpanel" id="demo-panel-oversized"
+             aria-labelledby="demo-tab-oversized">
+          <div class="demo-cast" data-cast="casts/oversized-context.cast"></div>
+          <pre class="cast-poster" aria-hidden="true">
   :::.      :::        AUTOLITH v0.35.0
   ;;`;;     ;;;        ─────────────────────────────────────────
  ,[[ &#x27;[[,   [[[        model         gpt-5.6-terra (effort high)
@@ -205,9 +216,22 @@ Sandboxing is no substitute for human oversight
 Tip: (resume) returns to a saved conversation from this workspace or another one.
 
 ❯ you  2026-08-22 10:52
-  Use rlm.complete over autolith-source.txt in the workspace root. It is the concatenation of</pre>
-              <button class="cast-load" type="button">Load the recording · 4 min 36 s</button>
-              <dl class="property-sheet">
+  Use rlm.complete over autolith-source.txt in the workspace root. It is the concatenation of
+  this repository&#x27;s 121 src/*.lisp files with &#x27;;;;; FILE:&#x27; headers, about 3.1 MB, larger than
+  your context window. Task: list every condition class defined in the source, grouped by
+  subsystem, with the defining file for each. Use a budget of 32 calls, 400000 tokens, depth 2.
+  Do not read or search the file directly; if the budget exhausts, stop and report.
+
+◇ reasoning summary
+  │ Planning rlm complete execution
+
+▸ rlm.complete
+  (rlm.complete :calls 32 :context (json-object &quot;label&quot; &quot;Autolith concatenated source&quot; &quot;uri&quot; &quot;…
+
+  calls  32
+  context.label  Autolith concatenated source</pre>
+          <button class="cast-load" type="button">Load the recording · 4 min 36 s</button>
+          <dl class="property-sheet">
                 <dt>Prompt</dt>
                 <dd>Use rlm.complete over autolith-source.txt in the workspace root.
                     It is the concatenation of this repository's 121 src/*.lisp files
@@ -229,13 +253,11 @@ Tip: (resume) returns to a saved conversation from this workspace or another one
                 <dt>Reproduce</dt>
                 <dd><code>find src -name '*.lisp' | sort | while read f; do printf ';;;; FILE: %s\n' "$f"; cat "$f"; done &gt; autolith-source.txt &amp;&amp; autolith</code>, then the prompt above</dd>
               </dl>
-            </div>
-          </figure>
-          <figure class="window window--wide demo-cast-window">
-            <figcaption class="window-titlebar">Captured session · break the running agent, watch it recover</figcaption>
-            <div class="window-body">
-              <div class="demo-cast" data-cast="casts/live-mutation.cast"></div>
-              <pre class="cast-poster" aria-hidden="true">
+        </div>
+        <div class="window-body demo-panel" role="tabpanel" id="demo-panel-mutation"
+             aria-labelledby="demo-tab-mutation" hidden>
+          <div class="demo-cast" data-cast="casts/live-mutation.cast"></div>
+          <pre class="cast-poster" aria-hidden="true">
   :::.      :::        AUTOLITH v0.35.0
   ;;`;;     ;;;        ─────────────────────────────────────────
  ,[[ &#x27;[[,   [[[        model         gpt-5.6-terra (effort high)
@@ -249,9 +271,22 @@ Sandboxing is no substitute for human oversight
 Tip: (vault-discard) deletes only this conversation&#x27;s recovery vault and blocked pending state.
 
 ❯ you  2026-08-22 10:58
-  Show the source of terminal-ui--duration-text in your running image, then redefine it live so</pre>
-              <button class="cast-load" type="button">Load the recording · 6 min 19 s</button>
-              <dl class="property-sheet">
+  Show the source of terminal-ui--duration-text in your running image, then redefine it live so
+  durations of 24 hours and more render as Dd H:MM:SS, for example 1d 2:00:00. Exercise the
+  change with assertions for 59 seconds, 61 minutes, and 26 hours, then commit the mutation
+  with a short message. Then deliberately break the function with a redefinition that signals
+  an error, demonstrate the failure with self.eval, and recover by discarding the broken
+  mutation. Verify with self.eval that the committed version is active again.
+
+◇ reasoning summary
+  │ Planning self-execution with live redefinition
+
+▸ lisp.source
+  (lisp.source :name &quot;terminal-ui--duration-text&quot; :package &quot;AUTOLITH&quot; :target &quot;self&quot;)
+
+◇ reasoning summary</pre>
+          <button class="cast-load" type="button">Load the recording · 6 min 19 s</button>
+          <dl class="property-sheet">
                 <dt>Prompt</dt>
                 <dd>Show the source of terminal-ui--duration-text in your running
                     image, then redefine it live so durations of 24 hours and more
@@ -282,13 +317,11 @@ Tip: (vault-discard) deletes only this conversation&#x27;s recovery vault and bl
                 <dt>Reproduce</dt>
                 <dd><code>autolith</code> in any workspace, then the prompt above</dd>
               </dl>
-            </div>
-          </figure>
-          <figure class="window window--wide demo-cast-window">
-            <figcaption class="window-titlebar">Captured session · persist the environment, quit, resume, continue</figcaption>
-            <div class="window-body">
-              <div class="demo-cast" data-cast="casts/continuity.cast"></div>
-              <pre class="cast-poster" aria-hidden="true">root@lho-thinkpad: ~/common-lisp/frob # ./bin/autolith
+        </div>
+        <div class="window-body demo-panel" role="tabpanel" id="demo-panel-continuity"
+             aria-labelledby="demo-tab-continuity" hidden>
+          <div class="demo-cast" data-cast="casts/continuity.cast"></div>
+          <pre class="cast-poster" aria-hidden="true">root@lho-thinkpad: ~/common-lisp/frob # ./bin/autolith
 WARNING: redefining AUTOLITH::TERMINAL-UI--DURATION-TEXT in DEFUN
 
   :::.      :::        AUTOLITH v0.35.0
@@ -301,9 +334,23 @@ c$$$cc$$$c  $$&#x27;        workspace     /root/common-lisp/frob/
 Autolith executes model-generated code with your user privileges.
 Sandboxing is no substitute for human oversight
 
-Tip: (papercuts) shows problems Autolith recorded when something was not working.</pre>
-              <button class="cast-load" type="button">Load the recording · 10 min 11 s</button>
-              <dl class="property-sheet">
+Tip: (papercuts) shows problems Autolith recorded when something was not working.
+
+❯ you  2026-08-22 11:05
+  Define autolith-demo-parse-fraction in the autolith package: parse a string like &quot;3/4&quot; into a
+  rational. Exercise it, then persist it as a private image commit. Then add an agenda entry:
+  handle zero denominators in autolith-demo-parse-fraction.
+
+◇ reasoning summary
+  │ Designing rational parser function
+  │
+  │ Implementing ratio parsing with validation
+
+▸ self.redefine
+  (self.redefine :definition &quot;(defun autolith-demo-parse-fraction (string)
+    \&quot;Parse STRING written as a numerator, slash, and denominator into a rational.\&quot;</pre>
+          <button class="cast-load" type="button">Load the recording · 10 min 11 s</button>
+          <dl class="property-sheet">
                 <dt>Prompt</dt>
                 <dd>Define autolith-demo-parse-fraction in the autolith package:
                     parse a string like "3/4" into a rational. Exercise it, then
@@ -332,8 +379,7 @@ Tip: (papercuts) shows problems Autolith recorded when something was not working
                 <dt>Reproduce</dt>
                 <dd><code>autolith</code>, the first prompt, <code>(quit)</code>, then <code>autolith resume</code> and the second prompt</dd>
               </dl>
-            </div>
-          </figure>
+        </div>
         </div>
       </section>
 
@@ -504,6 +550,19 @@ Tip: (papercuts) shows problems Autolith recorded when something was not working
               }, 1600);
             } catch {
               copyNote.textContent = "copy failed; select the command instead.";
+            }
+          });
+        }
+
+        const tabs = document.querySelectorAll(".demo-tab");
+        for (const tab of tabs) {
+          tab.addEventListener("click", () => {
+            for (const other of tabs) {
+              const panel = document.getElementById(other.getAttribute("aria-controls"));
+              const active = other === tab;
+              other.classList.toggle("demo-tab--active", active);
+              other.setAttribute("aria-selected", active ? "true" : "false");
+              panel.hidden = !active;
             }
           });
         }
