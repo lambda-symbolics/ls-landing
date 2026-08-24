@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Peace · Lambda Symbolics OÜ</title>
+    <meta
+      name="description"
+      content="World Peace is a small but funny complete no-types programming language with a REPL, source runner, image compiler, module loading, examples, tests, and (janky) editor support."
+    >
+    <link rel="canonical" href="https://lambda-symbolics.com/world-peace">
+
+    <meta property="og:title" content="World Peace">
+    <meta
+      property="og:description"
+      content="A small but funny complete no-types programming language. If static typing and functional programming arguments create so much flamewars, then what will lead to world peace? This."
+    >
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/world-peace">
+    <meta property="og:image" content="https://lambda-symbolics.com/og.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@LukasHozda">
+    <meta name="twitter:title" content="World Peace">
+    <meta
+      name="twitter:description"
+      content="A small but funny complete no-types programming language with a REPL, source runner, and image compiler."
+    >
+    <meta name="twitter:image" content="https://lambda-symbolics.com/og.png">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareSourceCode",
+      "name": "World Peace",
+      "description": "A small but funny complete no-types programming language.",
+      "url": "https://lambda-symbolics.com/world-peace",
+      "codeRepository": "https://github.com/luciusmagn/world-peace",
+      "programmingLanguage": "Common Lisp",
+      "author": {
+        "@type": "Person",
+        "name": "Lukáš Hozda",
+        "url": "https://github.com/luciusmagn"
+      }
+    }
+    </script>
+
+    <link rel="stylesheet" href="paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="#examples">Code examples</a></li>
+            <li><a href="#run">Run it</a></li>
+            <li><a href="https://github.com/luciusmagn/world-peace">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell">
+      <section class="hero" aria-label="World Peace">
+        <div class="hero-copy">
+          <h1>World Peace</h1>
+          <p class="lede">
+            A small but funny complete no-types programming language. If static
+            typing and functional programming arguments create so much
+            flamewars, then what will lead to world peace? This. It has a REPL,
+            source runner, image compiler, module loading, examples, tests, and
+            (janky) editor support.
+          </p>
+          <div class="actions">
+            <a class="button" href="https://github.com/luciusmagn/world-peace">Repository</a>
+            <a class="button" href="https://github.com/luciusmagn/world-peace/blob/master/world-peace.org">Spec</a>
+            <a class="button" href="https://github.com/luciusmagn/world-peace/tree/master/examples/tour">Examples</a>
+          </div>
+          <p>
+            We take inspiration from some niche and less niche things.
+          </p>
+        </div>
+
+        <div class="window">
+          <div class="window-titlebar">World Peace · Properties</div>
+          <div class="window-body">
+            <dl class="property-sheet">
+              <dt>Values</dt>
+              <dd>64-bit numbers and nested numeric arrays. Strings are byte arrays by convention.</dd>
+              <dt>Functions</dt>
+              <dd><code>dec</code> declarations, <code>---</code> body lines, and <code>end</code> return clauses.</dd>
+              <dt>Patterns</dt>
+              <dd>Exact values, ranges, wildcard arms, array prefixes, array suffixes, and parameter filters.</dd>
+              <dt>Modules</dt>
+              <dd><code>load support;</code> resolves a local module.</dd>
+              <dt>Commands</dt>
+              <dd><code>peace repl</code>, <code>peace run FILE.wp</code>, <code>peace compile FILE.wp -o OUTPUT</code></dd>
+              <dt>Repository</dt>
+              <dd><a href="https://github.com/luciusmagn/world-peace">luciusmagn/world-peace</a></dd>
+            </dl>
+          </div>
+        </div>
+      </section>
+
+      <section class="doc-section" id="examples" aria-labelledby="examples-title">
+        <h2 id="examples-title">Code examples</h2>
+        <div class="duo">
+          <article>
+            <h3>Case patterns</h3>
+            <p>Matches empty arrays, array starts, array ends, and a fallback arm.</p>
+            <pre><code><span class="hl-keyword">dec</span> array_tag(num values):
+--- num tag = 0;
+--- <span class="hl-keyword">case</span> {
+---     values &lt;- []: tag = 69,
+---     values &lt;- [1, 2, ..]: tag = 83,
+---     values &lt;- [.., 9]: tag = 57,
+---     _: tag = 63,
+--- }
+<span class="hl-keyword">end</span> {
+    tag
+}</code></pre>
+          </article>
+
+          <article>
+            <h3>Parameter filters</h3>
+            <p>A function can split cases by exact argument values or by array slices.</p>
+            <pre><code><span class="hl-comment">// exact-value filters</span>
+<span class="hl-keyword">dec</span> fibonacci(num[=0] n):
+<span class="hl-keyword">end</span> {
+    0
+}
+
+<span class="hl-keyword">dec</span> fibonacci(num[=1] n):
+<span class="hl-keyword">end</span> {
+    1
+}</code></pre>
+          </article>
+        </div>
+      </section>
+
+      <section class="doc-section" id="run" aria-labelledby="run-title">
+        <h2 id="run-title">Run it</h2>
+        <div class="window window--wide">
+          <div class="window-titlebar">Run it · flake.nix</div>
+          <div class="window-body table-scroll">
+            <table>
+              <thead>
+                <tr><th>Task</th><th>Command</th></tr>
+              </thead>
+              <tbody>
+                <tr><td>Run a tour file</td><td><code>nix run .# -- run examples/tour/01-hello.wp</code></td></tr>
+                <tr><td>Start the REPL</td><td><code>nix run .# -- repl</code></td></tr>
+                <tr><td>Compile an executable</td><td><code>./peace compile examples/tour/01-hello.wp -o /tmp/world-peace-hello</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+        <p>World Peace · Revised 24 August 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
