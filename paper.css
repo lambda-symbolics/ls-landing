@@ -1468,6 +1468,10 @@ button.button {
   margin: 14px 0 0;
 }
 
+.demo-cast-window [hidden] {
+  display: none;
+}
+
 .demo-tab-row {
   display: flex;
   border-bottom: 1px solid var(--ink);
