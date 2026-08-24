@@ -184,25 +184,32 @@ $ <kbd>./bin/autolith</kbd></code></pre>
       </section>
 
       <section class="doc-section" id="demos" aria-labelledby="demos-title">
-        <h2 id="demos-title">Three captured sessions</h2>
+        <h2 id="demos-title">Examples</h2>
 
         <div class="window window--wide demo-cast-window">
-          <div class="window-titlebar">Recorded against v0.35.0 · gpt-5.6-terra · Codex subscription</div>
-          <div class="demo-tab-row" role="tablist" aria-label="Captured sessions">
-          <button class="demo-tab demo-tab--active" type="button" role="tab"
-                  id="demo-tab-oversized" aria-controls="demo-panel-oversized"
-                  aria-selected="true">Oversized context</button>
-          <button class="demo-tab" type="button" role="tab"
-                  id="demo-tab-mutation" aria-controls="demo-panel-mutation"
-                  aria-selected="false">Break and recover</button>
-          <button class="demo-tab" type="button" role="tab"
-                  id="demo-tab-continuity" aria-controls="demo-panel-continuity"
-                  aria-selected="false">Persist and resume</button>
-          </div>
-        <div class="window-body demo-panel" role="tabpanel" id="demo-panel-oversized"
-             aria-labelledby="demo-tab-oversized">
-          <div class="demo-cast" data-cast="casts/oversized-context.cast"></div>
-          <pre class="cast-poster" aria-hidden="true">
+          <div class="window-titlebar">Recorded against v0.35.0 · gpt-5.6-terra</div>
+          <div class="window-body">
+            <div class="demo-load-row">
+            <button class="cast-load" type="button" data-demo="oversized">Load the recording · 4 min 36 s</button>
+            <button class="cast-load" type="button" data-demo="mutation" hidden>Load the recording · 6 min 19 s</button>
+            <button class="cast-load" type="button" data-demo="continuity" hidden>Load the recording · 10 min 11 s</button>
+            </div>
+            <div class="demo-terminal">
+              <div class="demo-tab-row" role="tablist" aria-label="Captured sessions">
+              <button class="demo-tab demo-tab--active" type="button" role="tab"
+                      id="demo-tab-oversized" data-demo="oversized" aria-controls="demo-screen-oversized"
+                      aria-selected="true">Oversized context</button>
+              <button class="demo-tab" type="button" role="tab"
+                      id="demo-tab-mutation" data-demo="mutation" aria-controls="demo-screen-mutation"
+                      aria-selected="false">Break and recover</button>
+              <button class="demo-tab" type="button" role="tab"
+                      id="demo-tab-continuity" data-demo="continuity" aria-controls="demo-screen-continuity"
+                      aria-selected="false">Persist and resume</button>
+              </div>
+            <div class="demo-screen" role="tabpanel" id="demo-screen-oversized"
+                 aria-labelledby="demo-tab-oversized" data-demo="oversized">
+              <div class="demo-cast" data-cast="casts/oversized-context.cast"></div>
+              <pre class="cast-poster" aria-hidden="true">
   :::.      :::        AUTOLITH v0.35.0
   ;;`;;     ;;;        ─────────────────────────────────────────
  ,[[ &#x27;[[,   [[[        model         gpt-5.6-terra (effort high)
@@ -230,34 +237,11 @@ Tip: (resume) returns to a saved conversation from this workspace or another one
 
   calls  32
   context.label  Autolith concatenated source</pre>
-          <button class="cast-load" type="button">Load the recording · 4 min 36 s</button>
-          <dl class="property-sheet">
-                <dt>Prompt</dt>
-                <dd>Use rlm.complete over autolith-source.txt in the workspace root.
-                    It is the concatenation of this repository's 121 src/*.lisp files
-                    with ';;;; FILE:' headers, about 3.1&nbsp;MB, larger than your
-                    context window. Task: list every condition class defined in the
-                    source, grouped by subsystem, with the defining file for each.
-                    Use a budget of 32 calls, 400000 tokens, depth 2. Do not read or
-                    search the file directly; if the budget exhausts, stop and report.</dd>
-                <dt>Provider</dt>
-                <dd>ChatGPT Codex subscription · gpt-5.6-terra (effort high)</dd>
-                <dt>Wall time</dt>
-                <dd>3 min 15 s for the answer; 4 min 36 s for the whole session</dd>
-                <dt>Tokens</dt>
-                <dd>59.6K in the root conversation (58.7K input + 915 output); the corpus itself never enters a prompt</dd>
-                <dt>Artifact</dt>
-                <dd>All 83 condition classes, grouped by 14 subsystems, each with its defining file</dd>
-                <dt>Trace</dt>
-                <dd><code>inference:s2Wb1o2</code>, the complete frame conversation, readable in-session with resource.read</dd>
-                <dt>Reproduce</dt>
-                <dd><code>find src -name '*.lisp' | sort | while read f; do printf ';;;; FILE: %s\n' "$f"; cat "$f"; done &gt; autolith-source.txt &amp;&amp; autolith</code>, then the prompt above</dd>
-              </dl>
-        </div>
-        <div class="window-body demo-panel" role="tabpanel" id="demo-panel-mutation"
-             aria-labelledby="demo-tab-mutation" hidden>
-          <div class="demo-cast" data-cast="casts/live-mutation.cast"></div>
-          <pre class="cast-poster" aria-hidden="true">
+            </div>
+            <div class="demo-screen" role="tabpanel" id="demo-screen-mutation"
+                 aria-labelledby="demo-tab-mutation" data-demo="mutation" hidden>
+              <div class="demo-cast" data-cast="casts/live-mutation.cast"></div>
+              <pre class="cast-poster" aria-hidden="true">
   :::.      :::        AUTOLITH v0.35.0
   ;;`;;     ;;;        ─────────────────────────────────────────
  ,[[ &#x27;[[,   [[[        model         gpt-5.6-terra (effort high)
@@ -285,8 +269,63 @@ Tip: (vault-discard) deletes only this conversation&#x27;s recovery vault and bl
   (lisp.source :name &quot;terminal-ui--duration-text&quot; :package &quot;AUTOLITH&quot; :target &quot;self&quot;)
 
 ◇ reasoning summary</pre>
-          <button class="cast-load" type="button">Load the recording · 6 min 19 s</button>
-          <dl class="property-sheet">
+            </div>
+            <div class="demo-screen" role="tabpanel" id="demo-screen-continuity"
+                 aria-labelledby="demo-tab-continuity" data-demo="continuity" hidden>
+              <div class="demo-cast" data-cast="casts/continuity.cast"></div>
+              <pre class="cast-poster" aria-hidden="true">root@lho-thinkpad: ~/common-lisp/frob # ./bin/autolith
+WARNING: redefining AUTOLITH::TERMINAL-UI--DURATION-TEXT in DEFUN
+
+  :::.      :::        AUTOLITH v0.35.0
+  ;;`;;     ;;;        ─────────────────────────────────────────
+ ,[[ &#x27;[[,   [[[        model         gpt-5.6-terra (effort high)
+c$$$cc$$$c  $$&#x27;        workspace     /root/common-lisp/frob/
+ 888   888,o88oo,.__
+ YMM   &quot;&quot;` &quot;&quot;&quot;&quot;YUMMM
+
+Autolith executes model-generated code with your user privileges.
+Sandboxing is no substitute for human oversight
+
+Tip: (papercuts) shows problems Autolith recorded when something was not working.
+
+❯ you  2026-08-22 11:05
+  Define autolith-demo-parse-fraction in the autolith package: parse a string like &quot;3/4&quot; into a
+  rational. Exercise it, then persist it as a private image commit. Then add an agenda entry:
+  handle zero denominators in autolith-demo-parse-fraction.
+
+◇ reasoning summary
+  │ Designing rational parser function
+  │
+  │ Implementing ratio parsing with validation
+
+▸ self.redefine
+  (self.redefine :definition &quot;(defun autolith-demo-parse-fraction (string)
+    \&quot;Parse STRING written as a numerator, slash, and denominator into a rational.\&quot;</pre>
+            </div>
+            </div>
+          <dl class="property-sheet" data-demo="oversized">
+                <dt>Prompt</dt>
+                <dd>Use rlm.complete over autolith-source.txt in the workspace root.
+                    It is the concatenation of this repository's 121 src/*.lisp files
+                    with ';;;; FILE:' headers, about 3.1&nbsp;MB, larger than your
+                    context window. Task: list every condition class defined in the
+                    source, grouped by subsystem, with the defining file for each.
+                    Use a budget of 32 calls, 400000 tokens, depth 2. Do not read or
+                    search the file directly; if the budget exhausts, stop and report.</dd>
+                <dt>Provider</dt>
+                <dd>ChatGPT Codex subscription · gpt-5.6-terra (effort high)</dd>
+                <dt>Wall time</dt>
+                <dd>3 min 15 s for the answer; 4 min 36 s for the whole session</dd>
+                <dt>Tokens</dt>
+                <dd>59.6K in the root conversation (58.7K input + 915 output); the corpus itself never enters a prompt</dd>
+                <dt>Artifact</dt>
+                <dd>All 83 condition classes, grouped by 14 subsystems, each with its defining file</dd>
+                <dt>Trace</dt>
+                <dd><code>inference:s2Wb1o2</code>, the complete frame conversation, readable in-session with resource.read</dd>
+                <dt>Reproduce</dt>
+                <dd><code>find src -name '*.lisp' | sort | while read f; do printf ';;;; FILE: %s\n' "$f"; cat "$f"; done &gt; autolith-source.txt &amp;&amp; autolith</code>, then the prompt above</dd>
+              </dl>
+          <dl class="property-sheet" data-demo="mutation" hidden>
                 <dt>Prompt</dt>
                 <dd>Show the source of terminal-ui--duration-text in your running
                     image, then redefine it live so durations of 24 hours and more
@@ -317,40 +356,7 @@ Tip: (vault-discard) deletes only this conversation&#x27;s recovery vault and bl
                 <dt>Reproduce</dt>
                 <dd><code>autolith</code> in any workspace, then the prompt above</dd>
               </dl>
-        </div>
-        <div class="window-body demo-panel" role="tabpanel" id="demo-panel-continuity"
-             aria-labelledby="demo-tab-continuity" hidden>
-          <div class="demo-cast" data-cast="casts/continuity.cast"></div>
-          <pre class="cast-poster" aria-hidden="true">root@lho-thinkpad: ~/common-lisp/frob # ./bin/autolith
-WARNING: redefining AUTOLITH::TERMINAL-UI--DURATION-TEXT in DEFUN
-
-  :::.      :::        AUTOLITH v0.35.0
-  ;;`;;     ;;;        ─────────────────────────────────────────
- ,[[ &#x27;[[,   [[[        model         gpt-5.6-terra (effort high)
-c$$$cc$$$c  $$&#x27;        workspace     /root/common-lisp/frob/
- 888   888,o88oo,.__
- YMM   &quot;&quot;` &quot;&quot;&quot;&quot;YUMMM
-
-Autolith executes model-generated code with your user privileges.
-Sandboxing is no substitute for human oversight
-
-Tip: (papercuts) shows problems Autolith recorded when something was not working.
-
-❯ you  2026-08-22 11:05
-  Define autolith-demo-parse-fraction in the autolith package: parse a string like &quot;3/4&quot; into a
-  rational. Exercise it, then persist it as a private image commit. Then add an agenda entry:
-  handle zero denominators in autolith-demo-parse-fraction.
-
-◇ reasoning summary
-  │ Designing rational parser function
-  │
-  │ Implementing ratio parsing with validation
-
-▸ self.redefine
-  (self.redefine :definition &quot;(defun autolith-demo-parse-fraction (string)
-    \&quot;Parse STRING written as a numerator, slash, and denominator into a rational.\&quot;</pre>
-          <button class="cast-load" type="button">Load the recording · 10 min 11 s</button>
-          <dl class="property-sheet">
+          <dl class="property-sheet" data-demo="continuity" hidden>
                 <dt>Prompt</dt>
                 <dd>Define autolith-demo-parse-fraction in the autolith package:
                     parse a string like "3/4" into a rational. Exercise it, then
@@ -379,7 +385,7 @@ Tip: (papercuts) shows problems Autolith recorded when something was not working
                 <dt>Reproduce</dt>
                 <dd><code>autolith</code>, the first prompt, <code>(quit)</code>, then <code>autolith resume</code> and the second prompt</dd>
               </dl>
-        </div>
+          </div>
         </div>
       </section>
 
@@ -554,24 +560,29 @@ Tip: (papercuts) shows problems Autolith recorded when something was not working
           });
         }
 
-        const tabs = document.querySelectorAll(".demo-tab");
-        for (const tab of tabs) {
+        const demoTabs = document.querySelectorAll(".demo-tab");
+        for (const tab of demoTabs) {
           tab.addEventListener("click", () => {
-            for (const other of tabs) {
-              const panel = document.getElementById(other.getAttribute("aria-controls"));
+            const key = tab.dataset.demo;
+            for (const other of demoTabs) {
               const active = other === tab;
               other.classList.toggle("demo-tab--active", active);
               other.setAttribute("aria-selected", active ? "true" : "false");
-              panel.hidden = !active;
+            }
+            for (const element of document.querySelectorAll(
+              ".demo-screen[data-demo], .cast-load[data-demo], .property-sheet[data-demo]"
+            )) {
+              element.hidden = element.dataset.demo !== key;
             }
           });
         }
 
         for (const button of document.querySelectorAll(".cast-load")) {
           button.addEventListener("click", () => {
-            const body = button.closest(".window-body");
-            const host = body.querySelector(".demo-cast");
-            const poster = body.querySelector(".cast-poster");
+            const key = button.dataset.demo;
+            const screen = document.getElementById(`demo-screen-${key}`);
+            const host = screen.querySelector(".demo-cast");
+            const poster = screen.querySelector(".cast-poster");
             if (!window.AsciinemaPlayer || !host) return;
             if (poster) poster.remove();
             button.remove();

@@ -1377,7 +1377,6 @@ button.button {
 
 .demo-cast {
   background: #000000;
-  border-bottom: 1px solid var(--ink);
 }
 
 .demo-cast .ap-wrapper,
@@ -1436,8 +1435,37 @@ button.button {
   fill: #fffefa;
 }
 
-.demo-cast-window {
+.demo-cast-window .window-body {
+  padding: 14px 16px;
+}
+
+.demo-load-row {
+  margin: 0 0 12px;
+}
+
+.cast-load {
+  padding: 6px 14px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  border: 1px solid var(--ink);
+  cursor: pointer;
+}
+
+.cast-load:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.demo-terminal {
   container-type: inline-size;
+  border: 1px solid var(--ink);
+}
+
+.demo-cast-window .property-sheet {
+  margin: 14px 0 0;
 }
 
 .demo-tab-row {
@@ -1488,34 +1516,4 @@ button.button {
   border: 0;
 }
 
-.cast-load {
-  display: block;
-  width: 100%;
-  padding: 10px 16px;
-  background: #000000;
-  color: #fffefa;
-  font-family: inherit;
-  font-size: 15px;
-  font-weight: 700;
-  text-align: center;
-  border: 0;
-  border-top: 1px solid #fffefa;
-  cursor: pointer;
-}
 
-.cast-load:hover {
-  background: #fffefa;
-  color: #000000;
-}
-
-.demo-cast-window .property-sheet {
-  margin: 12px 0 0;
-}
-
-.demo-cast-window .window-body {
-  padding: 0 0 14px;
-}
-
-.demo-cast-window .property-sheet {
-  padding: 0 16px;
-}
