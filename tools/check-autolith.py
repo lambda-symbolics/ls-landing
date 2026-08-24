@@ -116,12 +116,12 @@ def main() -> None:
             f"{repo} is not an Autolith checkout; "
             "pass one or set AUTOLITH_REPO"
         )
-    page = read(PAGE)
+    page = re.sub(r"\s+", " ", read(PAGE))
 
     failures = []
 
     def require(fact: str, needle: str) -> None:
-        if needle not in page:
+        if re.sub(r"\s+", " ", needle) not in page:
             failures.append(f"{fact}: page is missing {needle!r}")
 
     version = repo_version(repo)
