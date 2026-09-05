@@ -48,7 +48,7 @@
       "programmingLanguage": "Common Lisp",
       "runtimePlatform": "SBCL 2.6.6",
       "operatingSystem": "Linux x86-64, Linux aarch64, macOS x86-64, macOS arm64, FreeBSD x86-64, NetBSD x86-64, OpenBSD x86-64",
-      "softwareVersion": "0.40.1",
+      "softwareVersion": "0.47.1",
       "author": {
         "@type": "Person",
         "name": "Lukáš Hozda",
@@ -95,6 +95,7 @@
             <li><strong>Oversized context.</strong> Recursive inference over corpora larger than the model window.</li>
             <li><strong>Continuity.</strong> Portable conversations, memories, agendas, checkpoints, and recovery.</li>
             <li><strong>Live Lisp.</strong> An SBCL runtime it can inspect, test, and extend.</li>
+            <li><strong>Unattended.</strong> A single-job boundary with a structured-output contract, drivable from scripts and CI.</li>
           </ul>
           <div class="actions">
             <a class="button" href="https://github.com/lambda-symbolics/autolith">Read the source</a>
@@ -133,22 +134,23 @@
           <div>
             <h2 id="install-title">Install Autolith</h2>
             <p>
-              Autolith v0.40.1 runs on Linux x86-64, Linux aarch64, macOS x86-64,
+              Autolith v0.47.1 runs on Linux x86-64, Linux aarch64, macOS x86-64,
               macOS arm64, FreeBSD x86-64, NetBSD x86-64, and OpenBSD x86-64. The binary
               release carries its own SBCL 2.6.6, Lisp dependencies, and native
-              helpers; Linux is served in glibc and musl builds. Installed
-              releases check for newer tags and ask before updating. Nix is the
-              recommended route when you want the complete build pinned from
-              the start.
+              helpers; Linux is served in glibc and fully static musl builds.
+              Installed releases check for newer tags and ask before updating.
+              Nix is the recommended route when you want the complete build
+              pinned from the start.
             </p>
             <p>
               Providers sign in with a browser device flow or an API key:
-              ChatGPT Codex subscription, Grok subscription, Nous Research
-              subscription, Fireworks AI, Anthropic API (pay-per-token),
-              OpenRouter (pay-per-token), OpenCode (zen/go), and Mistral
-              AI. Any other
-              OpenAI-compatible endpoint can be registered from the REPL. The
-              default model is gpt-5.6-sol.
+              ChatGPT Codex subscription, Gemini Code Assist subscription,
+              Grok subscription, Nous Research subscription, Fireworks AI,
+              Anthropic API (pay-per-token), OpenRouter (pay-per-token),
+              OpenCode (zen/go), and Mistral AI. Any other OpenAI-compatible
+              endpoint can be registered from the REPL. The default model is
+              gpt-5.6-sol; through the Codex provider, gpt-6-astra is also
+              available with a 272,000-token context window.
             </p>
             <p class="caveat"><em>
               Yes, piping a URL into a shell is evil. Read the installer before
@@ -397,9 +399,9 @@ Tip: (papercuts) shows problems Autolith recorded when something was not working
             <p>
               Autolith is a terminal programming agent, not a wrapper around another
               agent process. Its Common Lisp image contains the provider
-              client, terminal interface, tool registry, conversation state,
-              persistent memories, workspace agenda, and the code that decides what
-              happens next.
+              client, terminal interface, tool registry, MCP connections,
+              conversation state, persistent memories, workspace agenda, and the
+              code that decides what happens next.
             </p>
             <p>
               Context larger than the window is an environment, not a prompt.
@@ -409,6 +411,13 @@ Tip: (papercuts) shows problems Autolith recorded when something was not working
               bounded slices, searches, and sub-inferences under an explicit
               call and token budget. Every run leaves a readable inference
               trace.
+            </p>
+            <p>
+              The conversation is not the only entry point. A
+              <strong><code>run-job</code></strong> boundary runs one
+              non-interactive job with a bounded data-only S-expression
+              envelope and a structured-output contract, reports trace and
+              usage, and installs the result atomically.
             </p>
           </div>
 
@@ -447,6 +456,12 @@ Tip: (papercuts) shows problems Autolith recorded when something was not working
               retained in a separate private Git history. It changes the active
               agent without quietly patching the tracked source repository.
             </p>
+            <p>
+              And when a signal interrupts the work, the live restart debugger
+              offers <em>Ask Autolith why this failed</em>: an independent
+              diagnosis beside the still-live restarts, with up to three
+              validated recovery proposals.
+            </p>
           </div>
 
           <div class="window">
@@ -480,7 +495,8 @@ Tip: (papercuts) shows problems Autolith recorded when something was not working
           Source, conversations, useful facts, live mutations, exact heaps, and
           disposable experiments have different lifetimes. Autolith keeps them
           separate instead of pretending that one database or one saved core is
-          everything.
+          everything. Shared state transactions are serialized across
+          processes, so concurrent agents can share one workspace.
         </p>
 
         <div class="window window--wide specimen-row">
@@ -490,7 +506,7 @@ Tip: (papercuts) shows problems Autolith recorded when something was not working
               <tbody>
                 <tr>
                   <th scope="row">Conversations</th>
-                  <td>Append-only portable S-expressions with exact resume commands and crash-tail repair.</td>
+                  <td>Append-only portable S-expressions with exact resume commands, crash-tail repair, and read-only replay navigation.</td>
                 </tr>
                 <tr>
                   <th scope="row">Memories</th>
@@ -602,7 +618,7 @@ Tip: (papercuts) shows problems Autolith recorded when something was not working
     <footer class="shell">
       <div class="colophon">
         <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
-        <p>Autolith · Revised 24 August 2026</p>
+        <p>Autolith · Revised 5 September 2026</p>
       </div>
     </footer>
   </body>
