@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The management endpoint · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="The opt-in authenticated management REPL for trusted local programs.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/advanced/management-endpoint">
+
+    <meta property="og:title" content="The management endpoint · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="The opt-in authenticated management REPL for trusted local programs.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/advanced/management-endpoint">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Advanced · The management endpoint</nav>
+
+        <!-- Source: guide.org "Active-image management endpoint"; checked against Autolith 0.47.1. -->
+        <h1>The management endpoint</h1>
+        <p class="lede">
+          The management REPL is an opt-in, authenticated endpoint for
+          trusted local programs that must evaluate Common Lisp in the
+          running Autolith image. It is off by default and uses neither
+          Swank nor Slynk.
+        </p>
+
+        <h2>Turn it on</h2>
+        <pre><code>$ <kbd>AUTOLITH_MANAGEMENT_REPL=on autolith</kbd></code></pre>
+        <p>
+          The endpoint speaks a length-prefixed S-expression wire
+          protocol. A Unix socket is the default transport; TCP is
+          available but accepts IPv4 loopback addresses only, and there
+          is no server TLS.
+        </p>
+
+        <h2>Authentication</h2>
+        <p>
+          Every connection answers a fresh nonce challenge with
+          HMAC-SHA-256; the reusable token never crosses the wire. The
+          token lives in a mode-0600 file owned by your user, opened
+          without following symbolic links only while checking a proof,
+          and its octets are wiped from memory afterwards.
+        </p>
+
+        <h2>Settings</h2>
+        <table>
+          <thead>
+            <tr><th>Variable</th><th>Default</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL</code></td><td><code>off</code></td><td>Enable the endpoint.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_TRANSPORT</code></td><td><code>unix</code></td><td><code>unix</code> or <code>tcp</code>.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_UNIX_SOCKET</code></td><td>state home</td><td>Socket under the XDG state home.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_TCP_ADDRESS</code></td><td><code>127.0.0.1</code></td><td>IPv4 loopback listener address.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_TCP_PORT</code></td><td><code>4141</code></td><td>TCP listener port.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_TOKEN_FILE</code></td><td>config home</td><td>Mode-0600 token file under the XDG config home.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_TIMEOUT</code></td><td><code>10</code></td><td>Evaluation deadline in seconds.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_MAX_FRAME</code></td><td><code>1048576</code></td><td>Maximum wire-frame octets.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_MAX_SOURCE</code></td><td><code>262144</code></td><td>Maximum UTF-8 source octets.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_MAX_OUTPUT</code></td><td><code>262144</code></td><td>Maximum captured output and value text.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_QUEUE_CAPACITY</code></td><td><code>8</code></td><td>Maximum queued evaluations.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_MAX_CLIENTS</code></td><td><code>8</code></td><td>Maximum accepted clients, including authentication.</td></tr>
+            <tr><td><code>AUTOLITH_MANAGEMENT_REPL_AUTH_TIMEOUT</code></td><td><code>10</code></td><td>Absolute authentication deadline in seconds.</td></tr>
+          </tbody>
+        </table>
+        <p class="caveat"><em>
+          Challenge-response prevents bearer-token replay, but an
+          unauthenticated local process can relay a challenge and proof
+          between trusted local clients. Treat loopback TCP clients as
+          locally trusted.
+        </em></p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Set up a project for Autolith</span>
+          <a href="/autolith/docs/cookbook/project-setup">Set up a project for Autolith</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Context tuning</span>
+          <a href="/autolith/docs/advanced/context-tuning">Context tuning</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
