@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search a corpus larger than the window · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Point bounded inference frames at a corpus larger than the model window.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/cookbook/search-big-corpus">
+
+    <meta property="og:title" content="Search a corpus larger than the window · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Point bounded inference frames at a corpus larger than the model window.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/cookbook/search-big-corpus">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Cookbook · Search a corpus larger than the window</nav>
+
+        <!-- Source: guide.org "Recursive inference"; checked against Autolith 0.47.1. -->
+        <h1>Search a corpus larger than the window</h1>
+        <p class="lede">
+          A ten-megabyte log does not fit in any model window. Recursive
+          inference runs bounded frames over slices instead, and only the
+          answer enters the conversation.
+        </p>
+
+        <h2>The request</h2>
+        <pre><code>❯ you
+Find every place where protocol version 2 is negotiated in
+var/log/gateway.log, and quote the surrounding lines.</code></pre>
+        <p>
+          Behind the prompt Autolith runs a root completion over the
+          file: the root drives a Lisp environment that slices the
+          context (<code>context-slice</code>,
+          <code>context-search</code>), fans sub-inferences over the
+          pieces, and combines their reports before committing one final
+          value.
+        </p>
+
+        <h2>Many independent files</h2>
+        <p>
+          When the same question applies to many files separately, the
+          fan-out form applies one frame per resource concurrently under
+          one shared budget, and results come back in task order.
+        </p>
+
+        <h2>Check the evidence</h2>
+        <p>
+          Every run records a trace identifier. Read the trace later to
+          see which slices produced the quoted lines, and audit the
+          answer against the corpus yourself.
+        </p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Keep a helper across restarts</span>
+          <a href="/autolith/docs/cookbook/persist-a-function">Keep a helper across restarts</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Run Autolith from CI</span>
+          <a href="/autolith/docs/cookbook/run-from-ci">Run Autolith from CI</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
