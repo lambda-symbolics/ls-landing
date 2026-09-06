@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Context tuning · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="init.lisp and request-local context contributors.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/advanced/context-tuning">
+
+    <meta property="og:title" content="Context tuning · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="init.lisp and request-local context contributors.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/advanced/context-tuning">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Advanced · Context tuning</nav>
+
+        <!-- Source: guide.org "init.lisp", src/agent/context.lisp; checked against Autolith 0.47.1. -->
+        <h1>Context tuning</h1>
+        <p class="lede">
+          Two small mechanisms shape what Autolith sees: init.lisp for
+          startup configuration, and request-local context contributors
+          for recurring notes that should not become conversation
+          history.
+        </p>
+
+        <h2>init.lisp</h2>
+        <p>
+          The file at your config root is ordinary Common Lisp in package
+          <code>:autolith</code>, run with your full privileges. It is
+          where provider registrations and small defaults live. It is
+          not copied into private replay or the pristine recovery image.
+          A trusted directory can carry its own
+          <code>.autolith/init.lisp</code> that loads only for work
+          there.
+        </p>
+
+        <h2>Ephemeral notes</h2>
+        <p>
+          Request-local context contributors attach bounded notes to
+          requests. Contributions stack, and priority matters only when
+          the budget is full. They never enter conversation history, and
+          <code>/context</code> inspects what each contributor added to
+          the current request.
+        </p>
+        <pre><code>(<span class="hl-keyword">define-context-contributor</span> house-style (request)
+  (list (make-context-contribution
+         <span class="hl-keyword">:identifier</span> "house-style"
+         <span class="hl-keyword">:instruction</span> "Prefer property lists over hashes in this repo.")))</code></pre>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">The management endpoint</span>
+          <a href="/autolith/docs/advanced/management-endpoint">The management endpoint</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
