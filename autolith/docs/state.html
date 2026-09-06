@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>State · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Conversations, persistent memories, the workspace agenda, and papercuts: what Autolith remembers and for how long.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/state">
+
+    <meta property="og:title" content="State · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Conversations, persistent memories, the workspace agenda, and papercuts: what Autolith remembers and for how long.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/state">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Concepts · State</nav>
+
+      <!-- Source: guide.org "Talk to Autolith", README.org "State and recovery"; checked against Autolith 0.47.1. -->
+      <h1>State</h1>
+      <p class="lede">
+        Different kinds of state have different lifetimes, and Autolith keeps
+        them in separate, readable stores instead of one database.
+      </p>
+
+      <!-- screenshot: the /resume picker with titled sessions, about 980px wide -->
+      <h2>Conversations</h2>
+      <p>
+        Conversations are append-only readable files with exact resume
+        commands and crash-tail repair. <code>/resume</code> picks one by
+        title, <code>/conversations</code> lists them, and
+        <code>autolith replay ID</code> reads a conversation without
+        resuming or locking it:
+      </p>
+      <div class="window">
+        <div class="window-titlebar">terminal</div>
+        <div class="window-body">
+          <pre><code>$ <kbd>autolith replay ID</kbd>
+$ <kbd>autolith replay ID turn 12</kbd>
+$ <kbd>autolith replay ID date 2026-09-01</kbd></code></pre>
+        </div>
+      </div>
+      <p>
+        Replay steps with <code>next</code> and <code>previous</code> and
+        jumps by turn, date, time, or sequence. Every session also gets a
+        title immediately, refined later by the provider if you allow it
+        with <code>/titles</code>.
+      </p>
+
+      <h2>The vault</h2>
+      <p>
+        Steering messages and follow-ups typed around a crash survive in a
+        conversation-scoped vault. The vault is deliberately not
+        resubmitted on its own, because you may want to diagnose the crash
+        first:
+      </p>
+      <div class="window">
+        <div class="window-titlebar">prompt window</div>
+        <div class="window-body">
+          <pre><code>(<span class="hl-keyword">vault</span>)         ; see what the vault holds
+(<span class="hl-keyword">vault-restore</span>) ; resubmit follow-ups and steering messages
+(<span class="hl-keyword">vault-discard</span>) ; delete the vault contents</code></pre>
+        </div>
+      </div>
+
+      <h2>Memories, agenda, papercuts</h2>
+      <dl class="property-sheet">
+        <dt>Memories</dt>
+        <dd>Workspace or global facts and preferences with bounded prompt recall. Ask Autolith to remember something, or write one yourself.</dd>
+        <dt>Agenda</dt>
+        <dd>The workspace's short durable task list, delivered in full on every request. /agenda shows it.</dd>
+        <dt>Papercuts</dt>
+        <dd>Reports Autolith files when something in the environment does not work. /papercuts lists them; /papercut-close resolves one.</dd>
+      </dl>
+      <p>
+        These stores are read and written through resource URIs with
+        revision gating: a read returns an observation with a revision, and
+        an edit applies only against exactly that revision. Shared state
+        transactions are serialized across processes, so concurrent agents
+        can share one workspace.
+      </p>
+
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Commit and recover</span>
+          <a href="/autolith/docs/commits-and-recovery">Commit and recover</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Recursive inference</span>
+          <a href="/autolith/docs/recursive-inference">Recursive inference</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
