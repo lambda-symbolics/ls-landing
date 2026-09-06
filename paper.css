@@ -1521,3 +1521,55 @@ button.button {
 }
 
 
+
+/* -- Autolith docs -- */
+
+.docs-path {
+  max-width: 68ch;
+  padding-top: 48px;
+  font-size: 15px;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+.docs-path a {
+  font-style: italic;
+}
+
+.doc-page h1 {
+  font-size: clamp(34px, 5vw, 56px);
+  margin: 10px 0 24px;
+}
+
+.docs-pager {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px 40px;
+  flex-wrap: wrap;
+  max-width: 68ch;
+  margin-top: 72px;
+  padding-top: 16px;
+  border-top: 1px solid var(--ink);
+}
+
+.docs-pager-cell {
+  min-width: 0;
+}
+
+.docs-pager-cell--next {
+  margin-left: auto;
+  text-align: right;
+}
+
+.docs-pager-label {
+  display: block;
+  font-size: 14px;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+.docs-pager a {
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
