@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The live image · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="How Autolith inspects, extends, and journals its own running Common Lisp image.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/live-image">
+
+    <meta property="og:title" content="The live image · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="How Autolith inspects, extends, and journals its own running Common Lisp image.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/live-image">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Concepts · The live image</nav>
+
+      <!-- Source: guide.org "Configure Autolith", README.org; checked against Autolith 0.47.1. -->
+      <h1>The live image</h1>
+      <p class="lede">
+        Autolith can inspect and change the running agent without a restart.
+        Every change is journaled, exercisable, and then either kept as a
+        private commit or discarded.
+      </p>
+
+      <h2>Make a change</h2>
+      <p>
+        <code>self.redefine</code> compiles and installs one complete
+        definition in the active image. <code>self.set</code> changes one
+        global value. Both take effect immediately and append to an
+        append-only mutation journal:
+      </p>
+      <div class="window window--wide">
+        <div class="window-titlebar">a representative mutation transaction</div>
+        <div class="window-body">
+          <pre><code>→ <span class="hl-keyword">lisp.source</span> TERMINAL-UI--DURATION-TEXT target self
+← complete tracked DEFUN
+
+→ <span class="hl-keyword">self.redefine</span>
+  (defun terminal-ui--duration-text ...)
+← compiled and installed in the active image
+
+→ <span class="hl-keyword">self.exercise</span>
+  (assert (string= "1d 2:00:00" ...))
+← journaled assertion passed</code></pre>
+        </div>
+      </div>
+
+      <h2>Judge it</h2>
+      <p>
+        <code>self.exercise</code> runs one assertion-style check against a
+        pending change. <code>self.diff</code> shows everything pending,
+        collapsed to the effective state. Deliberate tuning can run as an
+        explicit experiment: state a hypothesis, measure, and record a
+        verdict without committing anything. <code>self.discard</code>
+        restores the newest change, so being wrong is cheap.
+      </p>
+      <!-- screenshot: self.diff output, about 980px wide -->
+
+      <h2>Keep it</h2>
+      <p>
+        <code>self.commit</code> persists pending changes as an immutable
+        private image commit: a manifest plus a complete executable replay
+        script, retained in a separate private Git history. A clean process
+        replays the script before the commit is selected. The tracked source
+        repository is never patched; selected private commits load after the
+        tracked system.
+      </p>
+
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Lisp workers</span>
+          <a href="/autolith/docs/lisp-workers">Lisp workers</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Commit and recover</span>
+          <a href="/autolith/docs/commits-and-recovery">Commit and recover</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
