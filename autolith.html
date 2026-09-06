@@ -134,25 +134,16 @@
         <div class="duo">
           <div>
             <h2 id="install-title">Install Autolith</h2>
-            <p>
-              Autolith v0.47.1 runs on Linux x86-64, Linux aarch64, macOS x86-64,
-              macOS arm64, FreeBSD x86-64, NetBSD x86-64, and OpenBSD x86-64. The binary
-              release carries its own SBCL 2.6.6, Lisp dependencies, and native
-              helpers; Linux is served in glibc and fully static musl builds.
-              Installed releases check for newer tags and ask before updating.
-              Nix is the recommended route when you want the complete build
-              pinned from the start.
-            </p>
-            <p>
-              Providers sign in with a browser device flow or an API key:
-              ChatGPT Codex subscription, Gemini Code Assist subscription,
-              Grok subscription, Nous Research subscription, Fireworks AI,
-              Anthropic API (pay-per-token), OpenRouter (pay-per-token),
-              OpenCode (zen/go), and Mistral AI. Any other OpenAI-compatible
-              endpoint can be registered from the REPL. The default model is
-              gpt-5.6-sol; through the Codex provider, gpt-6-astra is also
-              available with a 272,000-token context window.
-            </p>
+              <p>
+                Runs on Linux, macOS, FreeBSD, NetBSD, and OpenBSD. The binary
+                carries its own SBCL, Lisp dependencies, and native helpers,
+                and installed releases check for newer tags and ask before
+                updating.
+              </p>
+              <p>
+                Sign-in methods and models are covered in
+                <a href="/autolith/docs/providers">the docs</a>.
+              </p>
             <p class="caveat"><em>
               Yes, piping a URL into a shell is evil. Read the installer before
               running it. Nix is the better installation path.
@@ -165,14 +156,12 @@
           </div>
 
           <div class="window install-window">
-            <div class="window-titlebar">Start Autolith · Binary, Nix, or source</div>
+            <div class="window-titlebar">Install Autolith · Binary, Nix, or source</div>
             <div class="window-body">
               <pre><code><span class="code-label">After the binary installer</span>
-$ <kbd>autolith auth</kbd>
 $ <kbd>autolith</kbd>
 
 <span class="code-label">Recommended · Nix</span>
-$ <kbd>nix run github:lambda-symbolics/autolith -- auth</kbd>
 $ <kbd>nix run github:lambda-symbolics/autolith</kbd>
 
 <span class="code-label">Build from the repository</span>
@@ -180,7 +169,6 @@ $ <kbd>git clone https://github.com/lambda-symbolics/autolith</kbd>
 $ <kbd>cd autolith</kbd>
 $ <kbd>./script/bootstrap</kbd>
 $ <kbd>./script/check</kbd>
-$ <kbd>./bin/autolith auth</kbd>
 $ <kbd>./bin/autolith</kbd></code></pre>
             </div>
           </div>
