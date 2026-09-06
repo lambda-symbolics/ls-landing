@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Providers · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Sign-in methods, registered models, reasoning effort, and where credentials live.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/providers">
+
+    <meta property="og:title" content="Providers · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Sign-in methods, registered models, reasoning effort, and where credentials live.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/providers">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Concepts · Providers</nav>
+
+        <!-- Source: guide.org "Providers", release notes 0.46.0-0.47.1; checked against Autolith 0.47.1. -->
+        <h1>Providers</h1>
+        <p class="lede">
+          One provider interface, many sign-in methods. Subscriptions and
+          API keys coexist, and switching model or reasoning effort is a
+          command away.
+        </p>
+
+        <h2>Signing in</h2>
+        <p>
+          <code>/auth</code> registers a provider. Subscriptions sign in
+          through a browser device flow; API providers take a key. Built
+          in: ChatGPT Codex subscription, Gemini Code Assist subscription,
+          Grok subscription, Nous Research subscription, Fireworks AI,
+          Anthropic API (pay-per-token), OpenRouter (pay-per-token),
+          OpenCode (zen/go), and Mistral AI. Any other OpenAI-compatible
+          endpoint can be registered from the REPL.
+        </p>
+
+        <h2>Models and effort</h2>
+        <p>
+          The default model is gpt-5.6-sol. Through the Codex provider,
+          gpt-6-astra is also available with a 272,000-token context
+          window. <code>/models</code> lists what is registered,
+          <code>/model</code> picks one together with its reasoning effort,
+          <code>/effort</code> changes the effort alone, and
+          <code>/fast</code> toggles Codex Fast mode.
+          <code>/trace</code> shows visible reasoning summaries, and
+          <code>/info</code> reports the current model and runtime
+          settings.
+        </p>
+
+        <h2>Where credentials live</h2>
+        <p>
+          Sign-in tokens and API keys are kept in your user configuration,
+          outside saved cores, conversation files, and Git.
+        </p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Agents and jobs</span>
+          <a href="/autolith/docs/agents-and-jobs">Agents and jobs</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">MCP</span>
+          <a href="/autolith/docs/mcp">MCP</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
