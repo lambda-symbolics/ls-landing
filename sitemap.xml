@@ -13,6 +13,75 @@
     <loc>https://lambda-symbolics.com/autolith</loc>
   </url>
   <url>
+    <loc>https://lambda-symbolics.com/autolith/docs</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/install</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/first-session</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/workspace</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/tools</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/lisp-workers</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/live-image</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/commits-and-recovery</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/state</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/recursive-inference</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/agents-and-jobs</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/providers</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/mcp</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/skills</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/commands</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/resume-and-replay</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/persist-a-function</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/search-big-corpus</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/run-from-ci</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/add-mcp-server</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/project-setup</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/advanced/management-endpoint</loc>
+  </url>
+  <url>
+    <loc>https://lambda-symbolics.com/autolith/docs/advanced/context-tuning</loc>
+  </url>
+  <url>
     <loc>https://lambda-symbolics.com/libraries</loc>
   </url>
   <url>

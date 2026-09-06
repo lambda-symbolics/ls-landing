@@ -18,6 +18,7 @@ gray, and only a small inline script for the Autolith demo. The durable design c
 - `cclsh.html`: CCLSH product page
 - `autolith.html`: Autolith product page
 - `autolith.png`: paper-colored, 1-bit dithered Autolith mascot
+- `autolith/docs/`: Autolith documentation pages, served under `/autolith/docs`
 - `rust-course.html`: Rust course page
 - `bookmark.html`: unlinked printable bookmark sheet (`/bookmark`; not in the sitemap, noindex)
 - `cards.html`: unlinked printable business card sheet (`/cards`; not in the sitemap, noindex)
