@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slash commands · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Every interactive slash command in one table.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/commands">
+
+    <meta property="og:title" content="Slash commands · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Every interactive slash command in one table.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/commands">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Reference · Slash commands</nav>
+
+        <!-- Source: interactive command registry, Autolith 0.47.1. -->
+        <h1>Slash commands</h1>
+        <p class="lede">
+          Every interactive command is one / away. Aliases are shown in
+          the second column; <code>/help</code> always shows the current
+          reference, and the terminal completes commands and their
+          options as you type.
+        </p>
+        <table>
+          <thead>
+            <tr><th>Command</th><th>Aliases</th><th>What it does</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>/help</code></td><td></td><td>show this reference</td></tr>
+            <tr><td><code>/new</code></td><td></td><td>start a new conversation</td></tr>
+            <tr><td><code>/resume</code></td><td></td><td>pick a saved conversation to resume</td></tr>
+            <tr><td><code>/conversations</code></td><td></td><td>list saved conversations</td></tr>
+            <tr><td><code>/history</code></td><td></td><td>load earlier transcript history</td></tr>
+            <tr><td><code>/cwd</code></td><td></td><td>show or change the active workspace</td></tr>
+            <tr><td><code>/auth</code></td><td></td><td>pick and authenticate a registered provider</td></tr>
+            <tr><td><code>/model</code></td><td></td><td>pick a registered provider model and reasoning effort</td></tr>
+            <tr><td><code>/models</code></td><td></td><td>list registered providers and models</td></tr>
+            <tr><td><code>/effort</code></td><td></td><td>pick the reasoning effort</td></tr>
+            <tr><td><code>/fast</code></td><td></td><td>show or change Codex Fast mode</td></tr>
+            <tr><td><code>/trace</code></td><td></td><td>show visible reasoning summaries</td></tr>
+            <tr><td><code>/timestamps</code></td><td></td><td>show local timestamps beside user and assistant turns</td></tr>
+            <tr><td><code>/ste</code></td><td></td><td>use Simple Technical English for replies</td></tr>
+            <tr><td><code>/titles</code></td><td></td><td>allow provider-generated session-title refreshes</td></tr>
+            <tr><td><code>/hurry-up</code></td><td></td><td>show or change hurry-up mode</td></tr>
+            <tr><td><code>/permissions</code></td><td></td><td>choose command access for this session</td></tr>
+            <tr><td><code>/goal</code></td><td></td><td>set or view the session goal</td></tr>
+            <tr><td><code>/agenda</code></td><td></td><td>show workspace agenda entries</td></tr>
+            <tr><td><code>/papercuts</code></td><td></td><td>show workspace papercut reports</td></tr>
+            <tr><td><code>/papercut</code></td><td></td><td>show one complete papercut report</td></tr>
+            <tr><td><code>/papercut-close</code></td><td></td><td>close one resolved papercut report</td></tr>
+            <tr><td><code>/skills</code></td><td></td><td>show available skills</td></tr>
+            <tr><td><code>/mcp</code></td><td></td><td>show or refresh configured MCP servers</td></tr>
+            <tr><td><code>/checkpoint</code></td><td></td><td>save a retained live generation</td></tr>
+            <tr><td><code>/generations</code></td><td></td><td>list retained generations</td></tr>
+            <tr><td><code>/rollback</code></td><td></td><td>pick a generation for recovery</td></tr>
+            <tr><td><code>/info</code></td><td></td><td>show current model and runtime settings</td></tr>
+            <tr><td><code>/status</code></td><td><code>/usage</code></td><td>show usage and rate limits</td></tr>
+            <tr><td><code>/update</code></td><td></td><td>check and install a newer packaged release</td></tr>
+            <tr><td><code>/context</code></td><td></td><td>inspect request-local context</td></tr>
+            <tr><td><code>/compact</code></td><td></td><td>condense tool details, or summarize context with no argument</td></tr>
+            <tr><td><code>/detach</code></td><td></td><td>detach Autolith from the current terminal</td></tr>
+            <tr><td><code>/quit</code></td><td><code>/exit</code></td><td>leave Autolith</td></tr>
+            <tr><td><code>/vault</code></td><td></td><td>inspect recovered queued input</td></tr>
+            <tr><td><code>/vault-restore</code></td><td></td><td>restore recovered queued input</td></tr>
+            <tr><td><code>/vault-discard</code></td><td></td><td>discard recovered queued input</td></tr>
+          </tbody>
+        </table>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Skills</span>
+          <a href="/autolith/docs/skills">Skills</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Find and resume past work</span>
+          <a href="/autolith/docs/cookbook/resume-and-replay">Find and resume past work</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
