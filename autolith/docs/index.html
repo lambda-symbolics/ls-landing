@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Documentation for Autolith, a terminal programming agent in a live Common Lisp image: install, daily work, and the whole machinery, page by page.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs">
+
+    <meta property="og:title" content="Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Documentation for Autolith, a terminal programming agent in a live Common Lisp image: install, daily work, and the whole machinery, page by page.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <h1>Autolith docs</h1>
+      <p class="lede">
+        Autolith is a terminal programming agent that lives in a running Common
+        Lisp image. It works in your repository, keeps project context, and can
+        inspect and extend its own runtime. These pages take you from install
+        to daily work in short, complete steps.
+      </p>
+      <p>
+        Read the three Start pages in order. Concepts explains one mechanism
+        per page. Cookbook solves concrete tasks. Advanced is operator
+        machinery. Every example was checked against Autolith 0.47.1.
+      </p>
+
+      <h2 id="start">Start</h2>
+      <ul>
+        <li><a href="/autolith/docs/install">Install</a> — put Autolith on your machine and keep it current.</li>
+        <li><a href="/autolith/docs/first-session">Your first session</a> — launch, authenticate, and hold a conversation.</li>
+        <li><a href="/autolith/docs/workspace">The workspace</a> — what Autolith reads, where its state lives, what a workspace is.</li>
+      </ul>
+
+      <h2 id="concepts">Concepts</h2>
+      <ul>
+        <li><a href="/autolith/docs/tools">Tools and permissions</a> — the tool registry, approvals, and guard rails.</li>
+        <li><a href="/autolith/docs/lisp-workers">Lisp workers</a> — disposable REPLs beside the prompt-window REPL.</li>
+        <li><a href="/autolith/docs/live-image">The live image</a> — journaled, exercisable self-modification.</li>
+        <li><a href="/autolith/docs/commits-and-recovery">Commit and recover</a> — generations, crash capsules, recovery.</li>
+        <li><a href="/autolith/docs/state">State</a> — conversations, memories, agenda, papercuts.</li>
+        <li><a href="/autolith/docs/recursive-inference">Recursive inference</a> — corpora larger than the model window.</li>
+        <li><a href="/autolith/docs/agents-and-jobs">Agents and jobs</a> — child agents, roles, and headless jobs.</li>
+        <li><a href="/autolith/docs/providers">Providers</a> — sign-in methods and models.</li>
+        <li><a href="/autolith/docs/mcp">MCP</a> — external tools through MCP servers.</li>
+        <li><a href="/autolith/docs/skills">Skills</a> — loadable instruction bundles.</li>
+      </ul>
+
+      <h2 id="reference">Reference</h2>
+      <ul>
+        <li><a href="/autolith/docs/commands">Slash commands</a> — every interactive command in one table.</li>
+      </ul>
+
+      <h2 id="cookbook">Cookbook</h2>
+      <ul>
+        <li><a href="/autolith/docs/cookbook/resume-and-replay">Find and resume past work</a></li>
+        <li><a href="/autolith/docs/cookbook/persist-a-function">Keep a helper across restarts</a></li>
+        <li><a href="/autolith/docs/cookbook/search-big-corpus">Search a corpus larger than the window</a></li>
+        <li><a href="/autolith/docs/cookbook/run-from-ci">Run Autolith from CI</a></li>
+        <li><a href="/autolith/docs/cookbook/add-mcp-server">Add an MCP server</a></li>
+        <li><a href="/autolith/docs/cookbook/project-setup">Set up a project for Autolith</a></li>
+      </ul>
+
+      <h2 id="advanced">Advanced</h2>
+      <ul>
+        <li><a href="/autolith/docs/advanced/management-endpoint">The management endpoint</a> — an authenticated REPL for trusted programs.</li>
+        <li><a href="/autolith/docs/advanced/context-tuning">Context tuning</a> — init.lisp and ephemeral notes.</li>
+      </ul>
+
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Install</span>
+          <a href="/autolith/docs/install">Install</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
