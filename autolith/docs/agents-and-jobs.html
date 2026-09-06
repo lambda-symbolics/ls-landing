@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agents and jobs · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Child agents, roles, inspectable jobs, and the non-interactive run-job boundary.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/agents-and-jobs">
+
+    <meta property="og:title" content="Agents and jobs · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Child agents, roles, inspectable jobs, and the non-interactive run-job boundary.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/agents-and-jobs">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Concepts · Agents and jobs</nav>
+
+        <!-- Source: guide.org "Child agents" and "Jobs"; checked against Autolith 0.47.1. -->
+        <h1>Agents and jobs</h1>
+        <p class="lede">
+          Autolith does its own work by default. Child agents and headless
+          jobs exist for work that needs independence, parallelism, or a
+          life outside the conversation.
+        </p>
+
+        <h2>Child agents</h2>
+        <p>
+          A child agent is a real in-process session with its own
+          conversation, its own tool set, and an explicit depth limit. It
+          follows a mandatory yield protocol: it finishes by submitting a
+          result, not by trailing off. Assignments can run as one child or
+          as a concurrency-limited batch with shared background context.
+        </p>
+        <p>
+          Children detach by default. The work continues in the background
+          while the main conversation keeps moving; you join a child when
+          its result is actually needed. Roles tune what a child may do:
+          scout, designer, reviewer, librarian, task, and sonic. Use
+          <code>task.agents</code> to list what the current depth and policy
+          allow.
+        </p>
+
+        <h2>Jobs</h2>
+        <p>
+          Anything that runs outside the immediate turn becomes an
+          inspectable job: a background shell command, a Lisp evaluation, a
+          test run, a detached child. Jobs are listed, waited on, inspected,
+          and cancelled by identifier. Keeping the identifier matters; a
+          turn does not end while a required job is still pending.
+        </p>
+
+        <h2>Outside the conversation</h2>
+        <p>
+          The same machinery has a fully non-interactive face: the
+          <code>run-job</code> boundary runs one job from a script with a
+          data-only envelope and a structured-output contract. The cookbook
+          shows it in <a href="/autolith/docs/cookbook/run-from-ci">Run Autolith from CI</a>.
+        </p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Recursive inference</span>
+          <a href="/autolith/docs/recursive-inference">Recursive inference</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Providers</span>
+          <a href="/autolith/docs/providers">Providers</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
