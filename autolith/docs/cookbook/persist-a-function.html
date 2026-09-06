@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keep a helper across restarts · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Prototype a helper, verify it, and persist it across restarts.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/cookbook/persist-a-function">
+
+    <meta property="og:title" content="Keep a helper across restarts · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Prototype a helper, verify it, and persist it across restarts.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/cookbook/persist-a-function">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Cookbook · Keep a helper across restarts</nav>
+
+        <!-- Source: guide.org "Self-modification"; checked against Autolith 0.47.1. -->
+        <h1>Keep a helper across restarts</h1>
+        <p class="lede">
+          A helper defined in the active image dies with the image unless
+          it is persisted. Autolith's mutation path makes the durable
+          version a single request.
+        </p>
+
+        <h2>Ask for it</h2>
+        <pre><code>❯ you
+Add a frob-line helper to the active image that trims outer
+spaces from one line. Check it on a few inputs and make it
+survive restarts.</code></pre>
+        <p>
+          Autolith journals the intended mutation, compiles and installs
+          it in the live image, and runs the checks you asked for before
+          anything becomes durable.
+        </p>
+
+        <h2>One definition or a working set</h2>
+        <p>
+          <code>self.persist-definition</code> compiles, installs, checks,
+          and persists one complete definition.
+          <code>self.commit</code> persists every pending change as one
+          immutable private image commit with a complete replay script,
+          retained in private Git history.
+        </p>
+
+        <h2>After the restart</h2>
+        <p>
+          The selected private commit replays automatically on startup,
+          so the helper is simply there. Nothing in your repository
+          changes; when a helper belongs to the project itself, put it in
+          the repository instead and let the workspace load it like any
+          other code.
+        </p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Find and resume past work</span>
+          <a href="/autolith/docs/cookbook/resume-and-replay">Find and resume past work</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Search a corpus larger than the window</span>
+          <a href="/autolith/docs/cookbook/search-big-corpus">Search a corpus larger than the window</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
