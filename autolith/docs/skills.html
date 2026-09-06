@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skills · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Named instruction bundles injected ephemerally for one logical turn.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/skills">
+
+    <meta property="og:title" content="Skills · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Named instruction bundles injected ephemerally for one logical turn.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/skills">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Concepts · Skills</nav>
+
+        <!-- Source: guide.org "Skills"; checked against Autolith 0.47.1. -->
+        <h1>Skills</h1>
+        <p class="lede">
+          A skill is a named instruction bundle. Loading one injects its
+          instructions into the provider requests for the current logical
+          turn, without touching the conversation.
+        </p>
+
+        <h2>Loading</h2>
+        <p>
+          Skills are selected by exact catalog name, or matched through
+          catalog metadata when a request names a technique rather than a
+          skill. The <code>/skills</code> command lists what is available
+          in this workspace.
+        </p>
+
+        <h2>What loading does</h2>
+        <p>
+          Loaded instructions are injected ephemerally: they influence the
+          requests that follow in the turn and then stop. They are not
+          stored as conversation history and do not persist into later
+          turns. For standing advice that should apply to many turns, use
+          the request-local context described in
+          <a href="/autolith/docs/advanced/context-tuning">Context tuning</a>.
+        </p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">MCP</span>
+          <a href="/autolith/docs/mcp">MCP</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Slash commands</span>
+          <a href="/autolith/docs/commands">Slash commands</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
