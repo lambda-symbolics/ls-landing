@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set up a project for Autolith · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Prepare a repository for Autolith: instructions, checks, and durable context.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/cookbook/project-setup">
+
+    <meta property="og:title" content="Set up a project for Autolith · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Prepare a repository for Autolith: instructions, checks, and durable context.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/cookbook/project-setup">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Cookbook · Set up a project for Autolith</nav>
+
+        <!-- Source: guide.org "Workspace instructions"; checked against Autolith 0.47.1. -->
+        <h1>Set up a project for Autolith</h1>
+        <p class="lede">
+          A good Autolith project is a good repository that says how it
+          wants to be worked on. One instructions file at the root,
+          exact check commands, and durable context tools do most of the
+          work.
+        </p>
+
+        <h2>Write AGENTS.md</h2>
+        <p>
+          Put the enduring policy in <code>AGENTS.md</code> at the
+          project root: purpose, architectural guardrails, style rules,
+          and the exact commands for checks and builds. Deeper
+          <code>AGENTS.md</code> files refine earlier ones, so a
+          component can carry its own rules. Commit the file.
+        </p>
+
+        <h2>Make the checks runnable</h2>
+        <p>
+          Autolith runs what the instructions name. A single
+          <code>script/check</code> that covers code, tests, and
+          documentation gives every session the same finish line.
+        </p>
+
+        <h2>Give context a home</h2>
+        <p>
+          The workspace agenda holds commitments and blockers across
+          sessions; persistent memories keep facts that outlive a task.
+          Ask Autolith to record them instead of retyping the context
+          every session.
+        </p>
+
+        <h2>Optional directory config</h2>
+        <p>
+          A trusted directory can carry its own
+          <code>.autolith/mcp.sexp</code> and
+          <code>.autolith/init.lisp</code>. The cookbook shows the MCP
+          case in <a href="/autolith/docs/cookbook/add-mcp-server">Add an MCP server</a>.
+        </p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Add an MCP server</span>
+          <a href="/autolith/docs/cookbook/add-mcp-server">Add an MCP server</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">The management endpoint</span>
+          <a href="/autolith/docs/advanced/management-endpoint">The management endpoint</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
