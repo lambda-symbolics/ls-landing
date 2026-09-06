@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add an MCP server · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Configure an MCP server for one project and bring its tools into Autolith.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/cookbook/add-mcp-server">
+
+    <meta property="og:title" content="Add an MCP server · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Configure an MCP server for one project and bring its tools into Autolith.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/cookbook/add-mcp-server">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Cookbook · Add an MCP server</nav>
+
+        <!-- Source: src/mcp/configuration.lisp, guide.org; checked against Autolith 0.47.1. -->
+        <h1>Add an MCP server</h1>
+        <p class="lede">
+          One file brings an MCP server's tools into Autolith for one
+          project: <code>.autolith/mcp.sexp</code> in the project root.
+        </p>
+
+        <h2>Write the file</h2>
+        <pre><code>(<span class="hl-keyword">:version</span> 1
+ <span class="hl-keyword">:servers</span>
+ ((<span class="hl-keyword">:name</span> "ripgrep"
+   <span class="hl-keyword">:transport</span> (<span class="hl-keyword">:type</span> <span class="hl-keyword">:stdio</span>
+               <span class="hl-keyword">:command</span> "mcp-ripgrep"
+               <span class="hl-keyword">:arguments</span> ("serve" "--no-banner"))
+   <span class="hl-keyword">:approval</span> <span class="hl-keyword">:read-only</span>
+   <span class="hl-keyword">:trusted-read-only-tools</span> ("search"))))</code></pre>
+        <p>
+          An HTTP server swaps the transport for
+          <code>(:type :http :url "https://...")</code>. Optional
+          <code>:startup-timeout-seconds</code> and
+          <code>:tool-timeout-seconds</code> bound each deadline, at
+          most one hour.
+        </p>
+
+        <h2>Trust the directory</h2>
+        <p>
+          Autolith reads <code>.autolith</code> files only from
+          directories you have trusted, through a
+          <code>directory-scopes.sexp</code> manifest in your config
+          root:
+        </p>
+        <pre><code>(<span class="hl-keyword">:version</span> 1
+ <span class="hl-keyword">:directories</span> ("~/src/my-project"))</code></pre>
+
+        <h2>Check it</h2>
+        <pre><code>/mcp</code></pre>
+        <p>
+          The command shows the effective servers and refreshes
+          discovery after a server recovers. The new server appears as
+          the exact <code>mcp__ripgrep</code> namespace, and its tools
+          list under it with everything else the model can call.
+        </p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Run Autolith from CI</span>
+          <a href="/autolith/docs/cookbook/run-from-ci">Run Autolith from CI</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Set up a project for Autolith</span>
+          <a href="/autolith/docs/cookbook/project-setup">Set up a project for Autolith</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
