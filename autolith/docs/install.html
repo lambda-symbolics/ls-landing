@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Install · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Install Autolith with Nix, the packaged binary release, or from source, and keep it updated.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/install">
+
+    <meta property="og:title" content="Install · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Install Autolith with Nix, the packaged binary release, or from source, and keep it updated.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/install">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Start · Install</nav>
+
+      <!-- Source: guide.org "Install and update", README.org "Install" and "Update"; checked against Autolith 0.47.1. -->
+      <h1>Install</h1>
+      <p class="lede">
+        Autolith ships as a Nix runtime, a packaged binary, or a source
+        checkout. Pick one route; you can switch later without losing state,
+        because state lives in your XDG directories either way.
+      </p>
+
+      <h2>Install with Nix</h2>
+      <p>
+        Nix is the recommended route: it pins the complete build and carries
+        the sandbox helper with it.
+      </p>
+      <div class="window">
+        <div class="window-titlebar">terminal</div>
+        <div class="window-body">
+          <pre><code>$ <kbd>nix run github:lambda-symbolics/autolith</kbd></code></pre>
+        </div>
+      </div>
+      <p>
+        The first launch builds the Lisp images Autolith needs. They live
+        below <code>~/.local/share/autolith/nix/images/</code>, and the next
+        start reuses them.
+      </p>
+
+      <h2>Install the packaged release</h2>
+      <div class="window">
+        <div class="window-titlebar">terminal</div>
+        <div class="window-body">
+          <pre><code>$ <kbd>curl -fsSL https://sh.lambda-symbolics.com/autolith | sh</kbd></code></pre>
+        </div>
+      </div>
+      <p>
+        The installer fetches the archive for your platform and installs the
+        launcher. Read the installer before piping it into a shell; the
+        <a href="/autolith">product page</a> says more about that tradeoff.
+      </p>
+      <dl class="property-sheet">
+        <dt>Platforms</dt>
+        <dd>Linux x86-64 and aarch64 (glibc and fully static musl), macOS x86-64 and arm64, FreeBSD x86-64, NetBSD x86-64, OpenBSD x86-64.</dd>
+        <dt>Bundled runtime</dt>
+        <dd>SBCL 2.6.6, Lisp dependencies, and native helpers.</dd>
+        <dt>Sandboxing</dt>
+        <dd>Linux uses Bubblewrap for sandboxed commands; Nix installs it, binary releases require it.</dd>
+      </dl>
+
+      <h2>Build from source</h2>
+      <div class="window">
+        <div class="window-titlebar">terminal</div>
+        <div class="window-body">
+          <pre><code>$ <kbd>git clone https://github.com/lambda-symbolics/autolith</kbd>
+$ <kbd>cd autolith</kbd>
+$ <kbd>./script/bootstrap</kbd>
+$ <kbd>./script/check</kbd></code></pre>
+        </div>
+      </div>
+      <p>
+        macOS needs a host SBCL, Quicklisp, Rust, CMake, <code>pkg-config</code>,
+        and OpenSSL. Linux additionally needs Bubblewrap. The
+        <a href="https://github.com/lambda-symbolics/autolith/blob/master/docs/guide.org">guide's
+        Source checkout section</a> walks through the full sequence.
+      </p>
+
+      <h2>Keep it current</h2>
+      <div class="window">
+        <div class="window-titlebar">terminal and prompt window</div>
+        <div class="window-body">
+          <pre><code>$ <kbd>autolith --update</kbd></code></pre>
+          <pre><code>(<span class="hl-keyword">update</span>)</code></pre>
+        </div>
+      </div>
+      <p>
+        Installed releases also check for newer tags at most once every 20
+        hours and ask before updating.
+      </p>
+
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Autolith docs</span>
+          <a href="/autolith/docs">Autolith docs</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Your first session</span>
+          <a href="/autolith/docs/first-session">Your first session</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
