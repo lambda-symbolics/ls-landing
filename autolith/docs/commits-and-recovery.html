@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commit and recover · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Private image commits, checkpoints, generations, crash capsules, and the recovery path.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/commits-and-recovery">
+
+    <meta property="og:title" content="Commit and recover · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Private image commits, checkpoints, generations, crash capsules, and the recovery path.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/commits-and-recovery">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Concepts · Commit and recover</nav>
+
+      <!-- Source: guide.org "Generations and recovery"; checked against Autolith 0.47.1. -->
+      <h1>Commit and recover</h1>
+      <p class="lede">
+        Generations are complete, verifiable saves of the running agent.
+        Recovery never depends on the damaged core.
+      </p>
+
+      <h2>Checkpoint</h2>
+      <div class="window">
+        <div class="window-titlebar">prompt window</div>
+        <div class="window-body">
+          <pre><code>/<span class="hl-keyword">checkpoint</span></code></pre>
+        </div>
+      </div>
+      <p>
+        A checkpoint requires a clean Git worktree and a passing
+        <code>./script/check</code>, then saves pending reconstructible
+        mutations and publishes a retained image without stopping the
+        session. <code>/generations</code> lists what is retained, and
+        <code>/rollback ID</code> selects one and exits through recovery.
+        The same works from the shell:
+      </p>
+      <div class="window">
+        <div class="window-titlebar">terminal</div>
+        <div class="window-body">
+          <pre><code>$ <kbd>autolith --recovery --list</kbd>
+$ <kbd>autolith --recovery --generation GENERATION-ID</kbd></code></pre>
+        </div>
+      </div>
+
+      <h2>Crash recovery</h2>
+      <p>
+        A fatal failure in the active image publishes a private crash
+        capsule and restores the terminal. Recovery boots the separately
+        built pristine image, or falls back to source, and tries in order:
+        the selected generation for the current source revision, other
+        compatible generations newest first, then a private clean checkout
+        of committed source.
+      </p>
+      <p>
+        The conversation comes back without duplicated scrollback. With a
+        valid capsule, recovery queues one read-only diagnosis turn before
+        ordinary input: it can inspect bounded crash context, the
+        workspace, tracked source, and active state, and it has no shell,
+        MCP, image, write, mutation, checkpoint, or rollback tools. It asks
+        before any repair.
+      </p>
+
+      <h2>Rebuild from source</h2>
+      <p>
+        Saved cores are exact but bound to their recorded SBCL version, OS
+        build, and architecture. Source stays authoritative: a generation
+        manifest carries an ordered <code>reconstruct.lisp</code>, and any
+        machine can rebuild from it:
+      </p>
+      <div class="window">
+        <div class="window-titlebar">reconstruction from a manifest</div>
+        <div class="window-body">
+          <pre><code>(<span class="hl-keyword">asdf:load-asd</span> (truename "autolith.asd"))
+(<span class="hl-keyword">asdf:load-system</span> :autolith)
+(<span class="hl-keyword">load</span> #P"/path/from/generation/manifest/reconstruct.lisp")</code></pre>
+        </div>
+      </div>
+
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">The live image</span>
+          <a href="/autolith/docs/live-image">The live image</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">State</span>
+          <a href="/autolith/docs/state">State</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
