@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lisp workers · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Disposable, heap-isolated SBCL REPLs beside the prompt-window image, and when to reach for each.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/lisp-workers">
+
+    <meta property="og:title" content="Lisp workers · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Disposable, heap-isolated SBCL REPLs beside the prompt-window image, and when to reach for each.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/lisp-workers">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Concepts · Lisp workers</nav>
+
+      <!-- Source: README.org "Some features", worker runtime behavior; checked against Autolith 0.47.1. -->
+      <h1>Lisp workers</h1>
+      <p class="lede">
+        Lisp runs in two places: the prompt window evaluates in the live
+        image, and the agent explores in disposable, heap-isolated SBCL
+        workers it can create, name, and throw away.
+      </p>
+
+      <h2>The prompt window is a REPL</h2>
+      <p>
+        A line starting with <code>(</code> evaluates in the active image,
+        with your privileges, and the model sees both your form and its
+        result. That makes the prompt window the shortest path to exact
+        local actions:
+      </p>
+      <div class="window">
+        <div class="window-titlebar">prompt window</div>
+        <div class="window-body">
+          <pre><code>(<span class="hl-keyword">describe</span> 'application)
+(<span class="hl-keyword">resource.read</span> :uri "workspace:.")
+(<span class="hl-keyword">prompt</span> (read-file "review-notes.org"))</code></pre>
+        </div>
+      </div>
+
+      <h2>Disposable workers</h2>
+      <p>
+        The agent's <code>lisp.*</code> tools run in named REPLs: separate
+        SBCL processes that share nothing with the active image. A worker
+        starts pristine or boots from a saved image, accumulates whatever
+        the task needs, and can be reset or stopped at any time. Nothing a
+        worker does leaks into the agent itself:
+      </p>
+      <div class="window">
+        <div class="window-titlebar">prompt window</div>
+        <div class="window-body">
+          <pre><code>(<span class="hl-keyword">lisp.eval</span> :form "(+ 20 22)" :repl "scratch")</code></pre>
+        </div>
+      </div>
+      <dl class="property-sheet">
+        <dt>lisp.eval</dt>
+        <dd>Evaluate one form in a named REPL.</dd>
+        <dt>lisp.scratchpad-run</dt>
+        <dd>Load a conversation-scoped scratchpad file into a REPL.</dd>
+        <dt>lisp.paren-check</dt>
+        <dd>Fast delimiter check for edited Lisp, before anything loads.</dd>
+        <dt>lisp.load-system, lisp.run-tests</dt>
+        <dd>Load an ASDF system, or run its tests, in a worker.</dd>
+        <dt>lisp.reset, lisp.stop</dt>
+        <dd>Restart a REPL from pristine or a saved image, or stop it.</dd>
+        <dt>lisp.images</dt>
+        <dd>List saved worker images with parentage and notes.</dd>
+      </dl>
+
+      <h2>Worker images</h2>
+      <p>
+        A useful worker state can be saved as an immutable image with a note
+        recording why it exists, and later sessions boot it by name. Saved
+        images are experimental tools: the active agent never selects one.
+        The durable paths for real changes are private image commits and
+        generations, covered next.
+      </p>
+
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Tools and permissions</span>
+          <a href="/autolith/docs/tools">Tools and permissions</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">The live image</span>
+          <a href="/autolith/docs/live-image">The live image</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
