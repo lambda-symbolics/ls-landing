@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Run Autolith from CI · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Run one non-interactive Autolith job from a script or CI with a data-only envelope.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/cookbook/run-from-ci">
+
+    <meta property="og:title" content="Run Autolith from CI · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Run one non-interactive Autolith job from a script or CI with a data-only envelope.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/cookbook/run-from-ci">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Cookbook · Run Autolith from CI</nav>
+
+        <!-- Source: src/task/job-boundary.lisp, guide.org; checked against Autolith 0.47.1. -->
+        <h1>Run Autolith from CI</h1>
+        <p class="lede">
+          The run-job boundary runs one non-interactive job with a
+          data-only S-expression envelope and a structured-output
+          contract. No terminal, no mid-flight approvals, one result
+          artifact.
+        </p>
+
+        <h2>Write the job</h2>
+        <pre><code>(<span class="hl-keyword">:autolith-job</span>
+ <span class="hl-keyword">:version</span> 1
+ <span class="hl-keyword">:id</span> "nightly-lint"
+ <span class="hl-keyword">:role</span> "task"
+ <span class="hl-keyword">:prompt</span> "Run ./script/check in the workspace and report every failure."
+ <span class="hl-keyword">:input</span> (<span class="hl-keyword">:branch</span> "main")
+ <span class="hl-keyword">:output-contract</span>
+ (<span class="hl-keyword">:type</span> <span class="hl-keyword">:object</span>
+  <span class="hl-keyword">:properties</span> (("status" (<span class="hl-keyword">:type</span> <span class="hl-keyword">:string</span>))
+               ("failures" (<span class="hl-keyword">:type</span> <span class="hl-keyword">:array</span> <span class="hl-keyword">:items</span> (<span class="hl-keyword">:type</span> <span class="hl-keyword">:string</span>))))
+  <span class="hl-keyword">:required</span> ("status"))
+ <span class="hl-keyword">:timeout-seconds</span> 1800)</code></pre>
+        <p>
+          Every field is required. <code>:role</code> names a discovered
+          task role; <code>task</code> is the general one. The contract
+          speaks a deliberately small schema dialect: types with
+          <code>:enum</code>, objects with <code>:properties</code>,
+          <code>:required</code>, and
+          <code>:additional-properties</code>, arrays with
+          <code>:items</code>, <code>:min-items</code>, and
+          <code>:max-items</code>.
+        </p>
+
+        <h2>Run it</h2>
+        <pre><code>$ <kbd>autolith run-job --input job.sexp --output result.sexp</kbd></code></pre>
+        <p>
+          The reader accepts exactly one data-only form: keywords,
+          strings, and finite numbers, at most one mebibyte across
+          65,536 nodes, 128 levels deep, with strings up to 512 KiB. No
+          symbols, no function calls, no reader tricks. Timeouts run
+          from one second to one day.
+        </p>
+
+        <h2>Read the result</h2>
+        <pre><code>(<span class="hl-keyword">:autolith-job-result</span>
+ <span class="hl-keyword">:version</span> 1
+ <span class="hl-keyword">:id</span> "nightly-lint"
+ <span class="hl-keyword">:status</span> <span class="hl-keyword">:succeeded</span>
+ <span class="hl-keyword">:result</span> (<span class="hl-keyword">:status</span> "pass" <span class="hl-keyword">:failures</span> nil)
+ <span class="hl-keyword">:trace-id</span> "..."
+ <span class="hl-keyword">:usage</span> (<span class="hl-keyword">:input-tokens</span> 4182 <span class="hl-keyword">:output-tokens</span> 917 <span class="hl-keyword">:provider-requests</span> 2)
+ <span class="hl-keyword">:started-at</span> "2026-09-06T02:14:09Z"
+ <span class="hl-keyword">:finished-at</span> "2026-09-06T02:19:44Z")</code></pre>
+        <p>
+          The envelope is written atomically. Failures replace
+          <code>:result</code> with <code>:failure</code>, carrying a
+          stable category and a bounded message, so pipelines branch on
+          data instead of scraping logs.
+        </p>
+        <p class="caveat"><em>
+          Command and tool authorization run fail-closed under the
+          configured permission mode: full access, sandboxed, or
+          automatic classification. Anything undecided is denied, never
+          waved through.
+        </em></p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Search a corpus larger than the window</span>
+          <a href="/autolith/docs/cookbook/search-big-corpus">Search a corpus larger than the window</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Add an MCP server</span>
+          <a href="/autolith/docs/cookbook/add-mcp-server">Add an MCP server</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
