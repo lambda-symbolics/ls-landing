@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your first session · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Launch Autolith, authenticate a provider, and hold your first conversation: prompts, Lisp forms, and commands.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/first-session">
+
+    <meta property="og:title" content="Your first session · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Launch Autolith, authenticate a provider, and hold your first conversation: prompts, Lisp forms, and commands.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/first-session">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Start · Your first session</nav>
+
+      <!-- Source: guide.org "Intro" and "Talk to Autolith", README.org; checked against Autolith 0.47.1. -->
+      <h1>Your first session</h1>
+      <p class="lede">
+        One conversation in one terminal. Launch Autolith in your project, say
+        what you want in plain prose, and reach for Lisp or commands when you
+        need exact actions.
+      </p>
+
+      <!-- screenshot: the Autolith banner and a first prompt exchange, about 980px wide -->
+      <h2>Launch and authenticate</h2>
+      <div class="window">
+        <div class="window-titlebar">terminal</div>
+        <div class="window-body">
+          <pre><code>$ <kbd>cd my-project</kbd>
+$ <kbd>autolith</kbd></code></pre>
+        </div>
+      </div>
+      <p>
+        Sign in once per provider. Subscription providers open a browser
+        authorization; key-based providers take a hidden paste. Authenticate
+        from the shell first, or from the prompt window later with
+        <code>/auth</code>. Device-code flows print the URL, so you can open
+        it on another machine.
+      </p>
+      <div class="window">
+        <div class="window-titlebar">authenticate from the shell</div>
+        <div class="window-body">
+          <pre><code>$ <kbd>autolith auth chatgpt</kbd></code></pre>
+        </div>
+      </div>
+
+      <h2>Say what you want</h2>
+      <p>
+        Ordinary text is a prompt. A line that starts with
+        <code>(</code> is Common Lisp, evaluated in the running image with
+        your privileges, and the model sees both your form and its result.
+        Slash commands are syntactic sugar for the same Lisp calls, so
+        <code>/cwd</code> and <code>(cwd)</code> are the same operation:
+      </p>
+      <div class="window">
+        <div class="window-titlebar">prompt window</div>
+        <div class="window-body">
+          <pre><code>❯ you
+  Summarize the failing tests and propose the smallest fix.
+
+❯ you
+  (<span class="hl-keyword">help</span>)
+
+❯ you
+  (<span class="hl-keyword">resource.read</span> :uri "workspace:.")</code></pre>
+        </div>
+      </div>
+      <p>
+        Prompts can also be computed. Send a file as your message, or steer a
+        named child agent directly:
+      </p>
+      <div class="window">
+        <div class="window-titlebar">prompt window</div>
+        <div class="window-body">
+          <pre><code>(<span class="hl-keyword">prompt</span> (read-file "review-notes.org"))
+(<span class="hl-keyword">prompt</span> :to 'test-review "Run focused tests and report only failures.")</code></pre>
+        </div>
+      </div>
+
+      <h2>Interrupt, correct, continue</h2>
+      <p>
+        Typing while Autolith works queues a steering message that lands at
+        the next safe boundary. <kbd>Ctrl-C</kbd> cancels the active turn,
+        and a second <kbd>Ctrl-C</kbd> exits. When one of your own forms
+        signals an error, the restart debugger keeps the failed stack alive,
+        can ask Autolith why it failed, and offers up to three validated
+        recoveries.
+      </p>
+
+      <h2>Leave and come back</h2>
+      <div class="window">
+        <div class="window-titlebar">terminal</div>
+        <div class="window-body">
+          <pre><code>$ <kbd>autolith resume</kbd></code></pre>
+        </div>
+      </div>
+      <p>
+        Conversations persist as append-only files and carry titles, so the
+        resume picker reads like a history instead of a list of hashes. To
+        read a conversation without resuming it, use
+        <code>autolith replay ID</code>. The State page covers both.
+      </p>
+
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Install</span>
+          <a href="/autolith/docs/install">Install</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">The workspace</span>
+          <a href="/autolith/docs/workspace">The workspace</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
