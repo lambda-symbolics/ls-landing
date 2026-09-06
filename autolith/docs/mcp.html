@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MCP · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Attaching external tools through MCP servers, with approval policies and directory-scoped configuration.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/mcp">
+
+    <meta property="og:title" content="MCP · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="Attaching external tools through MCP servers, with approval policies and directory-scoped configuration.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/mcp">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Concepts · MCP</nav>
+
+        <!-- Source: guide.org "MCP", src/mcp/configuration.lisp; checked against Autolith 0.47.1. -->
+        <h1>MCP</h1>
+        <p class="lede">
+          Model Context Protocol servers attach outside tools to
+          Autolith. Each configured server appears as one exact
+          <code>mcp__</code> namespace beside the built-in ones.
+        </p>
+
+        <h2>Servers</h2>
+        <p>
+          A stdio server is a local executable Autolith starts and speaks
+          to over standard input and output. An HTTP server is a
+          Streamable HTTP endpoint. Native configuration lists servers
+          with a name, a transport, optional deadlines, and an approval
+          policy:
+        </p>
+        <pre><code>(<span class="hl-keyword">:version</span> 1
+ <span class="hl-keyword">:servers</span>
+ ((<span class="hl-keyword">:name</span> "ripgrep"
+   <span class="hl-keyword">:transport</span> (<span class="hl-keyword">:type</span> <span class="hl-keyword">:stdio</span> <span class="hl-keyword">:command</span> "mcp-ripgrep")
+   <span class="hl-keyword">:approval</span> <span class="hl-keyword">:read-only</span>)))</code></pre>
+        <p>
+          The approval policy decides how calls ask:
+          <code>:read-only</code> with
+          <code>:trusted-read-only-tools</code> names the tools that
+          never ask, <code>:prompt</code> asks before each call (the
+          default), <code>:allow</code> allows everything, and
+          <code>:deny</code> disables the server. Environment bindings
+          and HTTP headers read parent process variables only when
+          needed, so secrets stay out of configuration files.
+        </p>
+
+        <h2>Where configuration lives</h2>
+        <p>
+          A global file in your config root applies everywhere. A
+          directory-scoped <code>.autolith/mcp.sexp</code> applies only
+          inside a trusted directory and layers project-specific servers
+          on top of the global ones. <code>/mcp</code> shows the
+          effective set and refreshes discovery after a server recovers.
+        </p>
+
+        <h2>Resources and prompts</h2>
+        <p>
+          Beyond tools, the mcp namespace reads server resources and
+          prompts: <code>mcp.status</code> inspects connections,
+          <code>mcp.resources</code> and <code>mcp.read-resource</code>
+          fetch data, and <code>mcp.prompts</code> and
+          <code>mcp.get-prompt</code> fetch prompt templates.
+        </p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Providers</span>
+          <a href="/autolith/docs/providers">Providers</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Skills</span>
+          <a href="/autolith/docs/skills">Skills</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
