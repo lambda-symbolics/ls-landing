@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools and permissions · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="The tool registry behind every Autolith action: namespaces, permissions, approvals, and guard rails.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/tools">
+
+    <meta property="og:title" content="Tools and permissions · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="The tool registry behind every Autolith action: namespaces, permissions, approvals, and guard rails.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/tools">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Concepts · Tools and permissions</nav>
+
+      <!-- Source: guide.org "Commands" and "Child roles", release notes 0.46.0-0.47.1; checked against Autolith 0.47.1. -->
+      <h1>Tools and permissions</h1>
+      <p class="lede">
+        Autolith's tools are typed operations with visible results.
+        Permissions decide which ones run sandboxed, which run with full
+        access, and which are denied outright.
+      </p>
+
+      <h2>The registry</h2>
+      <p>
+        Tools live in namespaces, and each namespace documents its
+        operations. The everyday set covers the filesystem, workspace search,
+        shell execution, durable resources, the agenda, and plans. Others
+        load Lisp workers, Skills, MCP servers, child tasks, jobs, and the
+        active image itself. Results come back as bounded observations, and
+        the model sees what you see.
+      </p>
+
+      <h2>Approvals</h2>
+      <p>
+        Shell commands and mutating operations ask before acting. A choice
+        holds for one call or is remembered:
+      </p>
+      <dl class="property-sheet">
+        <dt>Once</dt>
+        <dd>Approve this one call, unsandboxed.</dd>
+        <dt>Always</dt>
+        <dd>Approve this command pattern without asking again.</dd>
+        <dt>Sandboxed</dt>
+        <dd>Approve with filesystem and network isolation (Bubblewrap on Linux).</dd>
+        <dt>Deny</dt>
+        <dd>Refuse the call; Autolith works around it.</dd>
+      </dl>
+      <p>
+        Automatic permission mode goes further: the model classifies each
+        command itself, and the outcome is always sandboxed, full access, or
+        denied. It fails closed, so a decision that would have needed your
+        approval becomes a denial, never a silent pass. Launch with
+        <code>--permissions auto</code> (or <code>sandbox</code>,
+        <code>full</code>) to set the mode for a session, and use
+        <code>/permissions</code> to change it mid-session.
+      </p>
+      <!-- screenshot: a command approval picker, about 980px wide -->
+
+      <h2>Guard rails</h2>
+      <ul>
+        <li>Repeated identical mutating tool calls are capped, so a stuck loop cannot chew through your workspace.</li>
+        <li>Durable resources are revision-gated: an edit applies only against the exact observation it was written from, so a stale edit fails instead of overwriting.</li>
+        <li>Sandboxed commands get filesystem and network isolation on Linux. Without platform sandbox support the sandbox choice is unavailable, and explicit approvals run with your privileges.</li>
+      </ul>
+      <p class="caveat"><em>
+        Autolith executes model-generated code with your user privileges. Its
+        process boundaries protect reliability, not against hostile code.
+      </em></p>
+
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">The workspace</span>
+          <a href="/autolith/docs/workspace">The workspace</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Lisp workers</span>
+          <a href="/autolith/docs/lisp-workers">Lisp workers</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
