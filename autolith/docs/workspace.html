@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The workspace · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="What a workspace is, what Autolith reads for instructions, and where its state lives.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/workspace">
+
+    <meta property="og:title" content="The workspace · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="What a workspace is, what Autolith reads for instructions, and where its state lives.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/workspace">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Start · The workspace</nav>
+
+      <!-- Source: guide.org "Talk to Autolith" and "Local sessions", skills.org, mcp.org; checked against Autolith 0.47.1. -->
+      <h1>The workspace</h1>
+      <p class="lede">
+        A workspace is the directory Autolith works in. It decides which
+        project instructions Autolith reads, which project-local skills,
+        roles, and servers may load, and where relative paths land.
+      </p>
+
+      <h2>Show and change it</h2>
+      <div class="window">
+        <div class="window-titlebar">prompt window</div>
+        <div class="window-body">
+          <pre><code>/<span class="hl-keyword">cwd</span> "/tmp/work tree"</code></pre>
+        </div>
+      </div>
+      <p>
+        <code>/cwd</code> without arguments shows the active workspace; with a
+        path it moves new work there. Tool calls, process spawns, and
+        workspace references follow the change.
+      </p>
+
+      <h2>What Autolith reads</h2>
+      <p>
+        Standing project instructions come from <code>AGENTS.md</code> files:
+        the project root first, deeper files refining earlier ones.
+        Everything under <code>.autolith/</code> is opt-in, and most of it
+        needs an explicit trust decision:
+      </p>
+      <dl class="property-sheet">
+        <dt>AGENTS.md</dt>
+        <dd>Standing project instructions, re-read on every request.</dd>
+        <dt>.autolith/skills/</dt>
+        <dd>Project Skills, loaded from the catalog when work calls for them.</dd>
+        <dt>.autolith/agents/</dt>
+        <dd>Task roles for child agents and jobs.</dd>
+        <dt>.autolith/mcp.sexp</dt>
+        <dd>MCP servers; a repository can enable these only after you trust the directory.</dd>
+        <dt>.autolith/init.lisp</dt>
+        <dd>Full-power setup Lisp, loaded only for trusted directories.</dd>
+      </dl>
+
+      <h2>Where state lives</h2>
+      <p>
+        Autolith follows the XDG base-directory specification. Every root is
+        created private (mode 0700), and nothing lands in the project unless
+        a tool writes it there:
+      </p>
+      <dl class="property-sheet">
+        <dt>~/.config/autolith/</dt>
+        <dd>init.lisp, mcp.sexp, directory-scopes.sexp, management tokens.</dd>
+        <dt>~/.local/share/autolith/</dt>
+        <dd>Built Lisp images and inference objects.</dd>
+        <dt>~/.local/state/autolith/</dt>
+        <dd>Conversation leases, localgroup records, recovery state, provider credentials.</dd>
+        <dt>~/.cache/autolith/</dt>
+        <dd>Session scratchpads, converted skill caches.</dd>
+      </dl>
+      <p>
+        Conversations are append-only readable files;
+        <code>/conversations</code> lists them, and the resume picker shows
+        their titles.
+      </p>
+
+      <!-- screenshot: (resource.read :uri "workspace:.") directory listing, about 980px wide -->
+      <h2>Read-only mode</h2>
+      <p>
+        Starting with <code>--immutable</code> withholds evaluation, mutation,
+        persistence, checkpoint, and rollback tools. Inspection and recovery
+        information stay available, which makes immutable mode the right
+        choice when you want to look without letting anything change.
+      </p>
+
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">Your first session</span>
+          <a href="/autolith/docs/first-session">Your first session</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Tools and permissions</span>
+          <a href="/autolith/docs/tools">Tools and permissions</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
