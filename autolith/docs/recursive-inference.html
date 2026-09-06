@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recursive inference · Autolith docs · Lambda Symbolics OÜ</title>
+    <meta name="description" content="How Autolith runs bounded inference frames over corpora larger than the model window.">
+    <link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/recursive-inference">
+
+    <meta property="og:title" content="Recursive inference · Autolith docs · Lambda Symbolics OÜ">
+    <meta property="og:description" content="How Autolith runs bounded inference frames over corpora larger than the model window.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://lambda-symbolics.com/autolith/docs/recursive-inference">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>">
+    <link rel="stylesheet" href="/paper.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/">Lambda Symbolics</a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/autolith">Autolith</a></li>
+            <li><a href="/autolith/docs">Docs</a></li>
+            <li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main-content" class="shell doc-page">
+      <nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Concepts · Recursive inference</nav>
+
+        <!-- Source: guide.org "Recursive inference"; checked against Autolith 0.47.1. -->
+        <h1>Recursive inference</h1>
+        <p class="lede">
+          When the evidence is larger than the model window, Autolith treats
+          it as an environment instead of a prompt: bounded inference frames
+          read selected slices, and only their conclusions come back.
+        </p>
+
+        <h2>Three operations</h2>
+        <dl class="property-sheet">
+          <dt>infer</dt>
+          <dd>One bounded frame over explicit read-only views, for one judgment you would otherwise have to drag bulky evidence into the conversation for.</dd>
+          <dt>map</dt>
+          <dd>The same question applied to many resources as concurrent frames sharing one budget. Results keep task order; a failed frame reports its error in place.</dd>
+          <dt>complete</dt>
+          <dd>A root run over one large external context. The root drives a dedicated Lisp environment that slices the context, fans sub-inferences over the pieces, and records the final value.</dd>
+        </dl>
+
+        <h2>Frames are isolated</h2>
+        <p>
+          A frame never inherits this conversation, your identity, or
+          unrestricted tools. The task is the governing instruction. Views,
+          resource observations, and nested inference results are untrusted
+          data, not instructions. A frame with read capability can use the
+          workspace search and resource tools and nest further frames, but
+          nothing else.
+        </p>
+
+        <h2>Views, contracts, budgets</h2>
+        <p>
+          Views are literal text, a resource URI, or a stored context object
+          (<code>context:</code> plus a content hash). Pass the smallest
+          complete evidence set that answers the task. When the result feeds
+          further code, give the frame a JSON Schema contract and it returns
+          exactly one conforming value. Every frame runs under an explicit
+          allowance for provider calls, tokens, and recursion depth; the
+          defaults cover most fan-outs, and budget exhaustion is reported
+          per frame instead of silently truncating.
+        </p>
+
+        <h2>Provenance</h2>
+        <p>
+          Every frame and root run persists a private trace. The conversation
+          receives the value and the trace identifier, and the trace can be
+          read back later to audit what evidence produced the answer.
+        </p>
+
+      <nav class="docs-pager" aria-label="Adjacent pages">
+        <div class="docs-pager-cell">
+          <span class="docs-pager-label">State</span>
+          <a href="/autolith/docs/state">State</a>
+        </div>        <div class="docs-pager-cell docs-pager-cell--next">
+          <span class="docs-pager-label">Agents and jobs</span>
+          <a href="/autolith/docs/agents-and-jobs">Agents and jobs</a>
+        </div>      </nav>
+    </main>
+
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+          <p>Autolith docs · Revised 6 September 2026</p>
+      </div>
+    </footer>
+  </body>
+</html>
