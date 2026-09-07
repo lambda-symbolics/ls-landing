@@ -1535,6 +1535,76 @@ button.button {
   margin: 10px 0 24px;
 }
 
+/* -- Contents window for serial documents -- */
+
+.doc-body {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 280px;
+  gap: 32px 48px;
+  align-items: start;
+}
+
+.doc-content {
+  min-width: 0;
+}
+
+.doc-contents {
+  position: sticky;
+  top: 24px;
+}
+
+.toc-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: none;
+}
+
+.toc-list li {
+  margin-bottom: 0;
+}
+
+.toc-part {
+  margin-top: 14px;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.toc-part:first-child {
+  margin-top: 0;
+}
+
+.toc-list a,
+.toc-list .toc-current {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  padding: 4px 8px;
+  font-size: 15px;
+  font-style: normal;
+  text-decoration: none;
+}
+
+.toc-list a:hover,
+.toc-list a:focus-visible {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.toc-current {
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+}
+
+.toc-number {
+  font-family: var(--font-mono);
+  font-size: 14px;
+  letter-spacing: 0;
+  min-width: 2ch;
+  text-align: right;
+}
+
 .docs-pager {
   display: flex;
   justify-content: space-between;
@@ -1564,4 +1634,24 @@ button.button {
   font-weight: 700;
   text-decoration: underline;
   text-underline-offset: 2px;
+}
+
+@media (max-width: 880px) {
+  .doc-body {
+    grid-template-columns: 1fr;
+  }
+
+  .doc-contents {
+    position: static;
+  }
+}
+
+@media print {
+  .doc-contents {
+    display: none;
+  }
+
+  .doc-body {
+    display: block;
+  }
 }
