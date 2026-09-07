@@ -367,12 +367,6 @@ pre var,
   font-style: italic;
 }
 
-.install-section .caveat {
-  padding: 0;
-  border: 0;
-  font-style: italic;
-}
-
 .install-window {
   max-width: none;
 }
@@ -887,9 +881,8 @@ th {
 }
 
 .caveat {
-  border-block: 3px double var(--ink);
-  padding-block: 12px;
   margin-top: 28px;
+  font-style: italic;
 }
 
 .closing-actions {
@@ -1040,7 +1033,6 @@ button.button {
   display: block;
   width: 100%;
   height: auto;
-  border-bottom: 1px solid var(--ink);
   background: var(--paper);
 }
 
@@ -1050,12 +1042,6 @@ button.button {
   flex: 1 1 auto;
   min-height: 0;
   padding: 10px;
-}
-
-.bookmark-rule {
-  border-top: 1px solid var(--ink);
-  margin-top: 12px;
-  padding-top: 10px;
 }
 
 .bookmark-push {
@@ -1146,7 +1132,6 @@ button.button {
 }
 
 .bookmark-foot {
-  border-top: 3px double var(--ink);
   padding: 8px 10px 10px;
 }
 
@@ -1172,7 +1157,6 @@ button.button {
 .bookmark-dither {
   flex: 0 0 auto;
   height: 8mm;
-  border-top: 1px solid var(--ink);
   background-image: var(--bitmap-dither);
   background-size: 3px 3px;
 }
@@ -1267,7 +1251,6 @@ button.button {
 }
 
 .card-contact {
-  border-top: 1px solid var(--ink);
   margin-top: auto;
   padding-top: 8px;
   font-size: 11px;
@@ -1277,7 +1260,6 @@ button.button {
 .card-edge {
   flex: 0 0 auto;
   width: 6mm;
-  border-left: 1px solid var(--ink);
   background-image: var(--bitmap-dither);
   background-size: 3px 3px;
 }
@@ -1316,7 +1298,6 @@ button.button {
 .card-dither {
   flex: 0 0 auto;
   height: 4mm;
-  border-top: 1px solid var(--ink);
   background-image: var(--bitmap-dither);
   background-size: 3px 3px;
 }
@@ -1425,7 +1406,6 @@ button.button {
 
 .demo-cast .ap-control-bar {
   background: #000000;
-  border-top: 1px solid #fffefa;
 }
 
 .demo-cast .ap-control-bar svg {
@@ -1489,7 +1469,6 @@ button.button {
 
 .demo-tab-row {
   display: flex;
-  border-bottom: 1px solid var(--ink);
 }
 
 .demo-tab {
@@ -1563,8 +1542,6 @@ button.button {
   flex-wrap: wrap;
   max-width: 68ch;
   margin-top: 72px;
-  padding-top: 16px;
-  border-top: 1px solid var(--ink);
 }
 
 .docs-pager-cell {
