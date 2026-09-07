@@ -5,12 +5,13 @@ The page must never drift from the repository again. This script reads
 the authoritative sources in an Autolith checkout and fails when the
 published page disagrees with them:
 
-  version        autolith.asd            :version
-  SBCL pin       sbcl.version
-  platforms      script/install          uname case arms
-  providers      src/provider/builtins.lisp   register-provider forms
-  default model  src/configuration/settings.lisp  *default-model*
+  version        autolith.asd            :version, JSON-LD softwareVersion
+  SBCL pin       sbcl.version            JSON-LD runtimePlatform
+  platforms      script/install          uname case arms, JSON-LD operatingSystem
   install        README.org              curl and nix run commands
+
+The product page keeps provider and model facts out of its prose and
+defers to /autolith/docs/providers, so they are not needles here.
 
 Usage: python3 tools/check-autolith.py [AUTOLITH-CHECKOUT]
 The checkout defaults to $AUTOLITH_REPO, then ~/common-lisp/frob.
@@ -74,27 +75,6 @@ def repo_platforms(repo: Path) -> list[str]:
     return labels
 
 
-def repo_providers(repo: Path) -> list[str]:
-    """Provider description strings from the builtin registrations."""
-    builtins = read(repo / "src" / "provider" / "builtins.lisp")
-    descriptions = re.findall(
-        r'register-provider[^)]*?:description\s+"([^"]+)"', builtins, re.S
-    )
-    if not descriptions:
-        sys.exit("no register-provider descriptions in src/provider/builtins.lisp")
-    return descriptions
-
-
-def repo_default_model(repo: Path) -> str:
-    settings = read(repo / "src" / "configuration" / "settings.lisp")
-    match = re.search(
-        r'\*default-model\*[^"]*"([^"]+)"', settings
-    )
-    if not match:
-        sys.exit("no *default-model* in settings.lisp")
-    return match.group(1)
-
-
 def repo_install_commands(repo: Path) -> list[str]:
     readme = read(repo / "README.org")
     commands = []
@@ -125,14 +105,10 @@ def main() -> None:
             failures.append(f"{fact}: page is missing {needle!r}")
 
     version = repo_version(repo)
-    require("version", f"v{version}")
     require("version (JSON-LD)", f'"softwareVersion": "{version}"')
     require("SBCL pin", f"SBCL {repo_sbcl(repo)}")
     for platform in repo_platforms(repo):
         require("platform", platform)
-    for provider in repo_providers(repo):
-        require("provider", provider)
-    require("default model", repo_default_model(repo))
     for command in repo_install_commands(repo):
         require("install command", command)
 
