@@ -98,7 +98,20 @@
         their titles.
       </p>
 
-      <!-- screenshot: (resource.read :uri "workspace:.") directory listing, about 980px wide -->
+      <figure class="window window--wide screenshot-window">
+        <figcaption class="window-titlebar">autolith · (resource.read :uri "workspace:.")</figcaption>
+        <div class="window-body">
+          <img
+            class="screenshot-image"
+            src="/autolith/docs/img/workspace-listing.png"
+            width="1200"
+            height="1071"
+            loading="lazy"
+            alt="A Lisp form typed at the prompt reads the workspace root: the result lists the project's directories and files with kind, size, and per-line hashes under a revision identifier"
+          >
+        </div>
+      </figure>
+
       <h2>Read-only mode</h2>
       <p>
         Starting with <code>--immutable</code> withholds evaluation, mutation,

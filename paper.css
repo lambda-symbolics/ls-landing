@@ -755,6 +755,21 @@ input[type="checkbox"].switch:disabled::before {
   max-width: none;
 }
 
+.screenshot-window {
+  margin: 20px 0 28px;
+}
+
+.screenshot-window .window-body {
+  padding: 0;
+  background: #000000;
+}
+
+.screenshot-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
 .window::after {
   content: "";
   position: absolute;
