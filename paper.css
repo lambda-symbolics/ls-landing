@@ -1549,6 +1549,14 @@ button.button {
   min-width: 0;
 }
 
+.doc-content dl {
+  max-width: 68ch;
+}
+
+.doc-content .window:not(.window--wide) {
+  max-width: 68ch;
+}
+
 .doc-contents {
   position: sticky;
   top: 24px;
