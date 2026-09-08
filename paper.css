@@ -743,6 +743,7 @@ input[type="checkbox"].switch:disabled::before {
   background: var(--paper);
   border: 1px solid var(--ink);
   max-width: 620px;
+  margin-bottom: 15px;
 }
 
 .window--wide {
