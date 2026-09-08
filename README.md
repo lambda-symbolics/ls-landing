@@ -20,6 +20,7 @@ gray, and only a small inline script for the Autolith demo. The durable design c
 - `autolith.png`: paper-colored, 1-bit dithered Autolith mascot
 - `autolith/docs/`: Autolith documentation pages, served under `/autolith/docs`
 - `rust-course.html`: Rust course page
+- `lisp-repair.html`: fixed-scope Common Lisp repair service and quote enquiries
 - `bookmark.html`: unlinked printable bookmark sheet (`/bookmark`; not in the sitemap, noindex)
 - `cards.html`: unlinked printable business card sheet (`/cards`; not in the sitemap, noindex)
 - `404.html`: not-found page
