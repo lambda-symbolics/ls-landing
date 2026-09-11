@@ -89,6 +89,11 @@
   --font-mono:  "CMU Typewriter Text", "Courier New", Courier, "Liberation Mono", monospace;
 
   --bitmap-dither: radial-gradient(var(--ink) 1px, transparent 1px);
+
+  /* The letterhead lockup. Named because the row gap has to reserve the
+     descender of its lambda, and needs the same number to do it. */
+  --wordmark-size: clamp(38px, 12vw, 62px);
+  --wordmark-tail: calc(0.427 * var(--wordmark-size));
 }
 
 * {
@@ -148,13 +153,16 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  gap: 12px 32px;
+  /* The lockup is pulled up by its descender so the row aligns on the letter
+     baseline. When the header wraps, the row gap has to give that height
+     back, or the tail of the lambda lands on the navigation. */
+  gap: calc(12px + var(--wordmark-tail)) 32px;
   flex-wrap: wrap;
   padding: 50px 0 16px;
 }
 
 .wordmark {
-  font-size: clamp(38px, 12vw, 62px);
+  font-size: var(--wordmark-size);
   line-height: 0.95;
   letter-spacing: -0.01em;
   color: var(--ink);
@@ -192,7 +200,7 @@ body {
      then pulled up by the descender, because the tail of the lambda falls
      below the letter baseline and the letterhead aligns on baselines. */
   height: 1.097em;
-  margin-bottom: -0.427em;
+  margin-bottom: calc(-1 * var(--wordmark-tail));
 }
 
 .wordmark:hover {
@@ -956,8 +964,8 @@ th {
     padding-inline: 20px;
   }
 
-  .wordmark {
-    font-size: clamp(30px, 9.5vw, 38px);
+  :root {
+    --wordmark-size: clamp(30px, 9.5vw, 38px);
   }
 
   .property-sheet {
