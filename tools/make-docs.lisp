@@ -24,8 +24,8 @@
   "Directory the rendered docs pages are written to.")
 
 (defparameter *docs-favicon*
-  "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23FFFEFA'/><text x='50' y='54' dominant-baseline='central' text-anchor='middle' font-family='Times New Roman, Times, serif' font-weight='700' font-size='84' fill='%23000000'>%CE%BB</text></svg>"
-  "Inline lambda favicon shared by every docs page.")
+  "/logo/ls-favicon.svg"
+  "The house logotype, shared by every docs page.")
 
 (defparameter *docs-toc*
   '(("Start"
@@ -240,7 +240,7 @@
     <meta property=\"og:url\" content=\"" (docs-url slug) "\">
     <meta property=\"og:site_name\" content=\"Lambda Symbolics OÜ\">
 
-    <link rel=\"icon\" href=\"" *docs-favicon* "\">
+    <link rel=\"icon\" href=\"" *docs-favicon* "\" type=\"image/svg+xml\">
     <link rel=\"stylesheet\" href=\"/paper.css\">
   </head>
   <body>
