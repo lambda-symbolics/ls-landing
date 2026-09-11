@@ -185,6 +185,16 @@ body {
   padding-block: 4px;
 }
 
+.wordmark img {
+  display: block;
+  width: auto;
+  /* Sized so the cap height of the lockup matches the setting it replaced,
+     then pulled up by the descender, because the tail of the lambda falls
+     below the letter baseline and the letterhead aligns on baselines. */
+  height: 1.097em;
+  margin-bottom: -0.427em;
+}
+
 .wordmark:hover {
   text-decoration: none;
 }
