@@ -45,6 +45,24 @@
         {
           "@type": "SoftwareSourceCode",
           "position": 1,
+          "name": "agentcomms",
+          "description": "Agent Client Protocol v1 over newline-delimited JSON-RPC. Includes request correlation, cancellation, capability negotiation, and standard-I/O or in-process channels.",
+          "codeRepository": "https://github.com/lambda-symbolics/agentcomms",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/agentcomms/blob/c56cdca0b067eda19ba86f868fbad009f5af4e15/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 2,
+          "name": "argo",
+          "description": "RFC 8259 JSON encoding and decoding with distinct false, null, and empty-array values. Optional limits bound document processing.",
+          "codeRepository": "https://github.com/lambda-symbolics/argo",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/argo/blob/3658b947372fb19ae07aca65a439b63b0685ae47/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 3,
           "name": "cl-colorist",
           "description": "Capability-aware ANSI text styling for Common Lisp.",
           "codeRepository": "https://github.com/luciusmagn/cl-colorist",
@@ -53,7 +71,7 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 2,
+          "position": 4,
           "name": "cl-exec-sandbox",
           "description": "Policy-driven external process sandboxing for Common Lisp.",
           "codeRepository": "https://github.com/luciusmagn/cl-exec-sandbox",
@@ -62,7 +80,16 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 3,
+          "position": 5,
+          "name": "cl-hashline",
+          "description": "Line-anchored text editing against an observed revision. Validates anchors and applies batches of edits in original-line coordinates.",
+          "codeRepository": "https://github.com/lambda-symbolics/cl-hashline",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/cl-hashline/blob/master/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 6,
           "name": "cl-jobpond",
           "description": "A bounded Common Lisp thread pool for supervised jobs.",
           "codeRepository": "https://github.com/luciusmagn/cl-jobpond",
@@ -71,7 +98,61 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 4,
+          "position": 7,
+          "name": "cl-llm-provider-api",
+          "description": "Protocols, value types, and wire clients for language-model providers. Includes context assembly, structured-output contracts, inference budgets, and content-addressed contexts.",
+          "codeRepository": "https://github.com/lambda-symbolics/cl-llm-provider-api",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/cl-llm-provider-api/blob/2e782571bbd81bac2a37a0ad45aa95b0c3e9ea5e/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 8,
+          "name": "cl-lsp",
+          "description": "Client for standard-I/O Language Server Protocol servers. Includes initialization, UTF-8 file synchronization, JSON-RPC requests, and push or pull diagnostics.",
+          "codeRepository": "https://github.com/lambda-symbolics/cl-lsp",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/cl-lsp/blob/9f459b8d3d41e6eeb82cae06159879cf7258701a/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 9,
+          "name": "cl-rfc8252",
+          "description": "Browser-based OAuth for installed applications, with S256 PKCE, IPv4 loopback redirects, and authorization-code exchange. Integrates with cl-rfc8628 credential storage.",
+          "codeRepository": "https://github.com/lambda-symbolics/cl-rfc8252",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/cl-rfc8252/blob/b9affbd04c12e2adac4a2403f60a3a2802f9ac45/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 10,
+          "name": "cl-rfc8628",
+          "description": "OAuth 2.0 device authorization through a CLOS protocol, with replaceable HTTP, clock, browser, and sleep operations, plus credential storage.",
+          "codeRepository": "https://github.com/lambda-symbolics/cl-rfc8628",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/cl-rfc8628/blob/dea112d1bf2750a52c52f33344157af7b9f4f6f8/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 11,
+          "name": "cl-skills",
+          "description": "Discovery, validation, and reading of reusable Agent Skills. Supports SKILL.md directories and a bounded native SKILL.sexp format.",
+          "codeRepository": "https://github.com/lambda-symbolics/cl-skills",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/cl-skills/blob/935e10dacfb37b5140bd23ea72144b9a336c1282/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 12,
+          "name": "cl-termdown",
+          "description": "Parses Markdown into terminal-oriented semantic spans, with Unicode-aware wrapping, lists, inline markup, tables, fenced code, and streaming previews.",
+          "codeRepository": "https://github.com/lambda-symbolics/cl-termdown",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/cl-termdown/blob/681f4bcf636b15761119f5dc57691b1cdf1eb376/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 13,
           "name": "clifff",
           "description": "Common Lisp bindings and a supervised worker for the fff search library.",
           "codeRepository": "https://github.com/luciusmagn/clifff",
@@ -80,7 +161,7 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 5,
+          "position": 14,
           "name": "clinedi",
           "description": "A portable, Unicode-aware terminal line editor.",
           "codeRepository": "https://github.com/luciusmagn/clinedi",
@@ -89,7 +170,16 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 6,
+          "position": 15,
+          "name": "clinker-transcript",
+          "description": "Typed provider transcripts for Responses and Chat Completions, with constructors, canonicalization, compaction checkpoints, and records for server-executed calls.",
+          "codeRepository": "https://github.com/lambda-symbolics/clinker-transcript",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/clinker-transcript/blob/73aebf6c498bc6c9b42d2a5fdbe961163feaa933/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 16,
           "name": "COLL",
           "description": "A configurable software-license family expressed as a Common Lisp association list.",
           "codeRepository": "https://github.com/luciusmagn/COLL",
@@ -98,7 +188,7 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 7,
+          "position": 17,
           "name": "colordiff",
           "description": "Colorful syntax-highlighted endpoint diffs for terminals.",
           "codeRepository": "https://github.com/luciusmagn/colordiff",
@@ -107,7 +197,7 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 8,
+          "position": 18,
           "name": "colorlisp",
           "description": "Style-neutral syntax highlighting for Common Lisp applications.",
           "codeRepository": "https://github.com/luciusmagn/colorlisp",
@@ -116,7 +206,16 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 9,
+          "position": 19,
+          "name": "fetch-gist",
+          "description": "Fetches web pages over HTTP and converts HTML to Markdown. Uses Dexador for requests and Plump for HTML parsing.",
+          "codeRepository": "https://github.com/lambda-symbolics/fetch-gist",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/fetch-gist/blob/master/LICENSE"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 20,
           "name": "idsmall",
           "description": "Short, human-typable Common Lisp identifiers with recoverable timestamps.",
           "codeRepository": "https://github.com/luciusmagn/idsmall",
@@ -125,7 +224,25 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 10,
+          "position": 21,
+          "name": "image-daemon",
+          "description": "Wire and runtime protocols for Lisp image daemons, with authenticated loopback control, bounded packets, request deadlines, session identifiers, and terminal relays.",
+          "codeRepository": "https://github.com/lambda-symbolics/image-daemon",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/image-daemon/blob/4c9c78c98de110b540996f3580e22670504ac605/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 22,
+          "name": "lambda-debugger",
+          "description": "Live Common Lisp restart debugger with portable snapshots. Supports restart selection, source-backed repair, retrying operations, returning values, and aborting.",
+          "codeRepository": "https://github.com/lambda-symbolics/lambda-debugger",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/lambda-debugger/blob/713c4a64ad109eb4f511426c21ae422b18674c77/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 23,
           "name": "lightfast",
           "description": "Common Lisp bindings for FLTK 1.4 with a deterministic flex layout engine.",
           "codeRepository": "https://github.com/luciusmagn/lightfast",
@@ -134,7 +251,7 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 11,
+          "position": 24,
           "name": "lispolar",
           "description": "A Common Lisp client for Polar.sh checkouts, customer portals, and webhooks.",
           "codeRepository": "https://github.com/luciusmagn/lispolar",
@@ -143,7 +260,7 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 12,
+          "position": 25,
           "name": "ls-compat",
           "description": "A portability facade for Common Lisp across SBCL, Clozure CL, and ECL.",
           "codeRepository": "https://github.com/luciusmagn/ls-compat",
@@ -152,7 +269,16 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 13,
+          "position": 26,
+          "name": "ls-flock",
+          "description": "Advisory POSIX file locks through lockf. Includes scoped locking and process-wide mutex serialization for threads locking the same path.",
+          "codeRepository": "https://github.com/lambda-symbolics/ls-flock",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/ls-flock/blob/ff7a6abbc53f069c13d9649232ade062409c12da/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 27,
           "name": "mcparen",
           "description": "A Model Context Protocol client for Common Lisp.",
           "codeRepository": "https://github.com/luciusmagn/mcparen",
@@ -161,7 +287,16 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 14,
+          "position": 28,
+          "name": "org-templater",
+          "description": "Org document templating with key interpolation and conditional blocks. Heading properties can control whether a subtree is included.",
+          "codeRepository": "https://github.com/lambda-symbolics/org-templater",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/org-templater/blob/918d456528474e880014fe8377e4810e4a55e6a9/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 29,
           "name": "parenchek",
           "description": "Delimiter balance checker for Common Lisp, Scheme, and Clojure.",
           "codeRepository": "https://github.com/luciusmagn/parenchek",
@@ -170,7 +305,7 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 15,
+          "position": 30,
           "name": "sbcl-generations",
           "description": "Live SBCL image checkpoints as numbered, boot-probed generations.",
           "codeRepository": "https://github.com/luciusmagn/sbcl-generations",
@@ -179,7 +314,7 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 16,
+          "position": 31,
           "name": "sbcl-workers",
           "description": "Persistent isolated SBCL workers and immutable heap images.",
           "codeRepository": "https://github.com/luciusmagn/sbcl-workers",
@@ -188,7 +323,16 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 17,
+          "position": 32,
+          "name": "setinka",
+          "description": "Layered, typed configuration through documented CLOS settings. Includes source precedence, persistence, change listeners, and updates to dependent settings.",
+          "codeRepository": "https://github.com/lambda-symbolics/setinka",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/setinka/blob/f896272b4bde04e09385a1f050604a4943525e74/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 33,
           "name": "sexp-config",
           "description": "Safe, grammar-bounded s-expression configuration reading for Common Lisp.",
           "codeRepository": "https://github.com/luciusmagn/sexp-config",
@@ -197,12 +341,39 @@
         },
         {
           "@type": "SoftwareSourceCode",
-          "position": 18,
+          "position": 34,
           "name": "sexp-store",
           "description": "Crash-tolerant readable Common Lisp state files.",
           "codeRepository": "https://github.com/luciusmagn/sexp-store",
           "programmingLanguage": "Common Lisp",
           "license": "https://opensource.org/license/isc-license-txt"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 35,
+          "name": "sophisticated-clipboard",
+          "description": "Desktop clipboard access for Common Lisp, including text and typed data. Uses platform interfaces without requiring compiled glue code.",
+          "codeRepository": "https://github.com/lambda-symbolics/sophisticated-clipboard",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/sophisticated-clipboard/blob/756b65f4f8be18c786e2331de89708729df42bd4/COPYING"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 36,
+          "name": "structlisp",
+          "description": "Portable data structures using ANSI Common Lisp: deques, bounded sequence builders, heaps, ordered maps, caches, string indexes, and integer interval collections.",
+          "codeRepository": "https://github.com/lambda-symbolics/structlisp",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/structlisp/blob/0a276cd18f6d85576de7d761d96e40a34667b8b7/LICENSE.lisp"
+        },
+        {
+          "@type": "SoftwareSourceCode",
+          "position": 37,
+          "name": "surgeon",
+          "description": "SBCL introspection and reversible live redefinition. Includes defined-name lookup, lambda lists, restart selection, definition undo, and source-form location.",
+          "codeRepository": "https://github.com/lambda-symbolics/surgeon",
+          "programmingLanguage": "Common Lisp",
+          "license": "https://github.com/lambda-symbolics/surgeon/blob/4c3a5456049879ac79baccaf12c67969394aef88/LICENSE.lisp"
         }
       ]
     }
@@ -244,6 +415,28 @@
         <div class="duo">
           <article class="product">
             <header class="product-head">
+              <h3>agentcomms</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/agentcomms">lambda-symbolics/agentcomms</a>
+            </header>
+            <p>
+              Agent Client Protocol v1 over newline-delimited JSON-RPC. Includes
+              request correlation, cancellation, capability negotiation, and
+              standard-I/O or in-process channels.
+            </p>
+          </article>
+
+          <article class="product">
+            <header class="product-head">
+              <h3>argo</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/argo">lambda-symbolics/argo</a>
+            </header>
+            <p>
+              RFC 8259 JSON encoding and decoding with distinct false, null, and
+              empty-array values. Optional limits bound document processing.
+            </p>
+          </article>
+          <article class="product">
+            <header class="product-head">
               <h3>cl-colorist</h3>
               <a class="service-link" href="https://github.com/luciusmagn/cl-colorist">luciusmagn/cl-colorist</a>
             </header>
@@ -266,6 +459,16 @@
 
           <article class="product">
             <header class="product-head">
+              <h3>cl-hashline</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/cl-hashline">lambda-symbolics/cl-hashline</a>
+            </header>
+            <p>
+              Line-anchored text editing against an observed revision. Validates
+              anchors and applies batches of edits in original-line coordinates.
+            </p>
+          </article>
+          <article class="product">
+            <header class="product-head">
               <h3>cl-jobpond</h3>
               <a class="service-link" href="https://github.com/luciusmagn/cl-jobpond">luciusmagn/cl-jobpond</a>
             </header>
@@ -275,6 +478,76 @@
             </p>
           </article>
 
+          <article class="product">
+            <header class="product-head">
+              <h3>cl-llm-provider-api</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/cl-llm-provider-api">lambda-symbolics/cl-llm-provider-api</a>
+            </header>
+            <p>
+              Protocols, value types, and wire clients for language-model
+              providers. Includes context assembly, structured-output contracts,
+              inference budgets, and content-addressed contexts.
+            </p>
+          </article>
+
+          <article class="product">
+            <header class="product-head">
+              <h3>cl-lsp</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/cl-lsp">lambda-symbolics/cl-lsp</a>
+            </header>
+            <p>
+              Client for standard-I/O Language Server Protocol servers. Includes
+              initialization, UTF-8 file synchronization, JSON-RPC requests, and
+              push or pull diagnostics.
+            </p>
+          </article>
+
+          <article class="product">
+            <header class="product-head">
+              <h3>cl-rfc8252</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/cl-rfc8252">lambda-symbolics/cl-rfc8252</a>
+            </header>
+            <p>
+              Browser-based OAuth for installed applications, with S256 PKCE,
+              IPv4 loopback redirects, and authorization-code exchange.
+              Integrates with cl-rfc8628 credential storage.
+            </p>
+          </article>
+
+          <article class="product">
+            <header class="product-head">
+              <h3>cl-rfc8628</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/cl-rfc8628">lambda-symbolics/cl-rfc8628</a>
+            </header>
+            <p>
+              OAuth 2.0 device authorization through a CLOS protocol, with
+              replaceable HTTP, clock, browser, and sleep operations, plus
+              credential storage.
+            </p>
+          </article>
+
+          <article class="product">
+            <header class="product-head">
+              <h3>cl-skills</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/cl-skills">lambda-symbolics/cl-skills</a>
+            </header>
+            <p>
+              Discovery, validation, and reading of reusable Agent Skills.
+              Supports SKILL.md directories and a bounded native SKILL.sexp format.
+            </p>
+          </article>
+
+          <article class="product">
+            <header class="product-head">
+              <h3>cl-termdown</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/cl-termdown">lambda-symbolics/cl-termdown</a>
+            </header>
+            <p>
+              Parses Markdown into terminal-oriented semantic spans, with
+              Unicode-aware wrapping, lists, inline markup, tables, fenced code,
+              and streaming previews.
+            </p>
+          </article>
           <article class="product">
             <header class="product-head">
               <h3>clifff</h3>
@@ -298,6 +571,17 @@
             </p>
           </article>
 
+          <article class="product">
+            <header class="product-head">
+              <h3>clinker-transcript</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/clinker-transcript">lambda-symbolics/clinker-transcript</a>
+            </header>
+            <p>
+              Typed provider transcripts for Responses and Chat Completions,
+              with constructors, canonicalization, compaction checkpoints, and
+              records for server-executed calls.
+            </p>
+          </article>
           <article class="product">
             <header class="product-head">
               <h3>COLL</h3>
@@ -335,6 +619,16 @@
 
           <article class="product">
             <header class="product-head">
+              <h3>fetch-gist</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/fetch-gist">lambda-symbolics/fetch-gist</a>
+            </header>
+            <p>
+              Fetches web pages over HTTP and converts HTML to Markdown. Uses
+              Dexador for requests and Plump for HTML parsing.
+            </p>
+          </article>
+          <article class="product">
+            <header class="product-head">
               <h3>idsmall</h3>
               <a class="service-link" href="https://github.com/luciusmagn/idsmall">luciusmagn/idsmall</a>
             </header>
@@ -344,6 +638,29 @@
             </p>
           </article>
 
+          <article class="product">
+            <header class="product-head">
+              <h3>image-daemon</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/image-daemon">lambda-symbolics/image-daemon</a>
+            </header>
+            <p>
+              Wire and runtime protocols for Lisp image daemons, with
+              authenticated loopback control, bounded packets, request deadlines,
+              session identifiers, and terminal relays.
+            </p>
+          </article>
+
+          <article class="product">
+            <header class="product-head">
+              <h3>lambda-debugger</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/lambda-debugger">lambda-symbolics/lambda-debugger</a>
+            </header>
+            <p>
+              Live Common Lisp restart debugger with portable snapshots. Supports
+              restart selection, source-backed repair, retrying operations,
+              returning values, and aborting.
+            </p>
+          </article>
           <article class="product">
             <header class="product-head">
               <h3>lightfast</h3>
@@ -381,6 +698,16 @@
 
           <article class="product">
             <header class="product-head">
+              <h3>ls-flock</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/ls-flock">lambda-symbolics/ls-flock</a>
+            </header>
+            <p>
+              Advisory POSIX file locks through lockf. Includes scoped locking and
+              process-wide mutex serialization for threads locking the same path.
+            </p>
+          </article>
+          <article class="product">
+            <header class="product-head">
               <h3>mcparen</h3>
               <a class="service-link" href="https://github.com/luciusmagn/mcparen">luciusmagn/mcparen</a>
             </header>
@@ -389,6 +716,16 @@
             </p>
           </article>
 
+          <article class="product">
+            <header class="product-head">
+              <h3>org-templater</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/org-templater">lambda-symbolics/org-templater</a>
+            </header>
+            <p>
+              Org document templating with key interpolation and conditional
+              blocks. Heading properties can control whether a subtree is included.
+            </p>
+          </article>
           <article class="product">
             <header class="product-head">
               <h3>parenchek</h3>
@@ -427,6 +764,17 @@
 
           <article class="product">
             <header class="product-head">
+              <h3>setinka</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/setinka">lambda-symbolics/setinka</a>
+            </header>
+            <p>
+              Layered, typed configuration through documented CLOS settings.
+              Includes source precedence, persistence, change listeners, and
+              updates to dependent settings.
+            </p>
+          </article>
+          <article class="product">
+            <header class="product-head">
               <h3>sexp-config</h3>
               <a class="service-link" href="https://github.com/luciusmagn/sexp-config">luciusmagn/sexp-config</a>
             </header>
@@ -447,6 +795,41 @@
               Useful to create s-expression ledgers of actions taken by, say, a clanker.
             </p>
           </article>
+
+          <article class="product">
+            <header class="product-head">
+              <h3>sophisticated-clipboard</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/sophisticated-clipboard">lambda-symbolics/sophisticated-clipboard</a>
+            </header>
+            <p>
+              Desktop clipboard access for Common Lisp, including text and typed
+              data. Uses platform interfaces without requiring compiled glue code.
+            </p>
+          </article>
+
+          <article class="product">
+            <header class="product-head">
+              <h3>structlisp</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/structlisp">lambda-symbolics/structlisp</a>
+            </header>
+            <p>
+              Portable data structures using ANSI Common Lisp: deques, bounded
+              sequence builders, heaps, ordered maps, caches, string indexes, and
+              integer interval collections.
+            </p>
+          </article>
+
+          <article class="product">
+            <header class="product-head">
+              <h3>surgeon</h3>
+              <a class="service-link" href="https://github.com/lambda-symbolics/surgeon">lambda-symbolics/surgeon</a>
+            </header>
+            <p>
+              SBCL introspection and reversible live redefinition. Includes
+              defined-name lookup, lambda lists, restart selection, definition
+              undo, and source-form location.
+            </p>
+          </article>
         </div>
 
       </section>
@@ -455,7 +838,7 @@
     <footer class="shell">
       <div class="colophon">
         <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
-        <p>Libraries · Revised 11 August 2026</p>
+        <p>Libraries · Revised 4 October 2026</p>
       </div>
     </footer>
   </body>
