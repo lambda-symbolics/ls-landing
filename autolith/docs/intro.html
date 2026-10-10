@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intro · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Intro">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/intro"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=1c695ec3cdefbaad326587de96114094a4fada2a6dabe79f48f76177b6ef5f8c"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Intro</nav><div class="doc-body"><div class="doc-content"><h1 id="intro">Intro</h1>
+<p>Autolith is a terminal agent running in a live Common Lisp image. It works on Linux x86-64 and macOS.</p>
+<p>You can launch autolith by typing its name into your favorite terminal:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span></span></code></pre></div>
+</div>
+</div>
+<p>If you haven't authenticated already, you can check out the <a href="https://github.com/lambda-symbolics/autolith/blob/master/README.org">README</a> for how to do that.</p>
+<p>Autolith's prompt window can also evuluate lisp forms directly:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb2" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>(help)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;workspace:.&quot;</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>(prompt (read-file <span class="st">&quot;review-notes.org&quot;</span>))</span></code></pre></div>
+</div>
+</div>
+<p>This can be frequently helpful since you can use the exact same tools the clanker can, and the same machinery is exposed to you.</p>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/goals-and-verified-missions">Goals and verified missions</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><span class="toc-current"><span class="toc-number">1</span>Intro</span></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">2</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">3</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">4</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">5</span>Fullscreen terminal</a></li><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">6</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">7</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">8</span>Configure Autolith</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">9</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">10</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 11 October 2026</p></div></footer></body></html>

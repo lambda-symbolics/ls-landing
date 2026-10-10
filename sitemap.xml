@@ -1,102 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
+<url>
     <loc>https://lambda-symbolics.com/</loc>
   </url>
-  <url>
+<url>
     <loc>https://lambda-symbolics.com/software-repair</loc>
   </url>
-  <url>
+<url>
     <loc>https://lambda-symbolics.com/lisp-repair</loc>
   </url>
-  <url>
+<url>
     <loc>https://lambda-symbolics.com/rust-course</loc>
   </url>
-  <url>
+<url>
     <loc>https://lambda-symbolics.com/cclsh</loc>
   </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/install</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/first-session</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/workspace</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/tools</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/lisp-workers</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/live-image</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/commits-and-recovery</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/state</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/recursive-inference</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/agents-and-jobs</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/providers</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/mcp</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/skills</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/commands</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/resume-and-replay</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/persist-a-function</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/search-big-corpus</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/run-from-ci</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/add-mcp-server</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/cookbook/project-setup</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/advanced/management-endpoint</loc>
-  </url>
-  <url>
-    <loc>https://lambda-symbolics.com/autolith/docs/advanced/context-tuning</loc>
-  </url>
-  <url>
+<url>
     <loc>https://lambda-symbolics.com/libraries</loc>
   </url>
-  <url>
+<url>
     <loc>https://lambda-symbolics.com/waytemp</loc>
   </url>
-  <url>
+<url>
     <loc>https://lambda-symbolics.com/orfeus</loc>
   </url>
-  <url>
+<url>
     <loc>https://lambda-symbolics.com/world-peace</loc>
   </url>
-  <url>
+<url>
     <loc>https://lambda-symbolics.com/lukas</loc>
   </url>
+<url><loc>https://lambda-symbolics.com/autolith/docs</loc></url>
+<url><loc>https://lambda-symbolics.com/autolith/docs/intro</loc></url>
+<url><loc>https://lambda-symbolics.com/autolith/docs/goals-and-verified-missions</loc></url>
+<url><loc>https://lambda-symbolics.com/autolith/docs/editor-sessions-over-acp</loc></url>
+<url><loc>https://lambda-symbolics.com/autolith/docs/emacs-and-sly</loc></url>
+<url><loc>https://lambda-symbolics.com/autolith/docs/fullscreen-terminal</loc></url>
+<url><loc>https://lambda-symbolics.com/autolith/docs/install-update-and-uninstall</loc></url>
+<url><loc>https://lambda-symbolics.com/autolith/docs/talk-to-autolith</loc></url>
+<url><loc>https://lambda-symbolics.com/autolith/docs/configure-autolith</loc></url>
+<url><loc>https://lambda-symbolics.com/autolith/docs/non-interactive-jobs</loc></url>
+<url><loc>https://lambda-symbolics.com/autolith/docs/generations-and-recovery</loc></url>
 </urlset>

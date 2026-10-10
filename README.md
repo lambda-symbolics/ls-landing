@@ -39,3 +39,21 @@ Then open `http://localhost:4173`.
 ## Deploy
 
 Point Vercel at this repository/submodule and deploy as a static site.
+
+## Autolith docs
+
+`autolith/docs/` is generated from the authoritative `docs/guide.org` in an
+Autolith checkout. Regenerate it with Pandoc, SBCL and `sha256sum`:
+
+```bash
+AUTOLITH_GUIDE=/path/to/autolith/docs/guide.org \
+  sbcl --non-interactive --load tools/make-docs.lisp --eval '(make-docs)'
+```
+
+Check window shadow clearance at desktop and mobile widths with Chromium, and
+verify the Autolith relocation routes:
+
+```bash
+sbcl --script tools/check-window-layout.lisp paper.css
+python3 tools/check-autolith.py
+```

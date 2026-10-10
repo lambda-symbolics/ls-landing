@@ -1,26 +1,19 @@
 #!/usr/bin/env python3
-"""Check autolith.html against the Autolith repository's own metadata.
+"""Check the Autolith product page or its permanent relocation routes.
 
-The page must never drift from the repository again. This script reads
-the authoritative sources in an Autolith checkout and fails when the
-published page disagrees with them:
-
-  version        autolith.asd            :version, JSON-LD softwareVersion
-  SBCL pin       sbcl.version            JSON-LD runtimePlatform
-  platforms      script/install          uname case arms, JSON-LD operatingSystem
-  install        README.org              curl and nix run commands
-
-The product page keeps provider and model facts out of its prose and
-defers to /autolith/docs/providers, so they are not needles here.
+A relocated page must have matching canonical, HTML refresh, and Vercel
+redirect destinations. A local product page is checked against the Autolith
+checkout's version, SBCL pin, installer platforms, and installation commands.
 
 Usage: python3 tools/check-autolith.py [AUTOLITH-CHECKOUT]
 The checkout defaults to $AUTOLITH_REPO, then ~/common-lisp/frob.
-Exit status 0 means the page agrees with the repository.
 """
 
+import json
 import os
 import re
 import sys
+from html.parser import HTMLParser
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -89,14 +82,52 @@ def repo_install_commands(repo: Path) -> list[str]:
     return commands
 
 
+class ProductLocation(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.canonical = None
+        self.refresh = None
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attributes = dict(attrs)
+        if tag == "link" and attributes.get("rel") == "canonical":
+            self.canonical = attributes.get("href")
+        if tag == "meta" and attributes.get("http-equiv", "").lower() == "refresh":
+            content = attributes.get("content", "")
+            _, separator, target = content.partition(";")
+            if separator and target.strip().lower().startswith("url="):
+                self.refresh = target.strip()[4:]
+
+
+def check_relocation(page: str) -> bool:
+    location = ProductLocation()
+    location.feed(page)
+    if location.refresh is None:
+        return False
+    destination = location.refresh
+    if not destination.startswith("https://") or location.canonical != destination:
+        sys.exit("relocation: canonical and HTTPS refresh destinations must agree")
+    routes = json.loads(read(ROOT / "vercel.json")).get("redirects", [])
+    for source in ("/autolith", "/autolith.html"):
+        if not any(route.get("source") == source
+                   and route.get("destination") == destination
+                   and route.get("permanent") is True for route in routes):
+            sys.exit(f"relocation: missing permanent {source} redirect to {destination}")
+    print(f"Autolith relocation routes agree: {destination}")
+    return True
+
+
 def main() -> None:
+    page = read(PAGE)
+    if check_relocation(page):
+        return
     repo = repo_path()
     if not (repo / "autolith.asd").exists():
         sys.exit(
             f"{repo} is not an Autolith checkout; "
             "pass one or set AUTOLITH_REPO"
         )
-    page = re.sub(r"\s+", " ", read(PAGE))
+    page = re.sub(r"\s+", " ", page)
 
     failures = []
 

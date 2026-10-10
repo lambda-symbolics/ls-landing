@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Non-interactive jobs · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Non-interactive jobs">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/non-interactive-jobs"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=1c695ec3cdefbaad326587de96114094a4fada2a6dabe79f48f76177b6ef5f8c"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Non-interactive jobs</nav><div class="doc-body"><div class="doc-content"><h1 id="non-interactive-jobs">Non-interactive jobs</h1>
+<p><code class="verbatim">run-job</code> executes one caller-supplied child role without an interactive terminal. It uses normal project, user, and bundled task-agent discovery, provider and MCP configuration, role tool and spawn policy, task traces, usage accounting, and native structured-output contracts.</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb60" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--permissions</span> auto run-job <span class="dt">\</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> /path/to/job.sexp <span class="dt">\</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output</span> /path/to/result.sexp</span></code></pre></div>
+</div>
+</div>
+<p>The input is exactly one bounded data-only S-expression:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb61" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>(:autolith-job</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a> <span class="bu">:version</span> <span class="dv">1</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a> :id <span class="st">&quot;job-identifier&quot;</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a> :role <span class="st">&quot;project-role&quot;</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a> :prompt <span class="st">&quot;Perform the assigned work.&quot;</span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a> <span class="bu">:input</span> (:caller-owned <span class="st">&quot;opaque data&quot;</span>)</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a> :output-contract (<span class="bu">:type</span> :object</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>                   :properties ((<span class="st">&quot;answer&quot;</span> (<span class="bu">:type</span> :string)))</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>                   :required (<span class="st">&quot;answer&quot;</span>)</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>                   :additional-properties <span class="kw">nil</span>)</span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a> :timeout-seconds <span class="dv">900</span>)</span></code></pre></div>
+</div>
+</div>
+<p>The supplied output contract applies only to that run and does not alter the role definition. The terminal artifact is atomically installed at <code class="verbatim">--output</code> as <code class="verbatim">(:autolith-job-result :version 1 ...)</code>. Structured objects and arrays use <code class="verbatim">:OBJECT</code> and <code class="verbatim">:ARRAY</code> tags, so false, null, and empty arrays remain distinct. Failures use stable categories and statuses <code class="verbatim">:failed</code>, <code class="verbatim">:cancelled</code>, or <code class="verbatim">:timed-out</code>. Successful jobs use <code class="verbatim">:succeeded</code> and include the contracted result. Trace and usage fields are included when available.</p>
+<p>Headless execution never opens an approval picker. <code class="verbatim">auto</code> classifies shell commands and denies decisions that would require approval. <code class="verbatim">sandbox</code> permits only sandboxed commands. <code class="verbatim">full</code> permits full command execution. External tool calls whose configured policy requires approval are denied unless full access was selected. The role allowlist remains the child capability boundary.</p>
+<h2 id="live-s-expression-events">Live S-expression events</h2>
+<p>Add <code class="verbatim">--events sexp</code> to observe a run on stdout. Capture diagnostics separately on stderr and read the authoritative terminal result from <code class="verbatim">--output</code>:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb62" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--permissions</span> auto run-job <span class="dt">\</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--input</span> /path/to/job.sexp <span class="at">--output</span> /path/to/result.sexp <span class="dt">\</span></span>
+<span id="cb62-3"><a href="#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--events</span> sexp <span class="op">&gt;</span>events.sexp <span class="dv">2</span><span class="op">&gt;</span>diagnostics.log</span></code></pre></div>
+</div>
+</div>
+<p>Read consecutive top-level data forms, rather than splitting physical lines. Strings may contain newlines. Each version-one record has this shape:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb63" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>(:autolith-event <span class="bu">:version</span> <span class="dv">1</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a> :run-id <span class="st">&quot;a-generated-run-uuid&quot;</span> :seq <span class="dv">1</span> :time <span class="st">&quot;2026-10-08T09:00:00Z&quot;</span></span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a> :kind :run-started :data <span class="kw">nil</span>)</span></code></pre></div>
+</div>
+</div>
+<p>The event kinds are <code class="verbatim">:run-started</code>, <code class="verbatim">:job-started</code>, <code class="verbatim">:tool-started</code>, <code class="verbatim">:progress</code>, <code class="verbatim">:tool-finished</code>, <code class="verbatim">:job-finished</code>, <code class="verbatim">:usage</code>, <code class="verbatim">:warning</code>, <code class="verbatim">:progress-omitted</code>, and <code class="verbatim">:run-finished</code>. Ignore unknown versioned kinds. Sequence numbers increase strictly within one run. Job and execution identifiers are opaque execution UUIDs; provider call identifiers are pseudonymous within that run. Tool names come from the registered tool catalog. Observe only the requested root and its owned descendants, excluding other roots in the same conversation. Event data contains allowlisted statuses and numeric counters, not prompts, tool arguments, tool output, or provider payloads. Interactive input is EOF, and diagnostic/query streams go to stderr in the initiating thread and its workers.</p>
+<p>Use <code class="verbatim">run-job-event-read-stream</code> to read one validated record at a time, returning NIL at EOF. It uses the bounded <code class="verbatim">sexp-config</code> data grammar with <code class="verbatim">*read-eval*</code> NIL. Only approved keywords, strings, NIL/T, bounded nonnegative integers, and finite proper lists are accepted. The maximum record size is 16 KiB of UTF-8; character streams supplied to the library must already use UTF-8. Binary streams receive UTF-8 octets.</p>
+<p>Root <code class="verbatim">:job-finished</code> and final <code class="verbatim">:run-finished</code> records follow atomic result publication. Published terminal job events include a <code class="verbatim">:result-uri</code> resource reference; descendant references identify execution-qualified artifacts. The final data includes <code class="verbatim">:status</code> and <code class="verbatim">:published-p</code>; successful publication also includes <code class="verbatim">:output-path</code>. An output write failure reports <code class="verbatim">:failed</code>, <code class="verbatim">:published-p nil</code>, and <code class="verbatim">:category :result-publication-failed</code>, with a nonzero exit status. Inspect the result artifact for contracted data and full failure details.</p>
+<p>Delivery is best effort through one bounded queue and a single writer. Progress may be omitted under backpressure, with <code class="verbatim">:progress-omitted</code> reporting its count. Lifecycle overflow is reported with <code class="verbatim">:warning</code> and <code class="verbatim">:code :queue-full</code>; final delivery has a reserved slot. A slow or disconnected consumer may miss the terminal record; execution and result publication continue. There is no replay or reconnect cursor. For a new invocation, expect a new run UUID and sequence beginning at one.</p>
+<p>From Lisp, call <code class="verbatim">run-job-run</code> with <code class="verbatim">:events :sexp</code> and <code class="verbatim">:event-output STREAM</code>. Without the events option, use the existing artifact-only interface.</p>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/configure-autolith">Configure Autolith</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/generations-and-recovery">Generations and recovery</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/intro"><span class="toc-number">1</span>Intro</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">2</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">3</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">4</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">5</span>Fullscreen terminal</a></li><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">6</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">7</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">8</span>Configure Autolith</a></li><li><span class="toc-current"><span class="toc-number">9</span>Non-interactive jobs</span></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">10</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 11 October 2026</p></div></footer></body></html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Install, update, and uninstall · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Install, update, and uninstall">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/install-update-and-uninstall"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=1c695ec3cdefbaad326587de96114094a4fada2a6dabe79f48f76177b6ef5f8c"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Install, update, and uninstall</nav><div class="doc-body"><div class="doc-content"><h1 id="install-update-and-uninstall">Install, update, and uninstall</h1>
+<h2 id="nix">Nix</h2>
+<p>Nix is the simplest way to install Autolith:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb13" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix</span> run github:luciusmagn/autolith</span></code></pre></div>
+</div>
+</div>
+<p>The first launch builds Lisp images Autolith needs to launch. These images live under <code class="verbatim">${XDG_DATA_HOME:-~/.local/share}/autolith/nix/images/</code>}.</p>
+<h2 id="linux-binary-release">Linux binary release</h2>
+<p>It is possible to install autolith on Linux x86<sub>64</sub> via a shell installer:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb14" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://sh.lambda-symbolics.com/autolith <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div>
+</div>
+</div>
+<p>The installer verifies the release archive's SHA-256 before extraction. The checksum must identify that exact archive; malformed or missing checksums abort installation. The initial shell script is fetched over HTTPS.</p>
+<p>Read <a href="https://sh.lambda-symbolics.com/autolith">the installer</a> before piping it to a shell, or use Nix if that tradeoff is unwelcome. Linux binary releases require OpenSSL and Bubblewrap. Bubblewrap provides the filesystem and network isolation used for sandboxed command execution. The installer names the missing dependency instead of installing a release that cannot offer sandboxed or safe automatic execution. The launcher uses the installation layout, rather than an environment marker alone, to distinguish binary, Nix, and source starts.</p>
+<p>Autolith automatically checks for updates at most once every 20 hours. To install the latest binary release and exit without starting a session:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb15" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> update</span></code></pre></div>
+</div>
+</div>
+<p>The command exits successfully when updated or already current, and returns a nonzero status if checking or installing fails. <code class="verbatim">autolith --update</code> is an equivalent update-and-exit alias. Run <code class="verbatim">autolith</code> afterward to start the new release. Both spellings accept <code class="verbatim">--help</code> or <code class="verbatim">-h</code>; extra arguments exit with status 64 before checking for updates. Use your flake or Nix profile to update Nix installations; update the checkout and run <code class="verbatim">./script/bootstrap</code> for source installations. These installations explain their update mechanism without building or starting Lisp images.</p>
+<p>To update from a session and restart it with its original command arguments:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb16" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(update)</span></code></pre></div>
+</div>
+</div>
+<p>Release archives are built and checked by the installer host. GitHub publishes release metadata after the host checksum is available. See <a href="https://github.com/lambda-symbolics/autolith/blob/master/docs/release-service.org">Release service</a>.</p>
+<h2 id="source-checkout">Source checkout</h2>
+<p>For a fresh macOS machine:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb17" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">brew</span> install sbcl rust cmake pkg-config openssl@3</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-o</span> /tmp/quicklisp.lisp https://beta.quicklisp.org/quicklisp.lisp</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="ex">sbcl</span> <span class="at">--no-sysinit</span> <span class="at">--no-userinit</span> <span class="at">--load</span> /tmp/quicklisp.lisp <span class="dt">\</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--eval</span> <span class="st">&#39;(quicklisp-quickstart:install)&#39;</span> <span class="at">--quit</span></span></code></pre></div>
+</div>
+</div>
+<p>On Linux, also install Bubblewrap with your distribution's package manager. Autolith uses its <code class="verbatim">bwrap</code> executable to isolate the host filesystem and network for sandboxed commands and the sandboxed decisions made by automatic permission mode. Nix installations include it. Bubblewrap is not a macOS or BSD dependency. Without platform sandbox support, the <code class="verbatim">sandbox</code> choice is unavailable; explicit <code class="verbatim">once</code>, <code class="verbatim">always</code>, and <code class="verbatim">full</code> approvals run with the user's full privileges.</p>
+<p>With Quicklisp in <code class="verbatim">~/quicklisp</code>, bootstrap and check the checkout:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb18" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./script/bootstrap</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./script/check</span></span></code></pre></div>
+</div>
+</div>
+<p>The check runs FiveAM tests in isolated SBCL processes, defaulting to the available logical CPU count (one worker if detection fails), and verifies the pristine recovery image. Each run first saves an active image of the checked source, so cases that start a fresh Autolith boot that core instead of loading the system. List or select test suites and individual cases with:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb19" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./script/check</span> <span class="at">--list</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./script/check</span> <span class="at">--suite</span> workspace-resource <span class="at">--suite</span> fixtures</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ex">./script/check</span> <span class="at">--test</span> test-workspace-file-resources <span class="at">--jobs</span> 1</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="ex">./script/check</span> <span class="at">--jobs</span> 8 <span class="at">--timeout</span> 900</span></code></pre></div>
+</div>
+</div>
+<p>Selected runs skip recovery probes. Selectors are exact, case-insensitive names and can be repeated; unknown names fail. <code class="verbatim">--jobs</code> controls process concurrency, and <code class="verbatim">--timeout</code> sets the deadline per worker in seconds (default 600). Results include per-case timings and the slowest cases. <code class="verbatim">AGENTS.md</code> documents test registration, reusable fixtures, and interactive Lisp entry points.</p>
+<p>To put a checkout into <code class="verbatim">PATH</code>:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb20" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mkdir</span> <span class="at">-p</span> ~/.local/bin</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ln</span> <span class="at">-sfn</span> <span class="st">&quot;</span><span class="va">$PWD</span><span class="st">/bin/autolith&quot;</span> ~/.local/bin/autolith</span></code></pre></div>
+</div>
+</div>
+<p>This is assuming you have .local/bin/ in PATH.</p>
+<h2 id="windows">Windows</h2>
+<p>For the Windows x86-64 development artifact, extract the archive into a writable folder and run <code class="verbatim">.\bin\autolith.cmd</code> from PowerShell. Use Windows 10 version 1903 or newer. The bundled SBCL executable has a UTF-8 process manifest for Unicode paths; system-wide locale changes and 8.3 filenames are unnecessary. The first launch builds per-user cores under <code class="verbatim">.autolith-images</code> beside the release.</p>
+<p>To build the source checkout, install Git for Windows, Rust with the MSVC toolchain and Cargo, and Quicklisp under <code class="verbatim">%USERPROFILE%\quicklisp</code>. Put <code class="verbatim">clang</code> on <code class="verbatim">PATH</code> for the ColorLisp syntax library. An SBCL 2.6.6 or newer on <code class="verbatim">PATH</code> is used when present; otherwise the bootstrap downloads the official SBCL Windows binary pinned in <code class="verbatim">sbcl-windows-releases.sha256</code>, verifies its SHA-256, and unpacks it below the data root without registering it with Windows. OpenSSL 3 comes from Git for Windows, from <code class="verbatim">AUTOLITH_OPENSSL_DIRECTORY</code>, or from a <code class="verbatim">native\openssl</code> directory beside the sources.</p>
+<p>From PowerShell, bootstrap and check the checkout:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+PowerShell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb21"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>script\bootstrap<span class="op">.</span><span class="fu">ps1</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>script\check<span class="op">.</span><span class="fu">ps1</span></span></code></pre></div>
+</div>
+</div>
+<p><code class="verbatim">script\check.ps1</code> takes the same selectors as <code class="verbatim">./script/check</code>. Checks that need FIFOs, forked children, pseudo-terminals, POSIX file modes, or the POSIX shell are recorded as skipped. To package a Windows archive, install the Windows SDK (including <code class="verbatim">mt.exe</code>) and run <code class="verbatim">script\package-windows-release.ps1 -Tag VERSION</code>. The POSIX release-server scripts are not built on Windows.</p>
+<p>Start a session with <code class="verbatim">bin\autolith.cmd</code> or <code class="verbatim">bin\autolith.ps1</code>; both take the arguments <code class="verbatim">bin/autolith</code> takes. Windows Terminal is the primary console; legacy consoles without virtual-terminal input are refused with a message.</p>
+<p>Windows sandboxed commands use the bundled AppContainer helper. They can write in the workspace and a private temporary directory, read system applications and explicit tool directories, and have no network access. Repository metadata is protected. Bootstrap builds the helper with Clang; release archives include it.</p>
+<p>Windows supports supervised detached sessions, client-first starts, and exact-heap restart checkpoints. It withholds fork-based checkpoint saving and the <code class="verbatim">unix</code> management REPL transport.</p>
+<h2 id="uninstall">Uninstall</h2>
+<p>To remove Autolith and keep your data:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb22" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> uninstall</span></code></pre></div>
+</div>
+</div>
+<p>The launcher lists what it will remove, asks for confirmation, and exits without starting a session; <code class="verbatim">--yes</code> skips the prompt, which is required when no terminal is attached. It removes the packaged installation and its command link, managed SBCL runtimes, the active and recovery images, retained generation cores, saved worker images, Nix image trees, release markers, crash capsules, launcher pointers, session sockets and leases, provider caches, and the cache root.</p>
+<p>User data stays in place: conversations, inference traces, memories, papercuts, agendas, plans, pending input, private image commits, the mutation journal and mutation history, permissions, preferences, credentials, and the configuration root. Stop running sessions first. A source checkout stays as well; delete it yourself. Nix installations also need the package removed from the flake or profile. On Windows the launcher prints the folders to delete, because the runtime in use lives inside them.</p>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/fullscreen-terminal">Fullscreen terminal</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/talk-to-autolith">Talk to Autolith</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/intro"><span class="toc-number">1</span>Intro</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">2</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">3</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">4</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">5</span>Fullscreen terminal</a></li><li><span class="toc-current"><span class="toc-number">6</span>Install, update, and uninstall</span></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">7</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">8</span>Configure Autolith</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">9</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">10</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 11 October 2026</p></div></footer></body></html>

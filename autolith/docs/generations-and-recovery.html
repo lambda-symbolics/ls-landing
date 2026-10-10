@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Generations and recovery · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Generations and recovery">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/generations-and-recovery"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=1c695ec3cdefbaad326587de96114094a4fada2a6dabe79f48f76177b6ef5f8c"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Generations and recovery</nav><div class="doc-body"><div class="doc-content"><h1 id="generations-and-recovery">Generations and recovery</h1>
+<p><code class="verbatim">(checkpoint)</code> requires a clean Git worktree and a passing <code class="verbatim">./script/check</code>. On POSIX it saves a retained image without stopping the active session. On Windows it saves the exact live heap, restarts through the stable launcher, and resumes the active conversation after the saved image passes its probe.</p>
+<ul>
+<li><code class="verbatim">(generations)</code> lists retained images.</li>
+<li><code class="verbatim">(rollback ID)</code> selects a compatible image and exits through recovery.</li>
+</ul>
+<p>Inspect or boot retained generations from the CLI:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb64" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--recovery</span> <span class="at">--list</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--recovery</span> <span class="at">--generation</span> GENERATION-ID</span></code></pre></div>
+</div>
+</div>
+<p>Recovery starts the separately built pristine core, not the damaged active core. If that image is missing or invalid, it falls back to source.</p>
+<p>Automatic recovery boots a private clean checkout of current committed source with <code class="verbatim">--pristine</code>. It does not load retained generations or private mutation replay. An intentional <code class="verbatim">(rollback ID)</code> still boots the selected generation. Explicit generation selection may use an older revision.</p>
+<p>To start a rescue session directly, use:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb65" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> resume <span class="at">--pristine</span> <span class="at">--permissions</span> full</span></code></pre></div>
+</div>
+</div>
+<p><code class="verbatim">--pristine</code> forces tracked source instead of a saved active core and skips the selected private image commit, mutation journal reconstruction, and executable user initialization for this process. It implies <code class="verbatim">--immutable</code> so ordinary self-mutation tools cannot replace the selected private commit. It does not erase any mutation or conversation data. Ordinary startup remains unchanged.</p>
+<p>A fatal active failure publishes a private crash capsule and restores the terminal. Recovery restores the conversation without duplicating scrollback. With a valid capsule, it queues one read-only diagnosis turn before ordinary input.</p>
+<p>That turn can inspect:</p>
+<ul>
+<li>bounded crash context</li>
+<li>workspace and tracked source</li>
+<li>indexed source</li>
+<li>active state</li>
+</ul>
+<p>It has no shell, MCP, hosted provider, image, write, mutation, checkpoint, or rollback tools. It asks before any repair. A manually started recovery image does not queue diagnosis.</p>
+<p>Saved cores require their recorded SBCL version, OS build, and architecture. Source remains authoritative. To reconstruct without a core, check out the manifest revision, run <code class="verbatim">./script/bootstrap</code>, load <code class="verbatim">autolith</code>, then load the manifest's ordered <code class="verbatim">reconstruct.lisp</code> in package <code class="verbatim">AUTOLITH</code>:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb66" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>(asdf:load-asd (<span class="kw">truename</span> <span class="st">&quot;autolith.asd&quot;</span>))</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>(asdf:load-system :autolith)</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>(<span class="kw">load</span> #P<span class="st">&quot;/path/from/generation/manifest/reconstruct.lisp&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/non-interactive-jobs">Non-interactive jobs</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/intro"><span class="toc-number">1</span>Intro</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">2</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">3</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">4</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">5</span>Fullscreen terminal</a></li><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">6</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">7</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">8</span>Configure Autolith</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">9</span>Non-interactive jobs</a></li><li><span class="toc-current"><span class="toc-number">10</span>Generations and recovery</span></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 11 October 2026</p></div></footer></body></html>

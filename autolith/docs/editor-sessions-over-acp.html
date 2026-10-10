@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor sessions over ACP · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Editor sessions over ACP">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/editor-sessions-over-acp"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=1c695ec3cdefbaad326587de96114094a4fada2a6dabe79f48f76177b6ef5f8c"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Editor sessions over ACP</nav><div class="doc-body"><div class="doc-content"><h1 id="editor-sessions-over-acp">Editor sessions over ACP</h1>
+<p>Configure your ACP-compatible editor to launch:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb8" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> acp</span></code></pre></div>
+</div>
+</div>
+<p>Authenticate the selected provider with <code class="verbatim">autolith auth</code> before starting the editor session. ACP uses UTF-8 JSON-RPC on stdin/stdout; diagnostics go to stderr. The normal launch loads durable mutations and user initialization. For AUI, use <code class="verbatim">autolith --permissions auto acp</code>. Use <code class="verbatim">--pristine</code> when recovering from a damaged mutable image.</p>
+<p>New sessions use the editor's absolute working directory and a durable Autolith conversation ID. Load that ID to replay messages, visible reasoning, tool calls, and results. Text prompts, resource links, and embedded text resources are supported. File and process operations use the native Autolith tools.</p>
+<p>The default <code class="verbatim">ask</code> mode requests command and external-tool approval in the editor. An approval for the session covers the exact command and working directory, or external tool identity and arguments. Select <code class="verbatim">auto</code>, <code class="verbatim">sandboxed</code>, or <code class="verbatim">full-access</code> through ACP session modes; use <code class="verbatim">--permissions auto|sandbox|full</code> on the command line. Changing modes clears session approvals.</p>
+<p>Client-supplied stdio and HTTP MCP servers are merged with native registrations for that session. Literal environment values and headers are ephemeral and redacted from server output. Cancel a prompt to stop its provider, tools, and owned jobs; close the session or disconnect to release its resources and lease. One primary prompt, setting mutation, tool invocation, or session setup runs at a time in each ACP process. Catalog reads and owned-job controls can run alongside it.</p>
+<h2 id="typed-client-extensions">Typed client extensions</h2>
+<p>Request <code class="verbatim">_autolith/capabilities</code> to discover installed methods and schema version. Include <code class="verbatim">sessionId</code> in every other extension request. Responses contain <code class="verbatim">outcome</code> (<code class="verbatim">ok</code>, <code class="verbatim">condition</code>, <code class="verbatim">busy</code>, <code class="verbatim">unsupported</code>, or <code class="verbatim">cancelled</code>), with <code class="verbatim">value</code> on success and a bounded <code class="verbatim">report</code> on failure. Unknown measurements are JSON null.</p>
+<div class="table-scroll">
+<table>
+<thead>
+<tr class="header">
+<th>Method suffix</th>
+<th>Value or action</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code class="verbatim">state</code></td>
+<td>Session, turn, model, permission, usage, plan and health snapshot</td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">settings</code>, <code class="verbatim">models</code>, <code class="verbatim">operations</code></td>
+<td>Typed catalog <code class="verbatim">items</code></td>
+</tr>
+<tr class="odd">
+<td><code class="verbatim">set-setting</code></td>
+<td>Set <code class="verbatim">name</code> to <code class="verbatim">value</code>; return the updated setting row</td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">invoke</code></td>
+<td>Invoke <code class="verbatim">operation</code> with JSON <code class="verbatim">arguments</code>; return presented <code class="verbatim">text</code></td>
+</tr>
+<tr class="odd">
+<td><code class="verbatim">steer</code>, <code class="verbatim">queue</code></td>
+<td>Durably admit primary <code class="verbatim">text</code>; return <code class="verbatim">accepted</code> and <code class="verbatim">delivery</code></td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">conversations</code></td>
+<td>Page durable conversations using <code class="verbatim">limit</code> and <code class="verbatim">cursor</code>; optionally filter <code class="verbatim">cwd</code></td>
+</tr>
+<tr class="odd">
+<td><code class="verbatim">jobs</code>, <code class="verbatim">job</code></td>
+<td>Page owned jobs or inspect one <code class="verbatim">jobId</code></td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">job-transcript</code></td>
+<td>Read <code class="verbatim">jobId</code> with <code class="verbatim">offset</code>, <code class="verbatim">limit</code> and <code class="verbatim">output</code> (<code class="verbatim">text</code> or <code class="verbatim">structured</code>)</td>
+</tr>
+<tr class="odd">
+<td><code class="verbatim">job-send</code>, <code class="verbatim">job-cancel</code></td>
+<td>Send <code class="verbatim">text</code> to or cancel an owned <code class="verbatim">jobId</code></td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">resource</code></td>
+<td>Read bounded <code class="verbatim">workspace:</code> lines or <code class="verbatim">shell-log:</code> bytes from <code class="verbatim">uri</code></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Prefix these suffixes with <code class="verbatim">_autolith/</code>. Catalog operations expose admission and availability; tools use their native decoders and ACP approval callbacks. Terminal-only operations return an explicit unsupported outcome. Workspace resource windows use <code class="verbatim">startLine</code> and <code class="verbatim">lineCount</code> and include the observed revision. Shell-log windows use <code class="verbatim">byteOffset</code> and <code class="verbatim">byteCount</code> and require session ownership.</p>
+<p>Invoke ordinary commands with <code class="verbatim">arguments: {"input": "..."}</code>, using native command arguments without the command name. <code class="verbatim">text</code> is an alias for <code class="verbatim">input</code>. Commands such as <code class="verbatim">skills</code>, <code class="verbatim">hurry-up</code> and <code class="verbatim">papercuts</code> return their presented text. Operations with <code class="verbatim">terminalWithoutArguments</code> require an argument to avoid a terminal picker. During an active turn, native inspection and execution policies apply; boundary-applied commands return <code class="verbatim">delivery: "scheduled"</code> and present their results as ACP updates.</p>
+<p><code class="verbatim">steer</code> delivers text at the next safe boundary, including submissions made while an approval is pending. Late steering is promoted ahead of ordinary queued follow-ups. <code class="verbatim">queue</code> appends a follow-up for the next available primary turn. Both accept up to 262144 characters and return <code class="verbatim">delivery: "steering"</code> or <code class="verbatim">"queued"</code>. Display accepted input separately until its durable <code class="verbatim">user_message_chunk</code> arrives. Cancellation pauses pending input; a new submission resumes it. Accepted input survives session close and reload. ACP has no per-item withdrawal operation.</p>
+<p>For structured child transcripts, <code class="verbatim">value.updates</code> contains ordinary ACP SessionUpdate bodies, with messages, reasoning, tool calls and result content. Offsets count updates from zero; the default limit is 100 and the maximum is 200. The typed response envelope is bounded to 262144 UTF-8 bytes. A single update over that bound returns a condition instead of advancing the cursor. <code class="verbatim">nextOffset</code> is JSON null when <code class="verbatim">complete</code> is true, meaning the current snapshot is exhausted. For a running child, poll again from <code class="verbatim">total</code> to read later updates. Text output uses character offsets and retains its existing numeric end cursor.</p>
+<p>Treat <code class="verbatim">_autolith/event</code> state and catalog notifications as invalidation hints. Refetch the affected snapshot after a sequence gap. Events with kind <code class="verbatim">turn</code> are ordered lifecycle boundaries: <code class="verbatim">data</code> contains <code class="verbatim">state</code> (<code class="verbatim">running</code> or <code class="verbatim">idle</code>), an integer <code class="verbatim">epoch</code>, <code class="verbatim">source</code> (<code class="verbatim">prompt</code>, <code class="verbatim">queue</code>, <code class="verbatim">completion</code>, or <code class="verbatim">invoke</code>), and a terminal <code class="verbatim">outcome</code> (<code class="verbatim">end-turn</code>, <code class="verbatim">cancelled</code>, or <code class="verbatim">condition</code>; null while running). Match the epoch when handling approvals, cancellation and transcript boundaries.</p>
+<p>Automatic job continuations stream through ordinary ACP updates. Cancellation or an inference failure pauses continuation; submit an explicit prompt to resume.</p>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/goals-and-verified-missions">Goals and verified missions</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/emacs-and-sly">Emacs and sly</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/intro"><span class="toc-number">1</span>Intro</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">2</span>Goals and verified missions</a></li><li><span class="toc-current"><span class="toc-number">3</span>Editor sessions over ACP</span></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">4</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">5</span>Fullscreen terminal</a></li><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">6</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">7</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">8</span>Configure Autolith</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">9</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">10</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 11 October 2026</p></div></footer></body></html>

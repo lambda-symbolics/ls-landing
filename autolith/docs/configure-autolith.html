@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configure Autolith · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Configure Autolith">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/configure-autolith"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=1c695ec3cdefbaad326587de96114094a4fada2a6dabe79f48f76177b6ef5f8c"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Configure Autolith</nav><div class="doc-body"><div class="doc-content"><h1 id="configure-autolith">Configure Autolith</h1>
+<p>Autolith loads the optional user file <code class="verbatim">${XDG_CONFIG_HOME:-~/.config}/autolith/init.lisp</code> after tracked code, a selected private image commit, and any site or trusted directory configuration. It reloads on retained generation reconnect.</p>
+<p>The file is ordinary Common Lisp in package <code class="verbatim">AUTOLITH</code>, with your full privileges. It is not copied into private replay or the pristine recovery image.</p>
+<p>Packagers may supply one separate, read-only configuration tree with <code class="verbatim">--site-config-root DIRECTORY</code> or <code class="verbatim">AUTOLITH_SITE_CONFIG_ROOT</code>. The directory must already exist and be absolute. It may contain <code class="verbatim">init.lisp</code>, <code class="verbatim">mcp.sexp</code>, <code class="verbatim">skills/</code>, and <code class="verbatim">agents/</code>. Site configuration loads before user configuration, so it provides defaults without replacing the user's normal XDG tree. A site <code class="verbatim">init.lisp</code> has the same full privileges as user initialization and is not a security boundary.</p>
+<p>Executable initialization loads in this order:</p>
+<ol>
+<li>site <code class="verbatim">init.lisp</code></li>
+<li>trusted directory <code class="verbatim">.autolith/init.lisp</code> files, outermost to nearest</li>
+<li>the user XDG <code class="verbatim">init.lisp</code></li>
+</ol>
+<p>Missing files are ordinary. A present file that cannot be read or evaluated fails startup or reload with its exact pathname. <code class="verbatim">directory-scopes.sexp</code> is user-owned.</p>
+<h2 id="settings">Settings</h2>
+<p>Every knob Autolith exposes is a named setting with a type, a description, a default, and, where the choices are finite, its options. <code class="verbatim">(settings)</code> opens the settings page: a picker listing each setting with its current value and where that value came from. Choosing an adjustable setting opens its options; choosing a read-only one explains why it cannot change in a running session. The page returns to the list after every change until you cancel.</p>
+<p>The same operations work without the page. <code class="verbatim">(settings "NAME")</code> describes one setting, <code class="verbatim">(settings "NAME" "VALUE")</code> changes it, and <code class="verbatim">(settings)</code> called from a script, where no picker can open, prints every setting grouped by area. Values are written as they appear on the page: <code class="verbatim">on</code> and <code class="verbatim">off</code> for switches, option names for choices, and integers or paths as text. A change to a durable setting is saved at once for future sessions.</p>
+<p>Settings live in one of four scopes. Durable settings, such as the model, reasoning effort, Fast mode, reasoning traces, compact view, timestamps, cache miss notices, Simple Technical English, generated titles, fullscreen, and the saved permission mode, persist in <code class="verbatim">preferences.sexp</code> under the state directory. Session settings, such as hurry-up mode, last until exit. Process settings, such as the immutable flag, the management endpoint, and the roots, come from the command line, the environment, or defaults at startup and stay fixed. Derived settings, such as the context window and provider endpoint, follow the model. The window uses a declared model value, else the catalog value, else the default.</p>
+<p>A durable value is chosen at startup from the first source that supplies it: an explicit command-line choice, the setting's environment variable, then the saved file. A saved model or effort that no registered provider serves is dropped rather than applied.</p>
+<p>From Lisp, user initialization and replay scripts read a setting with <code class="verbatim">(config :model)</code>, which uses the current configuration, or <code class="verbatim">(config :model configuration)</code> for an explicit one, and change it with <code class="verbatim">(setf (config :reasoning-traces-p) t)</code>. Unknown setting names signal a configuration error. Create an independent configuration with <code class="verbatim">configuration-copy</code>.</p>
+<p>The preferences file uses version 8: one flat record of setting names and values that keeps unknown keys. Before upgrading a preferences file from versions 1 through 7 to 0.54 or later, run a 0.53 release once to write version 8.</p>
+<h2 id="language-servers">Language servers</h2>
+<p>Install your language server, then configure it in <code class="verbatim">lsp.sexp</code> under Autolith's user configuration directory, alongside <code class="verbatim">init.lisp</code>. For example:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb35" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">:version</span> <span class="dv">1</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a> :servers ((<span class="bu">:name</span> <span class="st">&quot;clangd&quot;</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>            :command <span class="st">&quot;clangd&quot;</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>            :arguments (<span class="st">&quot;--background-index&quot;</span>)</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>            :extensions (<span class="st">&quot;.c&quot;</span> <span class="st">&quot;.h&quot;</span>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>            :language-id <span class="st">&quot;c&quot;</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>            :root-markers (<span class="st">&quot;compile_commands.json&quot;</span> <span class="st">&quot;.git&quot;</span>)</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a>            :timeout-seconds <span class="dv">30</span>)))</span></code></pre></div>
+</div>
+</div>
+<p>Configuration is declarative. Supply a unique <code class="verbatim">:name</code>, executable <code class="verbatim">:command</code>, nonempty <code class="verbatim">:extensions</code> list, and <code class="verbatim">:language-id</code> for each entry. Arguments are literal strings. Optional <code class="verbatim">:initialization-options</code> and <code class="verbatim">:settings</code> are JSON object strings; <code class="verbatim">:disabled-p t</code> disables an entry. The request timeout is an integer from 1 through 120 seconds, defaulting to 30.</p>
+<p>Only configure commands you trust: language servers run with your privileges and inherited environment, outside the shell approval sandbox. Keep credentials out of this file. Executables must already be installed; commands are resolved on <code class="verbatim">PATH</code>. Repository-local LSP configuration is not loaded.</p>
+<p>Autolith exposes the <code class="verbatim">lsp</code> tools only when <code class="verbatim">lsp.sexp</code> defines at least one enabled server; without it the registry omits them. A malformed <code class="verbatim">lsp.sexp</code> keeps the tools registered so the configuration error surfaces when a tool runs. When at least one server is enabled, each provider request includes a context note naming those servers.</p>
+<p>Ask Autolith to use these tools:</p>
+<ul>
+<li><code class="verbatim">lsp.status</code>: inspect configuration and running project/server pairs.</li>
+<li><code class="verbatim">lsp.query</code>: request <code class="verbatim">definition</code>, <code class="verbatim">references</code>, <code class="verbatim">hover</code>, <code class="verbatim">implementation</code>, <code class="verbatim">type-definition</code>, <code class="verbatim">document-symbols</code>, or <code class="verbatim">workspace-symbols</code> for a workspace file. Position queries require one-based <code class="verbatim">line</code> and <code class="verbatim">character</code> coordinates, with columns measured in UTF-16 code units. For workspace symbols, supply <code class="verbatim">query</code>; the file selects the project and server.</li>
+<li><code class="verbatim">lsp.diagnostics</code>: synchronize a file and retrieve diagnostics.</li>
+<li><code class="verbatim">lsp.restart</code>: stop servers and reload the configuration after changing it.</li>
+</ul>
+<p>Use <code class="verbatim">lsp.semantic</code> for revisioned transformations:</p>
+<ul>
+<li><code class="verbatim">prepare-rename</code>: inspect the symbol at <code class="verbatim">path</code>, <code class="verbatim">line</code> and <code class="verbatim">character</code>.</li>
+<li><code class="verbatim">rename</code>: propose a symbol rename with those coordinates and <code class="verbatim">new-name</code>.</li>
+<li><code class="verbatim">code-actions</code>: discover choices for a range, using <code class="verbatim">line</code>, <code class="verbatim">character</code>, <code class="verbatim">end-line</code> and <code class="verbatim">end-character</code>. Optionally filter <code class="verbatim">only</code> action kinds or supply <code class="verbatim">diagnostics</code>.</li>
+<li><code class="verbatim">resolve</code>: retrieve a complete action using its returned <code class="verbatim">choice</code> ID.</li>
+<li><code class="verbatim">propose</code>: retain an action's edit as an applicable proposal using <code class="verbatim">choice</code>.</li>
+<li><code class="verbatim">move</code>: propose server preparatory edits followed by moving <code class="verbatim">path</code> to <code class="verbatim">new-path</code>. Both paths must identify regular files or a missing destination.</li>
+<li><code class="verbatim">inspect</code>: review a retained <code class="verbatim">proposal</code> ID.</li>
+<li><code class="verbatim">apply</code>: apply a retained <code class="verbatim">proposal</code>. Obtain explicit approval for annotations with <code class="verbatim">needsConfirmation</code>, then include their IDs in <code class="verbatim">approved-annotations</code>. Confirm each synthetic <code class="verbatim">lsp.semantic-confirmation</code> request through the ordinary command-permission prompt. Without a permission callback, confirmation is denied.</li>
+</ul>
+<p>Proposals preserve ordered text, create, move and delete effects. Every affected file passes the ordinary resource authority checks before observation and again before application. Resource revisions cover file kind and content; synchronized document versions must also match. Request a fresh proposal after a conflicting edit or server restart. Moves preserve the source permissions captured during staging, including edited multi-hop moves. Publication is atomic per file with change-set rollback on failure. Proposals and action choices own their exact snapshots and are conversation-local. Retain up to 32 choices, 240,000 encoded characters per choice, 128 resources per choice, and 512 resources or 16 MiB of UTF-8 snapshots per conversation. Older choices expire when those budgets fill. Server commands are presented as data for separate explicit execution. Use local <code class="verbatim">file:///</code> URIs; directories, service resources and URI authorities are unsupported.</p>
+<p>Servers start lazily on file requests, including diagnostic requests after a successful <code class="verbatim">resource.edit</code> workspace edit. All enabled entries with matching filename suffixes are queried. The project root is the nearest ancestor with a configured root marker, bounded by the workspace; otherwise it is the workspace. Open files are refreshed from disk before queries, including shell edits.</p>
+<p>Results contain native file URIs and zero-based UTF-16 ranges. Push and pull reports are retained independently and combined, removing duplicate items. Diagnostic state <code class="verbatim">received</code> identifies versioned reports, <code class="verbatim">unversioned</code> means a report's snapshot cannot be confirmed, and <code class="verbatim">pending</code> means no report arrived. The <code class="verbatim">sources</code> field gives push and pull freshness separately.</p>
+<p>Explicit diagnostics allow two seconds for push reports and use the configured request timeout for pull requests. Edit follow-ups have one shared one-second blocking deadline across lock acquisition, startup, synchronization, and all matching servers, with at most half a second for push settling. Failed startup also reaps its process. If automatic diagnostics time out, use <code class="verbatim">lsp.diagnostics</code> for the full server timeout. Reports retain at most 200 diagnostics per file and mark truncation. Files are limited to 2 MiB, with 64 open documents per server and 16 live project/server pairs per registry. Use <code class="verbatim">lsp.restart</code> to release them. Server shutdown occurs when the tool runtime is retired.</p>
+<h2 id="active-image-management-endpoint">Active-image management endpoint</h2>
+<p>The management REPL is a separate opt-in subsystem for trusted programs that must evaluate Common Lisp in the running <code class="verbatim">AUTOLITH</code> image. It is image-daemon's evaluation endpoint, whose <code class="verbatim">eval-connect</code> and <code class="verbatim">eval-call</code> form a complete Lisp client, and does not use the localgroup protocol, Swank, or Slynk. It is disabled unless <code class="verbatim">AUTOLITH_MANAGEMENT_REPL</code> is set to <code class="verbatim">on</code>.</p>
+<p>Every connection authenticates with a fresh random nonce and HMAC-SHA-256. The client never sends the reusable token. Put a nonempty token in a regular file owned by the current uid with mode <code class="verbatim">0600</code>. Autolith opens that file without following symbolic links only while checking a proof, wipes the token octets, and retains only the token-file pathname.</p>
+<p>The following environment variables configure newly created applications:</p>
+<div class="table-scroll">
+<table>
+<thead>
+<tr class="header">
+<th>Variable</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL</code></td>
+<td><code class="verbatim">off</code></td>
+<td>Enable the endpoint.</td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_TRANSPORT</code></td>
+<td><code class="verbatim">unix</code>, or <code class="verbatim">tcp</code> on Windows</td>
+<td><code class="verbatim">unix</code> or <code class="verbatim">tcp</code>.</td>
+</tr>
+<tr class="odd">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_UNIX_SOCKET</code></td>
+<td><code class="verbatim">${XDG_STATE_HOME:-~/.local/state}/autolith/management/repl.sock</code></td>
+<td>Unix socket pathname.</td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_TCP_ADDRESS</code></td>
+<td><code class="verbatim">127.0.0.1</code></td>
+<td>IPv4 loopback listener address.</td>
+</tr>
+<tr class="odd">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_TCP_PORT</code></td>
+<td><code class="verbatim">4141</code></td>
+<td>TCP listener port.</td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_TOKEN_FILE</code></td>
+<td><code class="verbatim">${XDG_CONFIG_HOME:-~/.config}/autolith/management-repl.token</code></td>
+<td>Mode-0600 token file.</td>
+</tr>
+<tr class="odd">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_TIMEOUT</code></td>
+<td><code class="verbatim">10</code></td>
+<td>Evaluation deadline in seconds.</td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_MAX_FRAME</code></td>
+<td><code class="verbatim">1048576</code></td>
+<td>Maximum wire-frame octets.</td>
+</tr>
+<tr class="odd">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_MAX_SOURCE</code></td>
+<td><code class="verbatim">262144</code></td>
+<td>Maximum UTF-8 source octets.</td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_MAX_OUTPUT</code></td>
+<td><code class="verbatim">262144</code></td>
+<td>Maximum captured output and value text.</td>
+</tr>
+<tr class="odd">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_QUEUE_CAPACITY</code></td>
+<td><code class="verbatim">8</code></td>
+<td>Maximum queued evaluations.</td>
+</tr>
+<tr class="even">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_MAX_CLIENTS</code></td>
+<td><code class="verbatim">8</code></td>
+<td>Maximum accepted clients, including authentication.</td>
+</tr>
+<tr class="odd">
+<td><code class="verbatim">AUTOLITH_MANAGEMENT_REPL_AUTH_TIMEOUT</code></td>
+<td><code class="verbatim">10</code></td>
+<td>Absolute authentication deadline in seconds.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>TCP accepts IPv4 loopback addresses only. This endpoint does not provide server TLS, and arbitrary Lisp results may contain secrets. Challenge-response prevents bearer-token replay, but an unauthenticated local process can relay a challenge and proof between trusted local clients. Treat loopback TCP clients as locally trusted. Unix transport creates a mode-0700 private directory and a mode-0600 socket. Startup refuses an active socket and any alien or non-socket path; it removes a socket only after proving that it is a stale current-user endpoint. Windows has no filesystem sockets, so <code class="verbatim">unix</code> is refused there with a message and <code class="verbatim">tcp</code> is the default.</p>
+<h3 id="wire-protocol">Wire protocol</h3>
+<p>Each message is a four-octet unsigned big-endian length followed by exactly that many UTF-8 octets containing one readable S-expression. Length zero, oversized or truncated frames, invalid UTF-8, malformed syntax, and trailing forms are rejected. Readers use standard I/O syntax, a fresh standard readtable, and <code class="verbatim">*read-eval*</code> <code class="verbatim">nil</code>.</p>
+<p>The server starts each connection with:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb36" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>(:challenge <span class="bu">:version</span> <span class="dv">1</span> :algorithm :hmac-sha-256 :nonce HEX)</span></code></pre></div>
+</div>
+</div>
+<p><code class="verbatim">HEX</code> encodes 32 random nonce octets as 64 lowercase hexadecimal characters. The client reads its token file, computes <code class="verbatim">HMAC-SHA-256(token, nonce)</code>, and replies:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb37" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>(:authenticate :proof HEX)</span></code></pre></div>
+</div>
+</div>
+<p>A valid proof receives <code class="verbatim">(:authenticated :version 1)</code>. A proof is valid only for that connection's nonce. Authentication failure closes the connection without a reusable credential or detailed oracle response.</p>
+<p>After authentication, send one request at a time:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb38" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>(:evaluate :source <span class="st">&quot;(values (+ 20 22) *package*)&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p>The source string must contain exactly one form. A dedicated serial evaluator thread reads it in package <code class="verbatim">AUTOLITH</code>, applies the configured deadline, prevents interactive debugger entry, and captures standard, error, trace, query, debug, and terminal output in a bounded Gray stream. Successful responses have this shape:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb39" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>(:evaluation-result</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a> :status :ok</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a> :values (<span class="st">&quot;42&quot;</span> <span class="st">&quot;#&lt;PACKAGE </span><span class="sc">\&quot;</span><span class="st">AUTOLITH</span><span class="sc">\&quot;</span><span class="st">&gt;&quot;</span>)</span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a> :values-truncated-p <span class="kw">nil</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a> <span class="bu">:output</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a> :output-truncated-p <span class="kw">nil</span>)</span></code></pre></div>
+</div>
+</div>
+<p><code class="verbatim">:values</code> contains one bounded readable string for every multiple value. Conditions return <code class="verbatim">:status :condition</code>, a bounded <code class="verbatim">:condition-type</code> and <code class="verbatim">:report</code>, captured output, and truncation flags. Deadline expiry returns <code class="verbatim">:status :timeout</code>. The client may submit further requests on the authenticated connection.</p>
+<p>Evaluation deadlines use in-process interrupts and are best effort for trusted forms; a form that suppresses interrupts may outlive its deadline. Checkpointing stops the listener, clients, evaluator, and queue before saving the image and restarts the endpoint afterward. If an evaluator cannot quiesce within the documented two-second shutdown bound, checkpointing aborts with a <code class="verbatim">management-repl-error</code> whose operation is <code class="verbatim">:quiesce</code> rather than saving live management threads. Normal shutdown is idempotent and removes only the exact Unix socket created by that runtime.</p>
+<h2 id="context">Context</h2>
+<p>Autolith has a concept of <strong>ephemeral notes</strong>, which can be used to add temporary additional information to the context that will eventually disappear:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb40" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>(define-context-contributor release-advice (request)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Add advice for release requests.&quot;</span></span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">when</span> (<span class="kw">search</span> <span class="st">&quot;release&quot;</span> (<span class="kw">or</span> (request-context-latest-user-text request) <span class="st">&quot;&quot;</span>)</span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>                <span class="bu">:test</span> <span class="op">#&#39;</span>char-equal)</span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    (make-context-contribution</span>
+<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a>     :identifier  <span class="st">&quot;release-check&quot;</span></span>
+<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a>     :instruction <span class="st">&quot;Verify release artifacts before publishing.&quot;</span></span>
+<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>     :lifetime    &#39;:turn</span>
+<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>     :priority    <span class="dv">40</span>)))</span></code></pre></div>
+</div>
+</div>
+<ul>
+<li>A contributor sees a read-only request snapshot</li>
+<li>It can return none, one, or many contributions</li>
+<li>Notes stack unless they deduplicate, supersede, or conflict</li>
+<li>Priority only comes into play when the advice budget is full</li>
+<li>You can use <code class="verbatim">(context)</code></li>
+</ul>
+<p>Note that these are provider-request-only, and don't not count as a conversation turn, and do not get attached to your messages.</p>
+<p>Register selective project or user advice as a declarative rule:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb41" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>(register-context-rule</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a> &#39;(:id <span class="st">&quot;lisp-edits&quot;</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>   :when (:paths (<span class="st">&quot;src/&quot;</span>) :languages (<span class="st">&quot;common-lisp&quot;</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>          :events (<span class="st">&quot;tool-success&quot;</span>))</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>   :instruction <span class="st">&quot;Check the changed declarations before committing.&quot;</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>   :priority <span class="dv">30</span> :lifetime :while-relevant))</span></code></pre></div>
+</div>
+</div>
+<p>Use <code class="verbatim">:paths</code>, <code class="verbatim">:languages</code>, <code class="verbatim">:tools</code>, <code class="verbatim">:namespaces</code>, <code class="verbatim">:roles</code>, <code class="verbatim">:diagnostics</code> and <code class="verbatim">:events</code> in <code class="verbatim">:when</code>. Fields are conjunctive; values within a field are alternatives. Paths match prefixes; other values match exactly. Add an absolute <code class="verbatim">:workspace</code> directory for project scope. Authorized tool operations and structured LSP severities supply bounded current-turn metadata. Asynchronous completions use their originating turn identity. Rules share the ordinary advice budget, priority, lifetime and deduplication policy. Inspect delivery with <code class="verbatim">context-status</code>; remove a rule with <code class="verbatim">unregister-context-rule</code> and its original ID.</p>
+<p>The status line keeps a context meter visible while idle. It shows used tokens and the full model window. <code class="verbatim">|</code> marks the automatic compaction point. The ChatGPT subscription catalog currently reports a 272K-token window for the GPT-6.1, GPT-6, and GPT-5.6 models, which compact at about 218K tokens by default:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Example
+</div>
+<div class="window-body">
+<pre class="example"><code>ctx [==========|..] 218K / 272K used
+</code></pre>
+</div>
+</div>
+<p>At narrow widths, the meter keeps the used and window counts and drops the bar.</p>
+<p>Use <code class="verbatim">(compact)</code> to compact the current conversation immediately, regardless of the meter. It uses the same provider-native checkpoint and portable summary path as automatic compaction. During an active turn, the command waits in the idle queue. An empty conversation needs no provider request. Compaction adds a durable checkpoint without adding a user message or starting a model turn. The native checkpoint and the portable summary are two provider requests. Each is recorded with its usage as a numbered request of the turn, so the request count and the persisted usage cover compaction work instead of hiding it.</p>
+<p>Before either request, Autolith captures a fixed history cutoff. The checkpoint includes unresolved calls with correlated actual or interrupted/unknown outputs, plus results and steering received during summarization. Running jobs and undelivered outcomes are recorded separately from the model-written summary. Ordinary requests include bounded authoritative job references and an omitted count; inspect <code class="verbatim">job.continuity</code>, <code class="verbatim">job.*</code> and their resources for full details. Provider-family changes use the portable handoff and exclude foreign private context.</p>
+<p>Providers bill context served from their prompt cache at a fraction of the uncached input price, so a request that re-reads context the previous request had cached costs noticeably more. <code class="verbatim">(cache-misses "on")</code> enables a dim notice after any request whose cache reads fell below half of the previous prompt, and after any request whose cache reads stopped growing while the prompt grew and at least a sixteenth of the previous prompt, never less than 4096 tokens, was re-read. The notice gives the re-read and total prompt token counts and the likely cause: a model change, an idle gap past the roughly five-minute provider cache lifetime, rewritten earlier context, a resumed conversation whose cache had expired, a changed prompt prefix, or a stalled prefix, which means the request reached a provider backend without the newest cached context. When the provider attributes cache reads to request fields, the notice adds whether the instructions and tools were re-read or still cached, so a changed prefix is told apart from lost routing. The first request after compaction is expected to miss and stays quiet. Autolith carries no price table, so the notice reports tokens rather than currency. The setting is off by default and persists across restarts.</p>
+<h2 id="providers">Providers</h2>
+<p>Register a OpenAI-compatible provider:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb43" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>(register-openai-compatible-provider</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a> <span class="bu">:name</span>            <span class="st">&quot;my-provider&quot;</span></span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a> :description     <span class="st">&quot;My OpenAI-compatible provider&quot;</span></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a> :endpoint        <span class="st">&quot;https://api.example.com/v1/chat/completions&quot;</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a> :models-endpoint <span class="st">&quot;https://api.example.com/v1/models&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p>List every model ID known to Autolith without authenticating or starting a session:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb44" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> models <span class="kw">|</span> <span class="fu">grep</span> gpt</span></code></pre></div>
+</div>
+</div>
+<p>The command prints one sorted, deduplicated model ID per line from built-in and locally configured catalogs.</p>
+<p>Inside a session, <code class="verbatim">(auth)</code> without a provider picks one interactively, and <code class="verbatim">(auth "my-provider")</code> selects one explicitly. Use <code class="verbatim">autolith auth my-provider</code> to authenticate during startup.</p>
+<p>After a key is saved, static metadata or the last good cache keeps models available. <code class="verbatim">(models)</code> triggers discovery. You can also pass non-secret <code class="verbatim">:headers</code> and static <code class="verbatim">:models</code> for descriptions, windows, efforts, or providers that have no model-list endpoint.</p>
+<p>Built-in ChatGPT subscriptions use browser OAuth with PKCE and a local callback on <code class="verbatim">localhost:1455</code> or <code class="verbatim">localhost:1457</code> by default. Use <code class="verbatim">(auth "chatgpt" "device")</code> or <code class="verbatim">autolith auth chatgpt device</code> to select the device-code flow instead. The browser authorization URL is always printed for manual use. Grok and Nous Research use browser device flows. Gemini uses Google installed-application OAuth with a local loopback callback. Anthropic, Fireworks, OpenCode, OpenRouter, Mistral, and user-registered OpenAI-compatible providers use API keys.</p>
+<p>Authenticate a GitHub Copilot subscription with <code class="verbatim">autolith auth copilot</code> or <code class="verbatim">(auth "copilot")</code>. Approve the displayed device code at GitHub. Credentials are stored in the private <code class="verbatim">copilot-auth.sexp</code> under the state root. Tokens renew automatically before expiry.</p>
+<p>Login discovers tool-capable picker models and <code class="verbatim">copilot/auto</code>, and attempts to enable unconfigured picker models. Models are named <code class="verbatim">copilot/&lt;model-id&gt;</code> locally to avoid collisions with direct vendor subscriptions. Successful Copilot login selects Auto and saves it as the default, unless the current Copilot model is still available. Use <code class="verbatim">(models)</code> to refresh the catalog, then <code class="verbatim">(model "copilot/auto")</code> to select Auto on an existing installation, or launch with <code class="verbatim">--model copilot/auto</code>. Normal startup reads the last successful catalog without a network request.</p>
+<p>Use Auto with Copilot Student or Free plans, which do not offer manual model selection. Each request resolves an account-authorized concrete model and uses its Chat Completions, Responses, or Messages protocol with a short-lived session token. Auto keeps the previous concrete model while it is available. Hidden named models are not offered as manual choices. For other plans, select an available named model with <code class="verbatim">(model)</code>. Disabled picker models are excluded.</p>
+<p>For GitHub Enterprise Cloud with data residency, set <code class="verbatim">AUTOLITH_COPILOT_DOMAIN</code> to your <code class="verbatim">TENANT.ghe.com</code> hostname during both login and subsequent launches. Tokens are pinned to that host and streams use the subscription-specific endpoint returned by Copilot. Chat Completions, Responses, and Anthropic Messages reuse the existing transports. This integration uses GitHub's internal Copilot endpoints, following pi and VS Code, so it may require updates when GitHub changes that service.</p>
+<p>ChatGPT Codex Fast mode sends <code class="verbatim">service_tier=priority</code> when the active Codex model advertises Fast support. Fast responses count more heavily against plan usage; the exact rate is set by OpenAI per model and is not tracked here. The built-in GPT-6.1, GPT-6, and GPT-5.6 models support it. Use <code class="verbatim">(fast)</code> or <code class="verbatim">(fast "status")</code> to inspect it, and <code class="verbatim">(fast "on")</code> or <code class="verbatim">(fast "off")</code> to change the saved preference. The activity status line displays <code class="verbatim">FAST</code> while the active model uses Fast mode. Other providers and unknown Codex models keep the preference but use the standard path. Set <code class="verbatim">AUTOLITH_CODEX_FAST_MODE=on</code> or <code class="verbatim">off</code> to override the saved choice for one process; while it is set, <code class="verbatim">(fast "on")</code> and <code class="verbatim">(fast "off")</code> are unavailable.</p>
+<p>A request that fails before the model has produced anything is retried up to six times with jittered delays, since the failed attempt cost only the wait. Once reasoning or output has started streaming, every reconnect bills a fresh generation of the same prompt, so at most two such retries are made before the request fails with a stream-abandoned error. Every failed attempt is recorded in the conversation next to its request number with the attempt count, the elapsed seconds, whether output had been received, and the provider's identifiers, so retry storms can be audited after the fact.</p>
+<p>ChatGPT Codex uses standard Responses requests and native Responses compaction. Normal requests enable provider parallel tool calls. Autolith executes independent calls concurrently, then records their results in provider wire order. Calls requiring a provider round trip, exclusive tools, and calls sharing one mutable runtime execute in separate ordered waves.</p>
+<p>GPT-5.4 and later Codex models use native Responses tool search. Autolith sends stable namespace names and descriptions up front, marks each function <code class="verbatim">defer_loading=true</code>, and declares a client-executed <code class="verbatim">tool_search</code>. When the model searches, Autolith answers from its own registry over the namespaces that request advertised, scoring namespace names, tool names, and description words, and appends the <code class="verbatim">tool_search_output</code> as a durable provider item. The expansion replays intact in every later request, which keeps those tools loaded and the prompt prefix cacheable; only native compaction requests replay it empty. Other models and providers receive the complete eager tool array.</p>
+<p>Authenticate Gemini with <code class="verbatim">autolith auth gemini</code> or <code class="verbatim">(auth "gemini")</code>. Autolith stores its Google OAuth credentials separately at <code class="verbatim">gemini-auth.sexp</code> under the state root. The provider uses the Gemini CLI Code Assist subscription service directly, including streaming text and thinking, tool calls, token usage, account onboarding, and managed companion projects. <code class="verbatim">AUTOLITH_GEMINI_OAUTH_CLIENT_ID</code> may replace the public installed-application client ID; <code class="verbatim">AUTOLITH_GEMINI_OAUTH_CLIENT_SECRET</code> supplies a client secret when a deployment requires one.</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb45" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> auth nous</span></code></pre></div>
+</div>
+</div>
+<p>Nous models are discovered from the authenticated account. Run <code class="verbatim">(models)</code> after login to refresh the catalog. Model identifiers beginning with <code class="verbatim">anthropic/</code> use the native Anthropic Messages route; the rest use OpenAI-compatible Chat Completions. Hermes model identifiers are omitted from the catalog because they are not reliable for agentic tool calling.</p>
+<p>The Nous integration accepts three deployment overrides:</p>
+<ul>
+<li><code class="verbatim">AUTOLITH_NOUS_PORTAL_URL</code> selects the OAuth portal.</li>
+<li><code class="verbatim">AUTOLITH_NOUS_INFERENCE_BASE_URL</code> selects the <code class="verbatim">/v1</code> inference base used for model discovery, Chat Completions, and Messages.</li>
+<li><code class="verbatim">AUTOLITH_NOUS_PROVIDER_ENDPOINT</code> overrides only the Chat Completions endpoint.</li>
+</ul>
+<p>Autolith stores Nous OAuth state separately at <code class="verbatim">nous-auth.sexp</code> under its state root and serializes rotating refresh-token updates across processes sharing that root.</p>
+<p>Mistral models are discovered from the authenticated account and filtered to models advertising Chat Completions support. <code class="verbatim">MISTRAL_API_KEY</code> takes precedence over Autolith's private Mistral key. <code class="verbatim">AUTOLITH_MISTRAL_PROVIDER_ENDPOINT</code> and <code class="verbatim">AUTOLITH_MISTRAL_MODELS_ENDPOINT</code> override the chat and discovery endpoints independently.</p>
+<p>OpenRouter models are discovered from the authenticated catalog and use <code class="verbatim">openrouter/&lt;vendor&gt;/&lt;model&gt;</code> identifiers locally. Discovery includes only models that emit text and advertise function tools, tool choice, and normalized reasoning, matching the request shape Autolith sends. <code class="verbatim">OPENROUTER_API_KEY</code> takes precedence over Autolith's private OpenRouter key. Authenticate with <code class="verbatim">autolith auth openrouter</code> or <code class="verbatim">(auth "openrouter")</code>. <code class="verbatim">AUTOLITH_OPENROUTER_PROVIDER_ENDPOINT</code> and <code class="verbatim">AUTOLITH_OPENROUTER_MODELS_ENDPOINT</code> override the chat and discovery endpoints independently.</p>
+<p>Set <code class="verbatim">:openrouter-provider-routing</code> to a JSON map of wire model names to OpenRouter provider preference objects. Omit the local <code class="verbatim">openrouter/</code> prefix from model keys. Use <code class="verbatim">*</code> for models without their own entry. For example:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb46" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> (config :openrouter-provider-routing)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">deepseek/deepseek-v4.1-flash</span><span class="sc">\&quot;</span><span class="st">:{</span><span class="sc">\&quot;</span><span class="st">order</span><span class="sc">\&quot;</span><span class="st">:[</span><span class="sc">\&quot;</span><span class="st">baseten</span><span class="sc">\&quot;</span><span class="st">,</span><span class="sc">\&quot;</span><span class="st">together</span><span class="sc">\&quot;</span><span class="st">],</span><span class="sc">\&quot;</span><span class="st">allow_fallbacks</span><span class="sc">\&quot;</span><span class="st">:true}}&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p>You can also supply this JSON through <code class="verbatim">AUTOLITH_OPENROUTER_PROVIDER_ROUTING</code>. Supply an empty string to use OpenRouter's normal routing. Provider preference fields are sent as supplied, including <code class="verbatim">order</code>, <code class="verbatim">allow_fallbacks</code>, <code class="verbatim">only</code>, <code class="verbatim">ignore</code>, <code class="verbatim">sort</code>, and <code class="verbatim">max_price</code>.</p>
+<h2 id="commands">Commands</h2>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb47" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>(define-application-command my-version-command</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    (<span class="bu">:name</span>              <span class="st">&quot;/my-version&quot;</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>     :argument          <span class="st">&quot;[LABEL]&quot;</span></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>     :description       <span class="st">&quot;show a labeled local integration version&quot;</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>     :tip               <span class="st">&quot;shows the version supplied by init.lisp.&quot;</span></span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>     :busy-behavior     :inspect</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>     :terminal-behavior :shared</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>     :callable          <span class="kw">t</span>)</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>    (application &amp;optional (label <span class="st">&quot;integration&quot;</span>))</span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>  (application-present application (<span class="kw">format</span> <span class="kw">nil</span> <span class="st">&quot;~A 3&quot;</span> label))</span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>  :continue)</span></code></pre></div>
+</div>
+</div>
+<ul>
+<li>Missing interactive arguments open the restart debugger. <code class="verbatim">supply-arguments</code> takes one Lisp form of replacement arguments. Excess slash arguments are rejected before dispatch. Programmatic calls keep ordinary Common Lisp arity rules.</li>
+<li>Busy behavior is <code class="verbatim">:inspect</code>, <code class="verbatim">:execute</code>, <code class="verbatim">:apply</code>, <code class="verbatim">:hold</code>, or <code class="verbatim">:cancel</code>. During active work, <code class="verbatim">:execute</code> runs immediately, <code class="verbatim">:apply</code> applies its change at the turn's next safe provider boundary, and <code class="verbatim">:hold</code> waits for the idle queue. Argument-free <code class="verbatim">:inspect</code> and <code class="verbatim">:apply</code> invocations only display state, so they run immediately. An unknown command reports its error immediately instead of being scheduled.</li>
+<li>Terminal behavior is <code class="verbatim">:shared</code>, <code class="verbatim">:exclusive</code>, or <code class="verbatim">:exclusive-without-arguments</code>. It declares which invocations open a modal picker so active work keeps them off the immediate reader path. A modal picker requires exclusive terminal input when open. The responsive reader continues animating until then.</li>
+<li><code class="verbatim">:static-options</code> replaces <code class="verbatim">:argument</code> for one finite positional parameter. It derives the help hint and both slash and parenthesized completions.</li>
+</ul>
+<h2 id="live-definitions">Live definitions</h2>
+<p>Use <code class="verbatim">self.redefine</code> to install loaded Lisp definitions, new or replacing, including functions and methods outside the Autolith package. <code class="verbatim">self.define</code> names the same tool. Qualify the target symbol in the source, or supply the <code class="verbatim">package</code> argument to select its reader package. Use qualified symbols with <code class="verbatim">self.set</code> for foreign global bindings.</p>
+<p>Installation, discard and replay temporarily unlock the reader and target packages, then restore their locks. New definition records include the target's owning package separately from the reader package. Replay skips stale definitions whose ownership moved to another library. Reapply an old skipped definition to record an intentional replacement under its current owner.</p>
+<p>Tracked source stays authoritative over private replay. Each published definition records the tracked source it shadowed, or that it introduced a new name. Startup replay skips a definition whose tracked definition changed, was removed, or appeared since publication, lists every skip in one startup notice grouped by reason, and leaves it out of the next <code class="verbatim">self.commit</code>. Commits published before this record replay their tracked overrides only while the image runs the source revision the lineage was published against. Reapply a skipped definition against the current source to restore it, or use <code class="verbatim">(fix-skipped-definitions)</code> to hand every skipped definition to the model with its persisted source, the tracked source it was written against, and the current tracked source. The model rebuilds each override on the current source with <code class="verbatim">self.redefine</code>, drops any the tracked source already covers, and publishes the result with <code class="verbatim">self.commit</code>. During an active turn, the command waits in the idle queue.</p>
+<h2 id="refinement">Refinement</h2>
+<p>Use <code class="verbatim">self.refine</code> to record trajectory evidence, choose the smallest useful target or <code class="verbatim">none</code>, and exercise existing memory, context, skill, role, RLM or mutation operations. Every transition names the proposal ID and its observed revision. Evaluation records actual task observations separately from owner compile/replay checks. Inspect proposals with <code class="verbatim">(refine)</code> and supply a local assessment before promotion:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb48" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>(refine <span class="st">&quot;(:assess </span><span class="sc">\&quot;</span><span class="st">PROPOSAL-ID</span><span class="sc">\&quot;</span><span class="st"> 3 :passed </span><span class="sc">\&quot;</span><span class="st">Evidence from a separate task</span><span class="sc">\&quot;</span><span class="st">)&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p>Promotion proceeds from session to project to global scope, with renewed evaluation at each scope and an owner-state guard against intervening changes. Recover an interrupted operation explicitly using recorded evidence; replay never repeats its effects automatically.</p>
+<h2 id="executable-skills">Executable Skills</h2>
+<p>Use <code class="verbatim">skill.load</code> with an exact catalog name to select prose instructions for the logical turn. To publish executable behavior, put a bounded data-only <code class="verbatim">EXECUTABLE.sexp</code> beside <code class="verbatim">SKILL.md</code> or <code class="verbatim">SKILL.sexp</code>. Declare the Skill and ASDF system versions, entrypoint, input/output contracts, capabilities and exact host tool names. An executable manifest has this shape:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb49" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>(:skill-executable :format-version <span class="dv">1</span> :skill-version <span class="st">&quot;1.0.0&quot;</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a> :system <span class="st">&quot;my-workflow&quot;</span> :system-version <span class="st">&quot;1.0.0&quot;</span></span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a> :entrypoint (<span class="st">&quot;MY-WORKFLOW&quot;</span> <span class="st">&quot;RUN&quot;</span>)</span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a> :self-test (<span class="st">&quot;MY-WORKFLOW&quot;</span> <span class="st">&quot;SELF-TEST&quot;</span>)</span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a> :verify (<span class="st">&quot;MY-WORKFLOW&quot;</span> <span class="st">&quot;VERIFY&quot;</span>)</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a> :capabilities (<span class="st">&quot;workspace-read&quot;</span>) :tools (<span class="st">&quot;resource.read&quot;</span>)</span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a> <span class="bu">:input</span> (<span class="bu">:type</span> :object) <span class="bu">:output</span> (<span class="bu">:type</span> :object))</span></code></pre></div>
+</div>
+</div>
+<p>The invocation function accepts <code class="verbatim">input &amp;key context</code>; self-test and verification functions accept <code class="verbatim">&amp;key context</code>. Input and output use the native portable JSON representation, such as <code class="verbatim">(:object ("status" "ready"))</code>. Install the declared ASDF system in the worker environment, or supply its authorized <code class="verbatim">asd</code> pathname. Call <code class="verbatim">skill.invoke</code> with <code class="verbatim">name</code> and contract-valid <code class="verbatim">input</code>:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+JSON
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb50"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span><span class="st">&quot;my-workflow&quot;</span><span class="fu">,</span><span class="dt">&quot;input&quot;</span><span class="fu">:{},</span></span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;asd&quot;</span><span class="fu">:</span><span class="st">&quot;.autolith/skills/my-workflow/my-workflow.asd&quot;</span><span class="fu">,</span><span class="dt">&quot;async&quot;</span><span class="fu">:</span><span class="kw">true</span><span class="fu">}</span></span></code></pre></div>
+</div>
+</div>
+<p>Use <code class="verbatim">skill.verify</code> with <code class="verbatim">name</code> to run the self-test; set <code class="verbatim">entrypoint</code> to <code class="verbatim">verify</code> for the verification function. Each operation requires ordinary explicit full-access code authorization and runs in a fresh disposable worker. Capabilities are declarations for admission; only declared exact host tools allowed by the originating agent policy enter the callback bridge. Source and sidecar identity and the complete manifest are rechecked before loading executable code; declared ASDF versions are checked during authorized system resolution.</p>
+<p>Invocation output is contract-validated and retained with its executable identity as native execution evidence. Result publication is bounded to 1 MiB and read as one data-only form after stopping the worker. Use <code class="verbatim">async: true</code> for managed jobs; completion policy applies as described below. Inspect full results with <code class="verbatim">job.get</code> or deliberately await them with <code class="verbatim">job.wait</code>. Mission accounting and ordinary execution supervision apply to workflows and their callbacks.</p>
+<h2 id="worker-tool-calls">Worker tool calls</h2>
+<p>Supply <code class="verbatim">host-tools</code>, an array of exact tool names, to <code class="verbatim">lisp.eval</code> or <code class="verbatim">lisp.scratchpad-run</code> for an explicitly authorized workflow request. Inside that request, call:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb51" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>(autolith:worker-tool-call <span class="st">&quot;resource.read&quot;</span> <span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">uri</span><span class="sc">\&quot;</span><span class="st">:</span><span class="sc">\&quot;</span><span class="st">workspace:src/main.lisp</span><span class="sc">\&quot;</span><span class="st">}&quot;</span>)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>(autolith:worker-tool-context)</span></code></pre></div>
+</div>
+</div>
+<p>Read <code class="verbatim">:success-p</code>, <code class="verbatim">:content</code>, <code class="verbatim">:code</code> and <code class="verbatim">:details</code> from the returned result. The host dispatch retains the originating conversation, callbacks, capability policy, mission context and job lineage. Requests and results are bounded and correlated in the conversation audit. Sequential callbacks are supported; choose a different REPL for nested worker operations. Omit <code class="verbatim">host-tools</code> for ordinary worker execution.</p>
+<p>For a Lisp-controlled workflow, branch on returned native results and make the next authorized call from the same evaluation. For example, pass these arguments to <code class="verbatim">lisp.eval</code>:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+JSON
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb52"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;host-tools&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="st">&quot;resource.read&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;forms&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="st">&quot;(let ((result (autolith:worker-tool-call </span><span class="ch">\&quot;</span><span class="st">resource.read</span><span class="ch">\&quot;</span><span class="st"> </span><span class="ch">\&quot;</span><span class="st">{</span><span class="ch">\\\&quot;</span><span class="st">uri</span><span class="ch">\\\&quot;</span><span class="st">:</span><span class="ch">\\\&quot;</span><span class="st">workspace:README.org</span><span class="ch">\\\&quot;</span><span class="st">}</span><span class="ch">\&quot;</span><span class="st">))) (if (getf result :success-p) (getf result :content) (getf result :code)))&quot;</span><span class="ot">]</span><span class="fu">}</span></span></code></pre></div>
+</div>
+</div>
+<p>Host calls pass through ordinary registry authorization with the captured mission admission, including its absence. An interrupted callback is recorded as <code class="verbatim">unknown-outcome</code> in the audit. Inspect effects before repeating a mutating call.</p>
+<h2 id="structural-code-edits">Structural code edits</h2>
+<p>Load the optional <code class="verbatim">autolith/structural</code> system and configure an <code class="verbatim">ast-grep</code> executable before creating the tool registry:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb53" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>(asdf:load-system <span class="st">&quot;autolith/structural&quot;</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> autolith:*structural-program* <span class="st">&quot;/path/to/ast-grep&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p>Use <code class="verbatim">structural.query</code> with an observed workspace URI and revision. Use <code class="verbatim">structural.rewrite</code> to retain a complete preview, inspect the proposal, then publish with <code class="verbatim">structural.apply</code>. Executable and file access require ordinary command authorization. Proposals are conversation-owned, bounded and single-use; publication uses the same stale-revision checks as resource edits.</p>
+<p>For an existing registry, call <code class="verbatim">structural-register-tools</code> explicitly with <code class="verbatim">:program</code>. Run the optional checks with <code class="verbatim">CLASTED_AST_GREP</code> set to the backend path and <code class="verbatim">(asdf:test-system "autolith/structural/tests")</code>.</p>
+<h2 id="debug-adapter-sessions">Debug adapter sessions</h2>
+<p>Load <code class="verbatim">autolith/debug</code> before creating a registry. Configure an adapter in user initialization, or pass an explicit adapter to <code class="verbatim">debug.launch</code> / <code class="verbatim">debug.attach</code>:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb54" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>(asdf:load-system <span class="st">&quot;autolith/debug&quot;</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> autolith:*debug-adapter-program* <span class="st">&quot;/path/to/debug-adapter&quot;</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>      autolith:*debug-adapter-arguments* <span class="kw">nil</span>)</span></code></pre></div>
+</div>
+</div>
+<p>For an existing registry, call <code class="verbatim">debug-register-tools</code> with <code class="verbatim">:program</code> and literal <code class="verbatim">:arguments</code>. Loading the system starts no adapter. Adapter execution, launch, attach and expression evaluation require exact full-access command approval. Authorize source and program paths through ordinary path permissions.</p>
+<p>Use the returned session ID for <code class="verbatim">debug.breakpoints</code>, <code class="verbatim">debug.continue</code>, <code class="verbatim">debug.pause</code>, <code class="verbatim">debug.step</code>, <code class="verbatim">debug.threads</code>, <code class="verbatim">debug.stack</code>, <code class="verbatim">debug.scopes</code>, <code class="verbatim">debug.variables</code> and <code class="verbatim">debug.evaluate</code>. Inspect bounded queued events with <code class="verbatim">debug.events</code>, using <code class="verbatim">count</code> and <code class="verbatim">wait-for</code> as needed. Session IDs belong to the originating conversation. Use <code class="verbatim">debug.cancel</code> to interrupt an operation, and <code class="verbatim">debug.terminate</code> to close the session and reap its adapter. Timeouts and cancellation close the owned adapter. Run the optional checks with <code class="verbatim">(asdf:test-system "autolith/debug/tests")</code>.</p>
+<h2 id="child-roles">Child roles</h2>
+<p>Roles load from these directories. First match wins:</p>
+<ul>
+<li><code class="verbatim">.autolith/agents/</code></li>
+<li><code class="verbatim">${XDG_CONFIG_HOME:-~/.config}/autolith/agents/</code></li>
+<li><code class="verbatim">&lt;site-config-root&gt;/agents/</code></li>
+<li>bundled roles</li>
+</ul>
+<p>A higher-precedence malformed role is reported, not silently replaced.</p>
+<p>A role is one bounded UTF-8 <code class="verbatim">*.sexp</code> property list:</p>
+<ul>
+<li>required: <code class="verbatim">:name</code>, <code class="verbatim">:description</code>, <code class="verbatim">:instructions</code></li>
+<li>optional: <code class="verbatim">:tools</code>, <code class="verbatim">:spawns</code>, <code class="verbatim">:models</code>, <code class="verbatim">:reasoning-effort</code>, <code class="verbatim">:output</code>, <code class="verbatim">:blocking-p</code></li>
+</ul>
+<p>Roles cannot grant <code class="verbatim">self.*</code>, <code class="verbatim">task.*</code>, or <code class="verbatim">yield.*</code>. Grant <code class="verbatim">job.*</code> when a role needs to inspect, await, or cancel asynchronous work. Children can access only their own jobs and descendant jobs, not parent or sibling jobs. This is independent of permission to spawn another child.</p>
+<ul>
+<li><code class="verbatim">:tools</code> may be <code class="verbatim">nil</code>, <code class="verbatim">:all</code>, or canonical tool names and namespace patterns.</li>
+<li><code class="verbatim">:spawns</code> may be <code class="verbatim">nil</code>, <code class="verbatim">:all</code>, or role names. Task depth still applies.</li>
+<li><code class="verbatim">:reasoning-effort</code> names a supported effort. Omitting it or writing <code class="verbatim">:auto</code> selects <code class="verbatim">medium</code>, so routine delegated work does not inherit the parent's effort. Children never inherit Codex Fast mode.</li>
+<li><code class="verbatim">:output</code> is the native schema DSL. There, <code class="verbatim">nil</code> is JSON false and <code class="verbatim">:null</code> is JSON null.</li>
+</ul>
+<p>Example:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb55" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">:name</span>             <span class="st">&quot;reviewer&quot;</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a> :description      <span class="st">&quot;Review a change for regressions.&quot;</span></span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a> :instructions     <span class="st">&quot;Report concrete, evidence-backed findings.&quot;</span></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a> :tools            (<span class="st">&quot;resource.read&quot;</span> <span class="st">&quot;search.*&quot;</span>)</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a> :spawns           <span class="kw">nil</span></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a> :models           (<span class="st">&quot;@parent&quot;</span>)</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a> :reasoning-effort :high</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a> :blocking-p <span class="kw">t</span>)</span></code></pre></div>
+</div>
+</div>
+<p><code class="verbatim">task.agents</code> shows effective roles. <code class="verbatim">task.run</code> starts one task or an independent batch. Nonblocking work detaches by default. <code class="verbatim">blocking: true</code> waits. A role with <code class="verbatim">:blocking-p t</code> always waits. Each child must finish with one <code class="verbatim">yield.submit</code> of <code class="verbatim">success</code>, <code class="verbatim">failed</code>, or <code class="verbatim">aborted</code>. Persisted child results must contain one data-only form with valid terminal status and field types. The default reading limits are 16 MiB, 128 nesting levels, and 262,144 tree nodes.</p>
+<h2 id="completion-driven-turns">Completion-driven turns</h2>
+<p>Set <code class="verbatim">completion-policy</code> to <code class="verbatim">continue</code> (the default) or <code class="verbatim">notify</code> on asynchronous tools and <code class="verbatim">task.run</code>. A batch inherits its outer policy unless an item overrides it. The policy also applies after the synchronous grace period hands work off.</p>
+<p>In a primary terminal session, continue independent work while jobs run. When only job results are pending, yield the current turn. Receive a bounded result summary, truthful outcome and artifact reference in the exact owning conversation. Idle completions within a one-second window share one automatic turn through the ordinary controller. Busy turns receive results at their next safe request boundary. With <code class="verbatim">notify</code>, receive results on the next ordinary turn instead.</p>
+<p>An active goal or mission does not urge the model on while a job that will wake it is queued, running or undelivered. Its automatic continuations wait, the goal stays active, and the transcript shows <code class="verbatim">∙ continuing with job results</code> when the wakeup arrives. The goal's continuations resume after that turn.</p>
+<p>Delivery receipts survive restart and conversation compaction. Notification reconstruction reads terminal artifacts without repeating job effects. Cancellation, paused or terminal missions, spent budgets, and conversation ownership constrain automatic turns. Inspect retained results with <code class="verbatim">job.get</code>, <code class="verbatim">job.continuity</code> or <code class="verbatim">(tasks)</code>. Child-owned outcomes are inspection-only outside their exact conversation; completing a child does not reopen it or redirect descendant results into the primary context. ACP sessions also own a completion controller and stream automatic turns to the connected client. Interfaces without an input controller deliver results on subsequent ordinary turns. Use <code class="verbatim">job.wait</code> when deliberate waiting is appropriate.</p>
+<h2 id="task-inspection-and-continuity">Task inspection and continuity</h2>
+<p>Use <code class="verbatim">(tasks)</code> for a compact nonmodal inventory of owned live and durable work, including lineage, timing, reported usage, recent activity and artifact paths:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb56" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>(tasks <span class="st">&quot;get JOB-ID&quot;</span>)</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>(tasks <span class="st">&quot;transcript JOB-ID 0 4000&quot;</span>)</span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>(tasks <span class="st">&quot;send JOB-ID Inspect the failing check before continuing.&quot;</span>)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>(tasks <span class="st">&quot;cancel JOB-ID&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p>Transcript arguments are a character offset and window limit, defaulting to 0 and 4000; use the returned <code class="verbatim">:next-offset</code> for another window. <code class="verbatim">get</code>, <code class="verbatim">send</code> and <code class="verbatim">cancel</code> use the ordinary owned job operations and authorization.</p>
+<p>Use <code class="verbatim">job.continuity</code> with <code class="verbatim">action</code> <code class="verbatim">list</code> or <code class="verbatim">get</code> to classify retained work as live detached, completed, reconstructible from a checkpoint, safe to restart, abandoned or needing a decision. List pages contain whole records with <code class="verbatim">:total</code>, <code class="verbatim">:next-offset</code> and <code class="verbatim">:more-p</code>; <code class="verbatim">offset</code> defaults to 0 and <code class="verbatim">limit</code> to 20 (maximum 100). Supply a visible job or durable execution <code class="verbatim">id</code> for other actions.</p>
+<p>The primary owner may declare <code class="verbatim">allow-restart</code> with a <code class="verbatim">safety</code> rationale and <code class="verbatim">authorize: true</code>, or declare <code class="verbatim">checkpoint</code> with a compatible saved worker <code class="verbatim">image</code>, target <code class="verbatim">repl</code> and the same explicit authority. A safety rationale is an assertion about repeating external effects. Revival reattaches live work, starts the named REPL from its saved image, or dispatches a new child from a safe retained shared-workspace task specification:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb57" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>(tasks <span class="st">&quot;revive JOB-ID authorize&quot;</span>)</span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>(tasks <span class="st">&quot;abandon EXECUTION-ID authorize&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p>Equivalent <code class="verbatim">job.continuity</code> actions are <code class="verbatim">revive</code> and <code class="verbatim">abandon</code> with <code class="verbatim">id</code> and <code class="verbatim">authorize: true</code>. The durable recovery decision precedes dispatch and links the old execution to the new execution. Failed or interrupted revival consumes its claim and records an uncertain outcome for explicit inspection. Resuming a conversation presents this inventory for a decision rather than replaying work.</p>
+<h2 id="granted-peer-messages">Granted peer messages</h2>
+<p>The primary owner establishes directional communication with <code class="verbatim">peer.grant</code>. Supply an immutable grant <code class="verbatim">id</code>, <code class="verbatim">sender</code> and <code class="verbatim">receiver</code> as primary-visible job IDs or <code class="verbatim">primary</code>. For example, these arguments grant one child permission to send coordination data to the primary:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+JSON
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb58"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;id&quot;</span><span class="fu">:</span><span class="st">&quot;build-report&quot;</span><span class="fu">,</span><span class="dt">&quot;sender&quot;</span><span class="fu">:</span><span class="st">&quot;CHILD-JOB-ID&quot;</span><span class="fu">,</span><span class="dt">&quot;receiver&quot;</span><span class="fu">:</span><span class="st">&quot;primary&quot;</span><span class="fu">,</span><span class="dt">&quot;context&quot;</span><span class="fu">:</span><span class="kw">true</span><span class="fu">}</span></span></code></pre></div>
+</div>
+</div>
+<p>Each participating actor uses <code class="verbatim">peer.discover</code> to inspect its current grants and exact endpoint identities. Call <code class="verbatim">peer.send</code> with a stable message <code class="verbatim">id</code>, the receiver's endpoint ID from discovery, and <code class="verbatim">text</code> of 1 to 8192 characters. The sender is the actual executing actor. <code class="verbatim">peer.receive</code> claims incoming work and returns a delivery token; use <code class="verbatim">peer.ack</code> with <code class="verbatim">id</code> and <code class="verbatim">token</code> after handling it. <code class="verbatim">peer.wait</code> waits for incoming work or a named message acknowledgment, with <code class="verbatim">timeout</code> bounded to five seconds. <code class="verbatim">peer.inspect</code> returns scoped metadata pages or the payload and recovery token for an exact message <code class="verbatim">id</code>.</p>
+<p>With <code class="verbatim">context: true</code> on the grant, receive coordination data at the existing safe steering boundary. Acknowledgment follows durable persistence of that input. Peer text is coordination data, not additional tool or execution authority. Children need their ordinary role permission for each <code class="verbatim">peer</code> tool; grants do not expose parent or sibling job-control operations.</p>
+<p>Cross-session communication requires paired explicit grants on both sessions. Set <code class="verbatim">remote-session</code> and <code class="verbatim">direction</code> (<code class="verbatim">outgoing</code> or <code class="verbatim">incoming</code>); name a remote child with both <code class="verbatim">remote-job</code> and <code class="verbatim">remote-execution</code>, or omit both for its primary. Transport uses authenticated local daemon discovery. <code class="verbatim">peer.revoke</code> durably revokes a grant. Endpoints include exact execution identity, so a replacement child does not inherit its predecessor's grant.</p>
+<p>Grants and messages restore with the session; interrupted deliveries become uncertain. Keep the same stable message ID when transport completion is unknown. Only the primary may call <code class="verbatim">peer.resolve</code> with <code class="verbatim">id</code>, current <code class="verbatim">token</code> and <code class="verbatim">action</code> <code class="verbatim">acknowledge</code>, <code class="verbatim">retry</code> or <code class="verbatim">cancel</code>; retry requires a current grant. Final session finish closes its mailbox, while transient daemon handoff preserves delivery state.</p>
+<h2 id="engineering-task-artifacts">Engineering task artifacts</h2>
+<p>Select the bundled <code class="verbatim">engineering</code> role or give a native role <code class="verbatim">:output :engineering</code>. Its version-1 contract requires <code class="verbatim">schemaVersion</code>, <code class="verbatim">baseline</code> (<code class="verbatim">kind</code>, <code class="verbatim">workspace</code>, <code class="verbatim">revision</code>), <code class="verbatim">change</code> (<code class="verbatim">kind</code>, <code class="verbatim">reference</code>), <code class="verbatim">paths</code>, <code class="verbatim">checks</code>, <code class="verbatim">evidence</code>, <code class="verbatim">issues</code> and <code class="verbatim">integrationNotes</code>. <code class="verbatim">symbols</code> is optional. Each check names the command, status (<code class="verbatim">passed</code>, <code class="verbatim">failed</code>, <code class="verbatim">skipped</code> or <code class="verbatim">not-run</code>) and summary, with optional evidence references. Use baseline kind <code class="verbatim">unknown</code> when no revision is available and change kind <code class="verbatim">none</code> when no change was produced.</p>
+<p>Extend the common contract in a native role:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb59" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="bu">:output</span> (<span class="bu">:type</span> :engineering</span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>         :properties ((<span class="st">&quot;review&quot;</span> (<span class="bu">:type</span> :string)))</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>         :required (<span class="st">&quot;review&quot;</span>))</span></code></pre></div>
+</div>
+</div>
+<p>Common properties cannot be overridden. The usual structured <code class="verbatim">yield.submit</code> and durable result transport validate and retain these values. Checks and evidence are child-reported observations; mission gates establish harness acceptance. A failed or aborted child follows the ordinary error-only terminal contract.</p>
+<h2 id="isolated-modifying-tasks">Isolated modifying tasks</h2>
+<p>Supply an <code class="verbatim">isolation</code> object in a flat <code class="verbatim">task.run</code> call or in each selected batch item. Omit it for the ordinary shared workspace. The object accepts <code class="verbatim">baseline</code> (a commit-resolving revision, default <code class="verbatim">HEAD</code>), <code class="verbatim">dirtyPolicy</code> (<code class="verbatim">reject</code> by default, or explicit <code class="verbatim">ignore</code>), and <code class="verbatim">artifactKind</code> (<code class="verbatim">patch</code> by default, or <code class="verbatim">commit-range</code>). With <code class="verbatim">ignore</code>, use only the committed baseline; staged, unstaged and untracked source edits are excluded. Git isolation is unavailable for non-Git workspaces.</p>
+<p>Sandboxed commands in an isolated child may write its owned checkout and the repository's Git administrative directories, including a linked worktree's common Git directory. Integration requires authorization for the target workspace.</p>
+<p>The child edits and tests in its detached checkout. Before it starts, persist the source repository, exact resolved baseline, isolated path and conversation-qualified owner. Stage new files before yielding. A patch includes committed and uncommitted tracked changes; a commit range requires a clean checkout and ancestor baseline. Terminal results, including aborted tasks, identify the secured engineering artifact. Extraction failures retain the checkout and report <code class="verbatim">:worktree-error</code>; a successful child without a complete artifact is reported as failed.</p>
+<p>Use <code class="verbatim">task.worktree</code> with an explicit <code class="verbatim">action</code>:</p>
+<ul>
+<li><code class="verbatim">inspect</code> returns provenance, touched paths and the durable artifact pathname; <code class="verbatim">extract</code> explicitly retries extraction after repairing an incomplete checkout. Supply a visible terminal job <code class="verbatim">id</code> or its durable execution ID.</li>
+<li><code class="verbatim">check</code> verifies patch applicability without mutation. <code class="verbatim">apply</code> applies the patch to the clean target's index and working tree; <code class="verbatim">commits</code> cherry-picks the recorded commit range. Supply <code class="verbatim">id</code> and an explicit <code class="verbatim">target</code> repository.</li>
+<li><code class="verbatim">conflicts</code> inspects unmerged paths; <code class="verbatim">abort</code> explicitly aborts an interrupted cherry-pick. Supply the target repository.</li>
+<li><code class="verbatim">cleanup</code> removes only the task's owned checkout. Dirty cleanup requires <code class="verbatim">discardDirty: true</code>. Secured artifacts are independent of checkout removal.</li>
+<li><code class="verbatim">discover</code> lists this conversation's active and absent owned records. Supply <code class="verbatim">source</code> to recover interrupted registry publication from Git markers. <code class="verbatim">cleanup-orphan</code> uses a discovery worktree <code class="verbatim">id</code> and explicit <code class="verbatim">source</code>, including after task-result publication failed. Unrelated worktrees are excluded.</li>
+</ul>
+<p>Git lifecycle and integration commands use ordinary command authorization and execution policy. Target paths use ordinary tool-path authorization. Isolation is an accidental-overlap boundary, not hostile-code confinement. The parent chooses integration order and resolves conflicts deliberately.</p>
+<p>Primary shell and Lisp executions and child agents appear as live rows with spinners and elapsed time. The command and agent strips share a viewport bound, and provider activity remains visible below them. <code class="verbatim">shell.run</code> accepts an optional short <code class="verbatim">:description</code> for its row label; otherwise it derives one from the command. Use POSIX shell syntax for commands on POSIX hosts and PowerShell syntax on Windows. Both Windows authorization modes use native PowerShell; MSYS/Git Bash requires a shared object namespace that AppContainer does not permit. Windows sandboxed commands execute serially while temporary filesystem ACLs are installed. Their writable temporary directory is removed after completion or cancellation. Add existing read-only tool directories through <code class="verbatim">*win32-sandbox-read-roots*</code> for tools installed outside system application directories. Windows scopes must be local directories without reparse points or hard-linked files. Unsupported scopes or an unavailable helper fail instead of running without isolation.</p>
+<p>The default pool admits eight concurrent children. <code class="verbatim">AUTOLITH_TASK_MAX_CONCURRENCY</code> raises that up to 32. Child jobs have no deadline unless <code class="verbatim">AUTOLITH_TASK_MAX_RUNTIME_MS</code> is set positive.</p>
+<h2 id="retained-command-output">Retained command output</h2>
+<p>Use <code class="verbatim">shell.run</code> for synchronous commands, detached commands and command mission gates. Each authorized invocation receives private execution-owned raw captures before launch. Results include exit, timeout and cancellation status, retained and observed byte counts, capture completeness, and stable <code class="verbatim">shell-log:</code> references. The inline preview samples the beginning and end, with most space reserved for trailing diagnostics. Set <code class="verbatim">separate-output: true</code> to capture stdout and stderr independently; the preview allocates more space to stderr.</p>
+<p>Read a reference with <code class="verbatim">resource.read</code> using zero-based <code class="verbatim">byte-offset</code> and <code class="verbatim">byte-count</code> (default and maximum 4096 bytes). Use <code class="verbatim">query</code> for a literal UTF-8 search, optionally <code class="verbatim">max-results</code> and <code class="verbatim">byte-offset</code>. Continue with the returned next offset. Each search scans at most 1 MiB and returns at most 20 excerpts. Text rendering replaces invalid UTF-8; the retained files contain the original bytes. Access follows the owning conversation and ordinary task-descendant inspection authority.</p>
+<p>References are included in job inspection, durable tool-result metadata and completion notices. Reopen them after restart or compaction without executing the command again. Missing, interrupted and pruned captures return diagnostics.</p>
+<p>Defaults are 64 MiB per stream, 1 GiB of reserved capture capacity and 256 retained artifacts. Eligible completed captures become pruneable after seven days or under capacity pressure, on the next allocation. Active captures and undelivered completion evidence are protected. Adjust <code class="verbatim">*shell-log-capture-byte-limit*</code>, <code class="verbatim">*shell-log-retention-byte-limit*</code>, <code class="verbatim">*shell-log-retention-count-limit*</code> and <code class="verbatim">*shell-log-retention-age*</code> in trusted configuration. Captures exceeding their limit are explicitly incomplete. Session export collects task metadata independently of local log storage.</p>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/talk-to-autolith">Talk to Autolith</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/non-interactive-jobs">Non-interactive jobs</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/intro"><span class="toc-number">1</span>Intro</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">2</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">3</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">4</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">5</span>Fullscreen terminal</a></li><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">6</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">7</span>Talk to Autolith</a></li><li><span class="toc-current"><span class="toc-number">8</span>Configure Autolith</span></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">9</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">10</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 11 October 2026</p></div></footer></body></html>

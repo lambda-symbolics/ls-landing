@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Talk to Autolith · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Talk to Autolith">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/talk-to-autolith"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=1c695ec3cdefbaad326587de96114094a4fada2a6dabe79f48f76177b6ef5f8c"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Talk to Autolith</nav><div class="doc-body"><div class="doc-content"><h1 id="talk-to-autolith">Talk to Autolith</h1>
+<h2 id="prose-lisp-and-commands">Prose, Lisp, and commands</h2>
+<p>Ordinary text is a prompt to the primary agent. It is equivalent to:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb23" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(prompt :to <span class="dt">&#39;autolith</span> <span class="st">&quot;Review this change&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p><code class="verbatim">autolith</code> is reserved, case-insensitively, for the primary agent.</p>
+<p>As a shortcut, if you want to submit something to the main agent, you don't need to include the <code class="verbatim">:to</code> parameter:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb24" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(prompt <span class="st">&quot;Shut yourself down homie&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p><code class="verbatim">prompt</code> can also compute text or attach local images:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb25" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(prompt (read-file <span class="st">&quot;request.org&quot;</span>))</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>(prompt :images <span class="st">&quot;/tmp/diagram.png&quot;</span> <span class="st">&quot;Review this diagram&quot;</span>)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>(prompt :to <span class="dt">&#39;test-review</span> <span class="st">&quot;Run focused tests and report failures.&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p>If you message a sub-agent, it can respond to you in the main conversation thread if it wants to.</p>
+<p>Start a message with <code class="verbatim">(</code> to evaluate it as Common Lisp in the active image:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb26" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(help)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;workspace:.&quot;</span>)</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>(eval-now (<span class="kw">setf</span> <span class="va">*print-pretty*</span> <span class="kw">nil</span>))</span></code></pre></div>
+</div>
+</div>
+<p>Use <code class="verbatim">(help)</code> for a short overview. Choose a topic or look up one command:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb27" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(help :conversations)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>(help :workspace)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>(help <span class="dt">&#39;resume</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>(help <span class="st">&quot;lisp.eval&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p>Keyword topics open sections. Quoted symbols and strings open command or tool help, including usage and parameter descriptions. Browse tools by namespace with <code class="verbatim">(help :lisp)</code>, list all commands with <code class="verbatim">(help :commands)</code>, or request the full reference with <code class="verbatim">(help :all)</code>. Help uses the terminal Markdown renderer and Lisp syntax highlighting.</p>
+<p>Press <code class="verbatim">Tab</code> after =(help = to browse topics and registered operations. Command options also appear after a command name and a space, for example =(ste =.</p>
+<p>Type <code class="verbatim">@</code> in prose or inside a Lisp string to fuzzy-search workspace files through fff. Accepting a match inserts the path and drops the <code class="verbatim">@</code>. Directories keep a trailing slash so you can keep completing. A completed file stays in the draft.</p>
+<p>The clanker sees both your source input and its evaluated result apart from any other effects it may have.</p>
+<p>Start input with <code class="verbatim">?</code> followed by whitespace to evaluate one form asynchronously in the active image. Use this for a blocking operation or a bare variable:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb28" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>? <span class="va">*package*</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>? (<span class="kw">progn</span> (<span class="kw">sleep</span> <span class="dv">10</span>) (<span class="kw">values</span> :finished <span class="dv">42</span>))</span></code></pre></div>
+</div>
+</div>
+<p>The editor displays <code class="verbatim">?</code> in place of the normal prompt. Submit with Enter, then continue using the session while the form runs. <code class="verbatim">??</code> and <code class="verbatim">?text</code> are chat; spaces, tabs, and line breaks after <code class="verbatim">?</code> select asynchronous Lisp. Continue an incomplete form on another line as with ordinary Lisp input.</p>
+<p>Inspect or cancel the returned <code class="verbatim">exec:N</code> job with <code class="verbatim">job.get</code>, <code class="verbatim">job.wait</code>, or <code class="verbatim">job.cancel</code>. Standard output, error output, and Lisp diagnostic streams are captured with bounded retention and rate-limited, sanitized terminal display. On completion, receive all returned values or the error, together with captured output. Asynchronous evaluation uses noninteractive error handling and EOF input rather than a restart picker.</p>
+<p>The submitted form and its eventual result are retained in the originating session, including across a session switch. The model receives these messages at a safe request boundary; submitting a form does not start a model turn.</p>
+<p>When local Lisp or an interactive command signals a serious condition, the restart debugger keeps the signaling stack and its live restarts available. Use <code class="verbatim">Ask Autolith why this failed</code> to run an independent diagnosis while the failed operation remains suspended. Diagnosis can offer up to three explicitly selected recoveries that invoke a live restart, run repair source first, retry the whole operation, return replacement values when supported, or abort the operation. Retry does not roll back effects completed before the failure.</p>
+<p>The debugger shows the condition type and report, followed by available details such as the offending value, expected type, operation, filename, and reader location. These fields come from the condition itself and are also included in model diagnosis.</p>
+<p>Escape during diagnosis cancels only the diagnosis and returns to the live restarts. Escape at the ordinary restart picker aborts the failed operation. During an active provider turn, Escape cancels the turn and continues queued steering in submission order, oldest first. Ctrl-C cancels and pauses queued work until you submit input; a second interrupt within the force-exit window exits the application.</p>
+<h2 id="parking-and-editing-queued-input">Parking and editing queued input</h2>
+<p>Run <code class="verbatim">(vault-store)</code> to move queued work and unconsumed steering into the recovery input vault immediately, including during an active turn. Active work continues. Use <code class="verbatim">(vault-contents)</code> to read the parked entries in restoration order and <code class="verbatim">setf</code> to replace the whole list or one zero-based entry:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb29" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(vault-store)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>(vault-contents)</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> (vault-contents <span class="dv">0</span>) &#39;(:message <span class="st">&quot;Revised task&quot;</span>))</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> (vault-contents) &#39;((:message <span class="st">&quot;First task&quot;</span>) (:lisp <span class="st">&quot;(+ 1 2)&quot;</span>)))</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>(vault-restore)</span></code></pre></div>
+</div>
+</div>
+<p>Entries are <code class="verbatim">(:message INPUT)</code>, <code class="verbatim">(:command TEXT)</code>, or <code class="verbatim">(:lisp SOURCE)</code>. Direct vault reads and top-level <code class="verbatim">setf</code> forms containing only <code class="verbatim">vault-contents</code> places execute during an active turn. Returned lists are detached snapshots; publish edits with <code class="verbatim">setf</code>. Use <code class="verbatim">(setf (vault-contents) nil)</code> to clear parked input. Run <code class="verbatim">(vault)</code> for a summary or <code class="verbatim">(vault-restore)</code> to prepend parked work to the live queue.</p>
+<h2 id="managed-resources">Managed resources</h2>
+<p><code class="verbatim">resource.read</code> observes durable state and returns an opaque revision. <code class="verbatim">resource.edit</code> applies a resource-specific operation only against that exact observation.</p>
+<p>For multi-file semantic changes, Autolith prepares a <code class="verbatim">cl-resources</code> change set against retained file revisions and validates every member before publication. Each file is published atomically. On a later failure, Autolith restores earlier members; conflicting external updates require explicit recovery rather than replacement. File moves preserve source permissions captured during staging.</p>
+<p>Papercuts use current-workspace resource URIs:</p>
+<ul>
+<li><code class="verbatim">papercut:current</code> lists active reports and accepts <code class="verbatim">papercut-report</code>.</li>
+<li><code class="verbatim">papercut:id/&lt;percent-encoded-stable-id&gt;</code> reads one active report and accepts <code class="verbatim">papercut-close</code> with a complete resolution.</li>
+</ul>
+<p>The existing <code class="verbatim">papercut.report</code> tool and <code class="verbatim">(papercuts)</code>, <code class="verbatim">(papercut "ID")</code>, and <code class="verbatim">(papercut-close "ID")</code> commands remain convenient direct interfaces.</p>
+<p>Conversation history uses read-only resource URIs:</p>
+<ul>
+<li><code class="verbatim">conversation:current</code> is the current conversation's complete durable history, including the records compaction removed from the model context. A plain read returns the newest records; <code class="verbatim">start-sequence</code> and <code class="verbatim">record-count</code> (default 20, maximum 200) page by durable record sequence. A window holds at most 7,000 characters and shortens long records, so read a record alone to see all of it.</li>
+<li>With <code class="verbatim">query</code>, the read lists the newest records containing every whitespace-separated term, each with its sequence and an excerpt. ASCII letters match in either case and other characters match exactly. <code class="verbatim">max-results</code> defaults to 20 and is capped at 50. Messages, assistant replies, reasoning summaries, tool call arguments and outputs, web searches, and compaction summaries are searched.</li>
+<li><code class="verbatim">conversation:id/&lt;id&gt;</code> reads or searches another conversation by its identifier. Searches never span several conversations.</li>
+</ul>
+<p>Each model report is acknowledged durably in the conversation, and a report that repeats an active papercut of the workspace is not recorded again: a title matching word for word, or a title and body whose words largely overlap a report from the last day, answers with that existing report instead. A conversation re-filing within an hour of its own report is matched more loosely, since rewritten repeats share fewer words.</p>
+<h2 id="exporting-and-importing-data">Exporting and importing data</h2>
+<p>Use the same portable archive from the command line or an active session:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb30" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> data export all.sexp <span class="at">--all</span></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> data export project.sexp <span class="at">--workspace</span> /home/al/code/project</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> data import project.sexp <span class="at">--workspace</span> /home/al/src/project</span></code></pre></div>
+</div>
+</div>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb31" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>(data.<span class="kw">export</span> <span class="st">&quot;all.sexp&quot;</span> :all)</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>(data.<span class="kw">export</span> <span class="st">&quot;project.sexp&quot;</span> :workspace <span class="st">&quot;/home/al/code/project&quot;</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>(data.<span class="kw">import</span> <span class="st">&quot;project.sexp&quot;</span> :workspace <span class="st">&quot;/home/al/src/project&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<p>Export defaults to all workspaces and global data. A workspace export contains its conversations, memories, agendas, plans, papercuts, and associated session assets. The archive contains Autolith data rather than the repository files; clone or copy the repository separately. Credentials, configuration, executable image state, and caches are excluded.</p>
+<p>Import preserves stable identifiers and merges into local data. Identical data is skipped; a conflicting identity aborts the import before publication. For a single-workspace archive, <code class="verbatim">--workspace DIRECTORY</code> or <code class="verbatim">:workspace "DIRECTORY"</code> sets its new home directory. Without that option, workspace locations are preserved. Relative paths are resolved against the current working directory.</p>
+<p>Export creates a new private archive and refuses to overwrite an existing file. The CLI exits without starting a session: success is 0, invalid arguments are 64, and transfer failures are 1. Both command groups provide <code class="verbatim">--help</code>.</p>
+<h2 id="session-titles-and-resume">Session titles and resume</h2>
+<p>A session gets an immediate local title from its first prompt or image. After the third actual user turn, Autolith may ask the active model for one concise replacement and persist it with the conversation. The local title does not depend on provider generation.</p>
+<p>Provider-generated refreshes are enabled by default. Use <code class="verbatim">(titles)</code>, <code class="verbatim">(titles "on")</code> or <code class="verbatim">(titles "off")</code> to inspect or change the durable global preference.</p>
+<p><code class="verbatim">(resume)</code> displays titles in its picker while an explicit <code class="verbatim">(resume "ID")</code> continues to address the stable conversation identifier. The terminal status bar and local session status display the title when one is available and otherwise show the conversation ID.</p>
+<p>A resumed conversation runs in a fresh process, so background jobs, asynchronous shell runs, and Lisp worker state from before the restart no longer exist. The first user turn after a resume carries a request-local notice telling the model so, which keeps it from polling or waiting on dead jobs. Only durable child task results stay readable through <code class="verbatim">job.get</code>.</p>
+<p>Inspect a saved conversation without resuming or locking it with:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb32" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> replay ID</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> replay ID turn 12</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> replay ID date 2026-08-28</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> replay ID time 2026-08-28T10:30:00</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> replay ID sequence 1200</span></code></pre></div>
+</div>
+</div>
+<p>On an interactive terminal, replay behaves like a small debugger over durable conversation events. <code class="verbatim">next</code> and <code class="verbatim">previous</code> step records; <code class="verbatim">turn</code>, <code class="verbatim">date</code>, <code class="verbatim">time</code>, and <code class="verbatim">sequence</code> jump to a location; <code class="verbatim">raw</code> shows the selected replay form; and <code class="verbatim">quit</code> exits. Replay reads complete persisted forms without acquiring the conversation lease or repairing, appending, or resuming the conversation.</p>
+<h2 id="local-sessions">Local sessions</h2>
+<p>Every running Autolith session publishes a private authenticated local endpoint. Its session ID is the active conversation ID, shared with <code class="verbatim">resume</code> and stable across detach, restart and checkpoint quiescence. Selecting another conversation with <code class="verbatim">new</code>, <code class="verbatim">resume</code> or <code class="verbatim">fork</code> moves the endpoint to that conversation ID while attached terminals continue using the same connection. Inspect endpoints with:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb33" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> localgroup status</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> localgroup status <span class="at">--sexp</span></span></code></pre></div>
+</div>
+</div>
+<p><code class="verbatim">idle</code> means that the process is at input with no active work of any kind.</p>
+<p>Control a sessions with the following commands:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb34" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> localgroup tell   SESSION-ID <span class="st">&quot;message&quot;</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> localgroup pause  SESSION-ID</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> localgroup attach SESSION-ID</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> localgroup attach SESSION-ID <span class="at">--read-only</span></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> localgroup attach SESSION-ID <span class="at">--take-over</span></span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> localgroup detach SESSION-ID</span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> localgroup kill   SESSION-ID</span></code></pre></div>
+</div>
+</div>
+<p>Use a full <code class="verbatim">SESSION-ID</code> or a prefix that matches one session. Prefixes accept IDs with or without the display hyphen, for example <code class="verbatim">b</code>, <code class="verbatim">b-6</code>, or <code class="verbatim">b6</code> for <code class="verbatim">b-6uouHJ</code>. Full IDs take priority over prefix matches. If a prefix matches more than one session, the error lists the matching IDs; use a longer prefix. Current IDs are case-sensitive. Legacy hexadecimal IDs accept either case.</p>
+<p><code class="verbatim">tell</code> uses input to tell something to a session and resumes a paused session. <code class="verbatim">pause</code> cancels active work and holds queued primary work. <code class="verbatim">kill</code> requests graceful shutdown.</p>
+<p>Detaching hands a session to a supervised process group that outlives the terminal. Windows has no process groups or detached sessions, so sessions there always run directly in the terminal that started them: <code class="verbatim">(detach)</code> and client-first starts report that the handoff is withheld, while the loopback endpoint and the <code class="verbatim">localgroup</code> commands work as elsewhere.</p>
+<p>Autolith stores configuration, durable data, process state, and replaceable caches below <code class="verbatim">${XDG_CONFIG_HOME:-~/.config}/autolith/</code>, <code class="verbatim">${XDG_DATA_HOME:-~/.local/share}/autolith/</code>, <code class="verbatim">${XDG_STATE_HOME:-~/.local/state}/autolith/</code>, and <code class="verbatim">${XDG_CACHE_HOME:-~/.cache}/autolith/</code>. XDG base-directory values must be nonempty absolute paths; invalid values use these defaults. Newly created Autolith roots have mode <code class="verbatim">0700</code>.</p>
+<p>On Windows the same four roots are, unless an absolute XDG variable overrides one, <code class="verbatim">%APPDATA%\autolith\</code>, <code class="verbatim">%LOCALAPPDATA%\autolith\data\</code>, <code class="verbatim">%LOCALAPPDATA%\autolith\state\</code>, and <code class="verbatim">%LOCALAPPDATA%\autolith\cache\</code>. Private files and directories carry an access control list granting only the owner and SYSTEM, which is what mode <code class="verbatim">0600</code> and <code class="verbatim">0700</code> mean there; a file Autolith publishes read-only withholds write access through that list and keeps the read-only attribute clear, so it can still be replaced and deleted.</p>
+<p>Conversation leases, Localgroup endpoint records, and recovery state live under <code class="verbatim">${XDG_STATE_HOME:-~/.local/state}/autolith/</code> rather than <code class="verbatim">XDG_RUNTIME_DIR</code>. They must survive logout so detached sessions, handoffs, and crash recovery can continue across login sessions. Autolith uses authenticated loopback TCP rather than filesystem sockets for its inference and Localgroup protocols, and cleans stale Localgroup records itself.</p>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/install-update-and-uninstall">Install, update, and uninstall</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/configure-autolith">Configure Autolith</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/intro"><span class="toc-number">1</span>Intro</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">2</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">3</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">4</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">5</span>Fullscreen terminal</a></li><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">6</span>Install, update, and uninstall</a></li><li><span class="toc-current"><span class="toc-number">7</span>Talk to Autolith</span></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">8</span>Configure Autolith</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">9</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">10</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 11 October 2026</p></div></footer></body></html>
