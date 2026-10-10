@@ -1,6 +1,18 @@
 {
   "cleanUrls": true,
   "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/autolith",
+      "destination": "https://autolith.rocks",
+      "permanent": true
+    },
+    {
+      "source": "/autolith.html",
+      "destination": "https://autolith.rocks",
+      "permanent": true
+    }
+  ],
   "headers": [
     {
       "source": "/(.*)",
