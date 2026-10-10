@@ -292,11 +292,13 @@ pre kbd {
 
 /* Algol-style monochrome syntax marking: bold for keywords, italic for
    comments, bold italic for placeholders. No color; ink stays black. */
-.hl-keyword {
+.hl-keyword,
+.doc-content code .kw {
   font-weight: 700;
 }
 
-.hl-comment {
+.hl-comment,
+.doc-content code .co {
   font-style: italic;
 }
 
@@ -305,6 +307,11 @@ pre var,
   font-weight: 700;
   font-style: italic;
   font-family: inherit;
+}
+
+/* Source-derived manual: wrap long inline names, scroll code blocks. */
+.doc-content :not(pre) > code {
+  overflow-wrap: anywhere;
 }
 
 /* PS1 transcript prompts: the package tag is bold, echoing the rule that a
@@ -743,7 +750,7 @@ input[type="checkbox"].switch:disabled::before {
   background: var(--paper);
   border: 1px solid var(--ink);
   max-width: 620px;
-  margin-bottom: 15px;
+  margin-bottom: 20px; /* 15px shadow band plus 5px clearance. */
 }
 
 .window--wide {
