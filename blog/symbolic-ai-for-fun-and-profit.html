@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symbolic AI for fun and profit · Lambda Symbolics OÜ</title>
+    <meta name="description" content="An introduction to symbolic AI, knowledge representation, rules and inference.">
+    <link rel="canonical" href="https://lambda-symbolics.com/blog/symbolic-ai-for-fun-and-profit">
+    <meta property="og:title" content="Symbolic AI for fun and profit">
+    <meta property="og:description" content="An introduction to symbolic AI, knowledge representation, rules and inference.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://lambda-symbolics.com/blog/symbolic-ai-for-fun-and-profit">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+    <link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/paper.css">
+    <link rel="stylesheet" href="/blog/blog.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/">Home</a></li>
+            <li><a href="/blog">Blog</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main-content" class="shell">
+      <article class="blog-article doc-section">
+        <figure><img src="/blog/images/cover.jpg" width="741" height="296" alt="Black-and-white portrait of a man with glasses and a beard."></figure>
+        <h1>Symbolic AI for fun and profit</h1>
+        <p><a href="/lukas">Lukáš Hozda</a> · <time datetime="2026-11-16">16 November 2026</time></p>
+        <p>Howdy!</p>
+        <p>I figured I would start giving explanations to the more nerdy things in Autolith, namely, its symbolic AI features.</p>
+        <p>Symbolic AI is an approach to AI in which a system represents aspects of a problem using symbols and manipulates those representations according to some operations with those symbols.</p>
+        <p>A symbol is e.g. an object, a category, a relation, or maybe an action. Then, Expressions combine symbols into structures that can state facts, describe rules, or propose questions.</p>
+        <p>The term represents a whole bunch of things in the world of gigachad Lisp era of AI. Here's a small list:</p>
+        <ul>
+          <li>Logic-based reasoning</li>
+          <li>Rule-based expert systems</li>
+          <li>Automated planning</li>
+          <li>Symbolic algebra</li>
+        </ul>
+        <h2>Representing knowledge</h2>
+        <p>For classical AI, the thing we need to do first is to have a way to represent knowledge.</p>
+        <p>A program might represent an individual animal by a name and associate it with a category. These are facts.</p>
+        <p>Facts are statements recorded in a system.</p>
+        <p>A fact such as <strong>mammal(moby)</strong> can be read as “Moby is a mammal.” Here mammal is a predicate, or property, and moby is an individual. I hope you learned Prolog lol.</p>
+        <p>Other predicates can represent relations between multiple individuals, imagine a <strong>parent(a, b)</strong> expression which means that <strong>a</strong> is a parent of <strong>b</strong>.</p>
+        <p>Collection of facts or other statements are generally referred to as <strong>knowledge bases.</strong> Their contents are represented as structures the program can inspect and manipulate.</p>
+        <p>We can have representations that are good and representations that are less good. There is a whole spectrum of approaches between having <strong>attribute-value pairs</strong>, having <strong>logical languages</strong> (like Prolog), and having a <strong>semantic network</strong> which represents and entities and relations as nodes and edges.</p>
+        <h2>Rules and inference</h2>
+        <p>Rules specify relationships between conditions and conclusions/actions.</p>
+        <p>In logic-oriented systems, a rule states that a conclusion follows when its conditions hold. For example:</p>
+        <pre><code>If x is a mammal, then x is an animal.</code></pre>
+        <p>The variable <strong>x</strong> stands for an individual.</p>
+        <p>This rule applies to an individual for which the stated condition <strong>(is a mammal)</strong> is established. If we are discussing so-called <strong>production-rule systems,</strong> rules may instead specify actions to perform when conditions match the current state.</p>
+        <p>Inference in classical AI means something a lil bit different from LLM inference, hahaha. It is the process of deriving conclusions from statements according to rules of reasoning.</p>
+        <p>In the classic approach of <strong>forward chaining</strong>, a system will:</p>
+        <ol>
+          <li>start with available facts</li>
+          <li>discover which rules have conditions that match</li>
+          <li>and derive further facts</li>
+        </ol>
+        <p>It sibling, <strong>backward chaining, </strong>works like this:</p>
+        <ol>
+          <li>starts with a question</li>
+          <li>discovers rules and facts that could establish an answer</li>
+          <li>attempts to find an answer</li>
+        </ol>
+        <p>Life is great, so both approaches can be used in rule-based systems</p>
+        <h2>An example</h2>
+        <p>Consider a knowledge base containing the following fact and rule:</p>
+        <pre><code>Fact:  Moby is a mammal.
+Rule:  If x is a mammal, then x is an animal.</code></pre>
+        <p>Moby is a name for an individual whale.</p>
+        <p>The fact states that this individual is a mammal.</p>
+        <p>The rule states that all individuals satisfying this condition are also animals.</p>
+        <p>The inference proceeds as follows:</p>
+        <ol>
+          <li>The inference system takes in the fact that Moby is a mammal</li>
+          <li>it matches Moby to the variable x in the rule’s condition</li>
+          <li>It applies the rule with x bound to Moby</li>
+          <li>It derives the conclusion that Moby is an animal</li>
+        </ol>
+        <figure><img src="/blog/images/inference.png" width="1400" height="720" alt="The fact that Moby is a mammal and the rule that every mammal is an animal lead to the conclusion that Moby is an animal."></figure>
+        <p>Now, we can record the conclusion plus the facts and rules used to derive it and save it as a <strong>trace</strong>.</p>
+        <p>That recorded trace explains the inference in terms of the knowledge base and the system’s rules, and is incredibly relevant when keeping track of whether facts still hold.</p>
+        <figure><img src="/blog/images/trace.png" width="1400" height="760" alt="A derivation connecting the fact that Moby is a mammal and the rule that every mammal is an animal to the conclusion that Moby is an animal."></figure>
+        <p>The example also shows the role of representation.</p>
+        <p>Merely stating that Moby is a whale does not help us, since our system can't derive that Moby is a mammal from this one rule alone.</p>
+        <p>Therefore, we would also need another statement which connects whales to mammals.</p>
+        <h2>Questions or changes or uncertainty (?)</h2>
+        <p>Symbolic systems can answer questions (without the involvement of LLMs or neural networks, mind you!). As implied above, they do this searching the knowledge base and applying rules.</p>
+        <p>For instance, if we remember the previous example, the system can answer whether Moby is an animal.</p>
+        <p>Knowledge isn't immutable and it can change no problem. Whenever a stored fact is removed or corrected, the conclusions that depend on it might have to be reconsidered. This, as we will see in the next part, this is particularly important for Autolith.</p>
+        <p>Systems can record dependencies between statements to help determine which conclusions require revision. Conclusion can have more than one justification each, so removing one premise does not have to invalidate it per se, there is a lot of leeway in how you implement your systems.</p>
+        <p>Ordinary logical rules very often express categorical relationships, but not all information is certain, we can be wrong. Some systems attach probabilities, confidence measures, or other qualifications to statements and use corresponding methods of inference.</p>
+        <h2>Relation to neural models</h2>
+        <p>This approach to artificial intelligence is more machine-like than how we perceive neural networks, especially LLMs.</p>
+        <p>Neural models usually learn numerical params from data. The internal representation is distributed across numerical values rather, and not stored as individually readable facts and rules.</p>
+        <p>Symbolic and neural methods differ in representation and processing, but they can be combined.</p>
+        <p>For a very auspicious example, neural models or LLMs can convert data into candidate structured facts, while a symbolic component checks these structured facts or uses them for inference.</p>
+        <p>Also, a symbolic system can supply constraints or maybe retrieve structured info for a neural model.</p>
+        <p>I think it's a shame that we are kinda forgetting symbolic AI in the LLM hype, as it is incredibly useful... and cheap!</p>
+        <p>Anyways, I am trying to keep this short, more soon.</p>
+        <p>Lukáš Hozda</p>
+      </article>
+    </main>
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+      </div>
+    </footer>
+  </body>
+</html>

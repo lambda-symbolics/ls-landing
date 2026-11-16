@@ -1,0 +1,13 @@
+.blog-article {
+  max-width: 760px;
+}
+
+.blog-article figure {
+  margin: 2em 0;
+}
+
+.blog-article figure img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
