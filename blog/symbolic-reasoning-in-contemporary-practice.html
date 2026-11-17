@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Symbolic reasoning in contemporary practice (Autolith) · Lambda Symbolics OÜ</title>
+    <meta name="description" content="Symbolic reasoning in Autolith: facts, rules, action contracts, procedures, and diagnosis.">
+    <link rel="canonical" href="https://lambda-symbolics.com/blog/symbolic-reasoning-in-contemporary-practice">
+    <meta property="og:title" content="Symbolic reasoning in contemporary practice (Autolith)">
+    <meta property="og:description" content="Symbolic reasoning in Autolith: facts, rules, action contracts, procedures, and diagnosis.">
+    <meta property="og:type" content="article">
+    <meta property="og:url" content="https://lambda-symbolics.com/blog/symbolic-reasoning-in-contemporary-practice">
+    <meta property="og:image" content="https://lambda-symbolics.com/blog/images/symbolic-reasoning-in-contemporary-practice/cover.jpg">
+    <meta property="og:site_name" content="Lambda Symbolics OÜ">
+    <link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml">
+    <link rel="stylesheet" href="/paper.css">
+    <link rel="stylesheet" href="/blog/blog.css">
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <header class="shell">
+      <div class="letterhead">
+        <a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a>
+        <nav class="site-nav" aria-label="Primary">
+          <ul class="site-nav-list">
+            <li><a href="/">Home</a></li>
+            <li><a href="/blog">Blog</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    <main id="main-content" class="shell">
+      <article class="blog-article doc-section">
+        <header class="blog-article-header">
+          <h1>Symbolic reasoning in contemporary practice (Autolith)</h1>
+          <p class="blog-byline"><a href="/lukas">Lukáš Hozda</a> · <time datetime="2026-11-17">17 November 2026</time></p>
+        </header>
+        <figure class="blog-cover"><img src="/blog/images/symbolic-reasoning-in-contemporary-practice/cover.jpg" width="1200" height="480" alt="Two cartoon figures with oversized brains grapple against a blue background."></figure>
+        <p>yo yo yo,</p>
+        <p>in the <a href="https://x.com/LukasHozda/status/2122144869799821505">last article</a>, we discussed symbolic reasoning at a very high level, in our example, we represented a whale called Moby as a mammal, applied a rule, and recorded a derivation based on that rule. That's very detached from reality, so let's talk more about what's happening in autolith</p>
+        <p>Autolith, <a href="https://autolith.rocks">our clanker harness</a>, uses the very same approaches to keep track of knowledge, derive inferences, or organize actions during a task (we actually have seven main applications of neurosymbolic AI in Autolith, but that's for later).</p>
+        <p>So, for starters:</p>
+        <ol>
+          <li>Autolith is a live Common Lisp image, which is introspectable</li>
+          <li>A language model in interprets requests and chooses actions</li>
+          <li>The Lisp runtime manages tools, persistent state, and symbolic operations. </li>
+          <li>Tool results or other evidence can become structured facts that inform later work actions.</li>
+        </ol>
+        <figure><img src="/blog/images/symbolic-reasoning-in-contemporary-practice/reasoning-and-action.jpg" width="2048" height="1112" alt="The agent model calls tools through a live Lisp image; selected observations add to knowledge that informs subsequent decisions."></figure>
+        <h2>Facts and evidence</h2>
+        <p>Autolith structured knowledge as facts, we have:</p>
+        <ol>
+          <li>Predicates, which describe a kind of statement and the types of its arguments</li>
+          <li>Facts, which supply argument values for predicate.</li>
+        </ol>
+        <p>For instance, a <strong>predicate for an appointment</strong>, would associate an event with a start time. If we take a particular event and time, that is a <strong>fact</strong>.</p>
+        <p>Facts do not spawn out of thin air, they must have a basis.</p>
+        <p>For example, file reads can support an <em>observation</em>, while the things a user says can support <em>user assertions</em>. Then, we can also have <em>assumptions </em>and <em>model proposals, </em>which<em> </em>have their own bases.</p>
+        <p><strong>Evidence</strong> connects a claim to its source, so the system can distinguish what was observed from what was proposed.</p>
+        <p>Autolith can attach multiple supports to the same claim, furthermore, it can identify conflicting values for the key of a predicate.</p>
+        <p>Imagine two different start times recorded for the same appointment call, that clearly signifies a contradiction and requires us (or the agent), to resolve the conflict before acting facts derived from the time.</p>
+        <h2>Rules, inference, and justifications</h2>
+        <p>Rules connect premises to conclusions. In Autolith, the model proposes rules for recurring calculations and relationships, but the user has to admit rules before it can participate in inference. </p>
+        <p>Using the example from the previous article, consider the fact <strong>mammal(moby)</strong> and the rule “if x is a mammal, then x is an animal.” Matching the premise <em>binds x to Moby </em>and yields <strong>animal(moby)</strong>.</p>
+        <p>In the derivation, we would record the rule, the version of the rule, and its the supporting premise.</p>
+        <figure><img src="/blog/images/symbolic-reasoning-in-contemporary-practice/facts-rules-justifications.jpg" width="2048" height="1112" alt="A file observation supports a typed fact; an admitted rule and its premises produce a derived fact with a justification."></figure>
+        <p>Justifications link conclusions to the facts and rules by which they are supported. With <strong>(why &quot;ID&quot;)</strong>, the user can inspect why something is the way it is. <strong>(what-changed)</strong> reports changes in the knowledge view.</p>
+        <figure><img src="/blog/images/symbolic-reasoning-in-contemporary-practice/memory-manager-fact-evidence.jpg" width="1707" height="930" alt="Autolith Memory Manager listing current and expired facts, with a selected package-version fact and its supporting observation."></figure>
+        <p>When a supporting fact is retracted or corrected, Autolith reevaluates the affected derivations. A conclusion with another active justification can still hold. This is <strong>truth maintenance, </strong>which we mentioned last time: the current conclusions are held together by the things that support it and admitted rules.</p>
+        <p>Rules can also perform calculations. Given an appointment's start time and a travel duration, an admitted rule can derive a departure time. If the appointment time changes, the departure time can be computed again from the updated inputs.</p>
+        <p>Finally, rules can include guards: conditions that a match must satisfy before its conclusion is derived. Rules can calculate dates, durations, quantities, and other values using the matched facts. The conclusion of one rule can serve as a premise for another, forming a chain, and you can follow the chain back to its origin</p>
+        <h2>Planning and action contracts</h2>
+        <p>The plans in  Autolith are a little different from the ones in Codex or Claude. First off, steps can list the facts they require and the facts used to verify the outcome of that steps.</p>
+        <p>Second, we have task methods describe how to expand a task into smaller tasks or steps. Autolith selects applicable methods using the current fact view and produces a concrete plan.</p>
+        <p><strong>Action contracts</strong> connect facts to tool calls. A contract can specify:</p>
+        <ul>
+          <li><strong>Requirements:</strong> facts that must hold before the call.</li>
+          <li><strong>Expected effects:</strong> predictions recorded after a successful call.</li>
+          <li><strong>Observations:</strong> values mapped from the tool call and its result.</li>
+        </ul>
+        <p>When the required facts are missing or conflicting, an admitted contract can refuse the tool call before it runs.</p>
+        <p>Consider a deployment step:</p>
+        <ol>
+          <li>A contract can require a passing test result for a particular revision. Its expected effect can record a successful deployment as a prediction.</li>
+          <li>A later result or check can supply an observation of the deployed revision. </li>
+        </ol>
+        <p>Keeping those bases distinct lets subsequent steps depend on evidence appropriate to the action.</p>
+        <p>Before the call, the contract matches its requirements against facts with accepted evidence bases. The match must produce one distinct set of bindings, even when several evidence paths support it.</p>
+        <p>In the deployment example, the test result and the deployment request must refer to the same revision.</p>
+        <p>After a successful call, the contract can map fields from the result into observations and record expected effects as predictions. These records include the tool call and the facts that satisfied the requirements, connecting the outcome back to the preconditions.</p>
+        <figure><img src="/blog/images/symbolic-reasoning-in-contemporary-practice/action-contract.jpg" width="2048" height="1112" alt="Required facts are checked before a tool call. Missing or conflicting facts cause refusal; an allowed call has a predicted effect and an observed result."></figure>
+        <h2>Procedures and diagnoses</h2>
+        <p>Autolith can learn reusable procedures from repeated tool sequences. Procedure captures a sequence with parameters for values that vary between uses.</p>
+        <p>We learn a candidate procedure in stages:</p>
+        <ol>
+          <li>Group traces with the same sequence of tools and identify values that vary between examples.</li>
+          <li>Look for values passed from one tool's result into a later call.</li>
+          <li>Check whether the candidate explains held-out examples before proposing it.</li>
+        </ol>
+        <p>Procedures save the calls and their results when they run.</p>
+        <p>Diagnoses organize an investigation around competing hypotheses. Each hypothesis predicts what particular probes will observe.</p>
+        <p>Autolith can choose probes that distinguish the candidates, run them, and compare observations with predictions.</p>
+        <p>Imagine, if a service cannot be reached, we can consider three hypotheses:</p>
+        <ul>
+          <li>Either the service is stopped,</li>
+          <li>Or the service is active, but there is a network fault</li>
+          <li>Or, the service is active, but a firewall is blocking traffic</li>
+        </ul>
+        <p>A service-status probe distinguishes the first from the other two. If the service is active, the stopped hypothesis is eliminated, but the remaining candidates need another probe.</p>
+        <figure><img src="/blog/images/symbolic-reasoning-in-contemporary-practice/diagnosis.jpg" width="2048" height="1112" alt="A service-status probe finds the service active, ruling out a stopped service while leaving network fault and firewall as candidates."></figure>
+        <p>We will go more in-depth, with more Autolith screenshots in the future o algo</p>
+        <p>See you,</p>
+        <p>Lukáš Hozda</p>
+      </article>
+    </main>
+    <footer class="shell">
+      <div class="colophon">
+        <p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p>
+      </div>
+    </footer>
+  </body>
+</html>
