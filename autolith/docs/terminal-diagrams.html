@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Terminal diagrams · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Terminal diagrams">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/terminal-diagrams"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=a524626cb296ba6b0f43766519117ea1cfb3848f0958b44b014e6f0b7f3ba3d1"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Terminal diagrams</nav><p class="docs-edition">Development guide. For Autolith 0.67.66, see the <a href="https://github.com/lambda-symbolics/autolith/blob/v0.67.66/docs/guide.org">release guide</a>.</p><div class="doc-body"><div class="doc-content"><h1 id="terminal-diagrams">Terminal diagrams</h1>
+<p>Ask for a fenced <code class="verbatim">mermaid</code> block to see a diagram in the terminal. <a href="https://github.com/lambda-symbolics/clermaid">Clermaid</a> documents the supported syntax for:</p>
+<ul>
+<li>Flowcharts</li>
+<li>Sequence diagrams</li>
+<li>Flat state diagrams</li>
+<li>Class diagrams</li>
+<li>Entity relationship diagrams</li>
+</ul>
+<div class="window code-window">
+<div class="window-titlebar">
+markdown
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb2"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="in">```mermaid</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="in">flowchart LR</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="in">  A[Read] --&gt; B[Evaluate]</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="in">  B --&gt; C[Print]</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+</div>
+</div>
+<p>While the response streams, read the Mermaid source in the live tail. Use the <strong>copy</strong> action on the finished diagram to copy the source. If the syntax is unsupported or the diagram is too wide, read the source block instead.</p>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/intro">Intro</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/command-arguments">Command arguments</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/intro"><span class="toc-number">1</span>Intro</a></li><li><span class="toc-current"><span class="toc-number">2</span>Terminal diagrams</span></li><li><a href="/autolith/docs/command-arguments"><span class="toc-number">3</span>Command arguments</a></li><li><a href="/autolith/docs/onboarding"><span class="toc-number">4</span>Onboarding</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">5</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">6</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">7</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">8</span>Fullscreen terminal</a></li><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">9</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">10</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">11</span>Configure Autolith</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">12</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">13</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 22 November 2026</p></div></footer></body></html>

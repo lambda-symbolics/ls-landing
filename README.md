@@ -41,8 +41,10 @@ Point Vercel at this repository/submodule and deploy as a static site.
 
 ## Autolith docs
 
-`autolith/docs/` is generated from the authoritative `docs/guide.org` in an
-Autolith checkout. Regenerate it with Pandoc, SBCL and `sha256sum`:
+The site guide in `autolith/docs/` comes from `docs/guide.org` in the Autolith
+source repo. It covers development builds and links to the guide for the
+latest release. Before regenerating, update the revision date and release
+number in `tools/make-docs.lisp`. You need Pandoc, SBCL and `sha256sum`.
 
 ```bash
 AUTOLITH_GUIDE=/path/to/autolith/docs/guide.org \

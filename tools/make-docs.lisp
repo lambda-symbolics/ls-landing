@@ -14,10 +14,11 @@
 (defparameter *docs-dir* (merge-pathnames "autolith/docs/" *site-root*))
 (defparameter *guide-path*
   (pathname (or (uiop:getenv "AUTOLITH_GUIDE")
-                "~/common-lisp/frob/docs/guide.org")))
+                "~/common-lisp/autolith/docs/guide.org")))
 (defparameter *pandoc-filter*
   (merge-pathnames "tools/pandoc-autolith.lua" *site-root*))
-(defparameter *docs-revised* "11 October 2026")
+(defparameter *docs-revised* "22 November 2026")
+(defparameter *docs-release* "0.67.66")
 (defparameter *paper-css-url*
   (format nil "/paper.css?v=~A"
           (subseq (uiop:run-program
@@ -150,16 +151,20 @@
         (format out "<div class=\"docs-pager-cell docs-pager-cell--next\"><span class=\"docs-pager-label\">Next</span><a href=\"~A\">~A</a></div>" (docs-href (getf chapter :slug)) (getf chapter :title))))
     (write-string "</nav>" out)))
 
+(defun docs-edition ()
+  (format nil "<p class=\"docs-edition\">Development guide. For Autolith ~A, see the <a href=\"https://github.com/lambda-symbolics/autolith/blob/v~A/docs/guide.org\">release guide</a>.</p>"
+          *docs-release* *docs-release*))
+
 (defun docs-write-chapter (chapters chapter index)
   (let* ((slug (getf chapter :slug))
-         (breadcrumb (format nil "<nav class=\"docs-path\" aria-label=\"Location\"><a href=\"/autolith/docs\">Docs</a> · ~A</nav><div class=\"doc-body\"><div class=\"doc-content\">~A~A</div>~A</div>"
-                             (getf chapter :title) (getf chapter :body)
-                             (docs-pager chapters index) (docs-toc chapters slug))))
-    (docs-write (docs-file slug) (docs-page (getf chapter :title) breadcrumb :slug slug :breadcrumb ""))))
+         (body (format nil "<nav class=\"docs-path\" aria-label=\"Location\"><a href=\"/autolith/docs\">Docs</a> · ~A</nav>~A<div class=\"doc-body\"><div class=\"doc-content\">~A~A</div>~A</div>"
+                       (getf chapter :title) (docs-edition) (getf chapter :body)
+                       (docs-pager chapters index) (docs-toc chapters slug))))
+    (docs-write (docs-file slug) (docs-page (getf chapter :title) body :slug slug :breadcrumb ""))))
 
 (defun docs-write-index (chapters)
   (let ((body (with-output-to-string (out)
-                (format out "<section class=\"doc-content\"><h1>Autolith guide</h1><p>The current manual is generated from the authoritative Autolith guide. Read it in order or start with a chapter.</p><ol>")
+                (format out "<section class=\"doc-content\"><h1>Autolith guide</h1>~A<p><a href=\"/autolith/docs/configure-autolith#run-a-local-model\">Set up local inference</a></p><ol>" (docs-edition))
                 (dolist (chapter chapters)
                   (format out "<li><a href=\"~A\">~A</a></li>" (docs-href (getf chapter :slug)) (getf chapter :title)))
                 (write-string "</ol></section>" out))))

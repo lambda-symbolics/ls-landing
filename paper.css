@@ -1561,6 +1561,23 @@ button.button {
   margin: 10px 0 24px;
 }
 
+.doc-page .doc-content :where(p, li, dd) {
+  text-align: justify;
+  hyphens: auto;
+  overflow-wrap: anywhere;
+}
+
+.doc-page .doc-content :where(pre, table) {
+  text-align: start;
+  hyphens: none;
+  overflow-wrap: normal;
+}
+
+.docs-edition {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
 /* -- Contents window for serial documents -- */
 
 .doc-body {
