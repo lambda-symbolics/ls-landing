@@ -48,14 +48,14 @@
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb31" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">:version</span> <span class="dv">1</span></span>
-<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a> :servers ((<span class="bu">:name</span> <span class="st">&quot;clangd&quot;</span></span>
-<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>            :command <span class="st">&quot;clangd&quot;</span></span>
-<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>            :arguments (<span class="st">&quot;--background-index&quot;</span>)</span>
-<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>            :extensions (<span class="st">&quot;.c&quot;</span> <span class="st">&quot;.h&quot;</span>)</span>
-<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>            :language-id <span class="st">&quot;c&quot;</span></span>
-<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>            :root-markers (<span class="st">&quot;compile_commands.json&quot;</span> <span class="st">&quot;.git&quot;</span>)</span>
-<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>            :timeout-seconds <span class="dv">30</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb22" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">:version</span> <span class="dv">1</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a> :servers ((<span class="bu">:name</span> <span class="st">&quot;clangd&quot;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>            :command <span class="st">&quot;clangd&quot;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>            :arguments (<span class="st">&quot;--background-index&quot;</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>            :extensions (<span class="st">&quot;.c&quot;</span> <span class="st">&quot;.h&quot;</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>            :language-id <span class="st">&quot;c&quot;</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>            :root-markers (<span class="st">&quot;compile_commands.json&quot;</span> <span class="st">&quot;.git&quot;</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>            :timeout-seconds <span class="dv">30</span>)))</span></code></pre></div>
 </div>
 </div>
 <p>For each server, provide a unique <code class="verbatim">:name</code>, a <code class="verbatim">:command</code> on <code class="verbatim">PATH</code>, a nonempty <code class="verbatim">:extensions</code> list and a <code class="verbatim">:language-id</code>. Use literal strings for arguments.</p>
@@ -146,7 +146,7 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb32" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>(:challenge <span class="bu">:version</span> <span class="dv">1</span> :algorithm :hmac-sha-256 :nonce HEX)</span></code></pre></div>
+<div class="sourceCode" id="cb23" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(:challenge <span class="bu">:version</span> <span class="dv">1</span> :algorithm :hmac-sha-256 :nonce HEX)</span></code></pre></div>
 </div>
 </div>
 <p><code class="verbatim">HEX</code> encodes 32 random nonce octets as 64 lowercase hexadecimal characters. The client reads its token file, computes <code class="verbatim">HMAC-SHA-256(token, nonce)</code>, and replies:</p>
@@ -155,7 +155,7 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb33" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>(:authenticate :proof HEX)</span></code></pre></div>
+<div class="sourceCode" id="cb24" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(:authenticate :proof HEX)</span></code></pre></div>
 </div>
 </div>
 <p>A valid proof receives <code class="verbatim">(:authenticated :version 1)</code>. A proof is valid only for that connection's nonce. Authentication failure closes the connection without a reusable credential or detailed oracle response.</p>
@@ -165,7 +165,7 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb34" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>(:evaluate :source <span class="st">&quot;(values (+ 20 22) *package*)&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb25" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(:evaluate :source <span class="st">&quot;(values (+ 20 22) *package*)&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <p>Send one form per request. Autolith evaluates it in the <code class="verbatim">AUTOLITH</code> package and captures output. A successful response looks like this:</p>
@@ -174,12 +174,12 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb35" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>(:evaluation-result</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a> :status :ok</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a> :values (<span class="st">&quot;42&quot;</span> <span class="st">&quot;#&lt;PACKAGE </span><span class="sc">\&quot;</span><span class="st">AUTOLITH</span><span class="sc">\&quot;</span><span class="st">&gt;&quot;</span>)</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a> :values-truncated-p <span class="kw">nil</span></span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a> <span class="bu">:output</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a> :output-truncated-p <span class="kw">nil</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb26" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>(:evaluation-result</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a> :status :ok</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a> :values (<span class="st">&quot;42&quot;</span> <span class="st">&quot;#&lt;PACKAGE </span><span class="sc">\&quot;</span><span class="st">AUTOLITH</span><span class="sc">\&quot;</span><span class="st">&gt;&quot;</span>)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a> :values-truncated-p <span class="kw">nil</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a> <span class="bu">:output</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a> :output-truncated-p <span class="kw">nil</span>)</span></code></pre></div>
 </div>
 </div>
 <p>The <code class="verbatim">:values</code> list contains one string per return value. A condition response includes <code class="verbatim">:condition-type</code> and <code class="verbatim">:report</code>. A deadline returns <code class="verbatim">:status :timeout</code>. The connection can accept another request. The deadline is best effort because trusted forms can suppress interrupts.</p>
@@ -191,15 +191,15 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb36" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>(define-context-contributor release-advice (request)</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Add advice for release requests.&quot;</span></span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">when</span> (<span class="kw">search</span> <span class="st">&quot;release&quot;</span> (<span class="kw">or</span> (request-context-latest-user-text request) <span class="st">&quot;&quot;</span>)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>                <span class="bu">:test</span> <span class="op">#&#39;</span>char-equal)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>    (make-context-contribution</span>
-<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>     :identifier  <span class="st">&quot;release-check&quot;</span></span>
-<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>     :instruction <span class="st">&quot;Verify release artifacts before publishing.&quot;</span></span>
-<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>     :lifetime    &#39;:turn</span>
-<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>     :priority    <span class="dv">40</span>)))</span></code></pre></div>
+<div class="sourceCode" id="cb27" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(define-context-contributor release-advice (request)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;Add advice for release requests.&quot;</span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  (<span class="kw">when</span> (<span class="kw">search</span> <span class="st">&quot;release&quot;</span> (<span class="kw">or</span> (request-context-latest-user-text request) <span class="st">&quot;&quot;</span>)</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>                <span class="bu">:test</span> <span class="op">#&#39;</span>char-equal)</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    (make-context-contribution</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>     :identifier  <span class="st">&quot;release-check&quot;</span></span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>     :instruction <span class="st">&quot;Verify release artifacts before publishing.&quot;</span></span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>     :lifetime    &#39;:turn</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>     :priority    <span class="dv">40</span>)))</span></code></pre></div>
 </div>
 </div>
 <ul>
@@ -215,12 +215,12 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb37" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>(register-context-rule</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a> &#39;(:id <span class="st">&quot;lisp-edits&quot;</span></span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>   :when (:paths (<span class="st">&quot;src/&quot;</span>) :languages (<span class="st">&quot;common-lisp&quot;</span>)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>          :events (<span class="st">&quot;tool-success&quot;</span>))</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>   :instruction <span class="st">&quot;Check the changed declarations before committing.&quot;</span></span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>   :priority <span class="dv">30</span> :lifetime :while-relevant))</span></code></pre></div>
+<div class="sourceCode" id="cb28" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(register-context-rule</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a> &#39;(:id <span class="st">&quot;lisp-edits&quot;</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>   :when (:paths (<span class="st">&quot;src/&quot;</span>) :languages (<span class="st">&quot;common-lisp&quot;</span>)</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>          :events (<span class="st">&quot;tool-success&quot;</span>))</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>   :instruction <span class="st">&quot;Check the changed declarations before committing.&quot;</span></span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>   :priority <span class="dv">30</span> :lifetime :while-relevant))</span></code></pre></div>
 </div>
 </div>
 <p>Use <code class="verbatim">:paths</code>, <code class="verbatim">:languages</code>, <code class="verbatim">:tools</code>, <code class="verbatim">:namespaces</code>, <code class="verbatim">:roles</code>, <code class="verbatim">:diagnostics</code>, <code class="verbatim">:events</code> and <code class="verbatim">:output-contains</code> in <code class="verbatim">:when</code>. Fields are conjunctive; values within a field are alternatives. Paths match prefixes; <code class="verbatim">:output-contains</code> matches literal case-insensitive substrings of recent completed assistant text and generated tool arguments. Other values match exactly. Add an absolute <code class="verbatim">:workspace</code> directory for project scope. Authorized tool operations and structured LSP severities supply bounded current-turn metadata. Asynchronous completions use their originating turn identity. Rules share the ordinary advice budget, priority, lifetime and deduplication policy. Inspect delivery with <code class="verbatim">context-status</code>; remove a registered rule with <code class="verbatim">unregister-context-rule</code> and its original ID.</p>
@@ -230,8 +230,8 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb38" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>(complain <span class="st">&quot;Your explanations are too long. Give the result first.&quot;</span>)</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>(wtf <span class="st">&quot;Use the existing library instead of reimplementing it.&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb29" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>(complain <span class="st">&quot;Your explanations are too long. Give the result first.&quot;</span>)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>(wtf <span class="st">&quot;Use the existing library instead of reimplementing it.&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <p>Both names open the same interactive review. Inspect the generated instruction and literal trigger, amend the candidate, then choose workspace or global scope to save it. Saving an unmatched trigger and replacing an existing rule each require separate confirmation. Cancel to discard the candidate. Omit the text to enter a complaint in the editor.</p>
@@ -285,7 +285,7 @@ Code
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb40" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen3:8b</span></code></pre></div>
+<div class="sourceCode" id="cb31" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen3:8b</span></code></pre></div>
 </div>
 </div></li>
 <li><p>Add this form to <code class="verbatim">${XDG_CONFIG_HOME:-~/.config}/autolith/init.lisp</code>:</p>
@@ -294,12 +294,12 @@ Shell
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb41" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>(register-openai-compatible-provider</span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a> <span class="bu">:name</span>                         <span class="st">&quot;local-ollama&quot;</span></span>
-<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a> :endpoint                     <span class="st">&quot;http://127.0.0.1:11434/v1/chat/completions&quot;</span></span>
-<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a> :models                       &#39;(<span class="st">&quot;qwen3:8b&quot;</span>)</span>
-<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a> :api-key-environment-variable <span class="st">&quot;AUTOLITH_OLLAMA_KEY&quot;</span></span>
-<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a> :stream-usage-p               <span class="kw">nil</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb32" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>(register-openai-compatible-provider</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a> <span class="bu">:name</span>                         <span class="st">&quot;local-ollama&quot;</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a> :endpoint                     <span class="st">&quot;http://127.0.0.1:11434/v1/chat/completions&quot;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a> :models                       &#39;(<span class="st">&quot;qwen3:8b&quot;</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a> :api-key-environment-variable <span class="st">&quot;AUTOLITH_OLLAMA_KEY&quot;</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a> :stream-usage-p               <span class="kw">nil</span>)</span></code></pre></div>
 </div>
 </div></li>
 <li><p>Set a nonempty key value and start Autolith. Autolith sends it as a bearer key. Local Ollama ignores it, so <code class="verbatim">ollama</code> is a placeholder, not a secret.</p>
@@ -308,9 +308,9 @@ Common Lisp
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb42" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AUTOLITH_OLLAMA_KEY</span><span class="op">=</span>ollama</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> models <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-Fx</span> <span class="st">&#39;local-ollama/qwen3:8b&#39;</span></span>
-<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--provider</span> local-ollama <span class="at">--model</span> qwen3:8b</span></code></pre></div>
+<div class="sourceCode" id="cb33" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AUTOLITH_OLLAMA_KEY</span><span class="op">=</span>ollama</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> models <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-Fx</span> <span class="st">&#39;local-ollama/qwen3:8b&#39;</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--provider</span> local-ollama <span class="at">--model</span> qwen3:8b</span></code></pre></div>
 </div>
 </div></li>
 <li><p>Send a short prompt to check that replies stream. Ask Autolith to list the files in the current directory to check tool calls.</p></li>
@@ -335,10 +335,10 @@ Shell
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb43" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--model</span> my-provider/my-model</span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--provider</span> my-provider <span class="at">--model</span> hf:custom/model</span>
-<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> open <span class="at">--model</span> my-provider/my-model</span>
-<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> run-job <span class="at">--model</span> my-provider/my-model <span class="at">--input</span> job.sexp <span class="at">--output</span> result.sexp</span></code></pre></div>
+<div class="sourceCode" id="cb34" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--model</span> my-provider/my-model</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--provider</span> my-provider <span class="at">--model</span> hf:custom/model</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> open <span class="at">--model</span> my-provider/my-model</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> run-job <span class="at">--model</span> my-provider/my-model <span class="at">--input</span> job.sexp <span class="at">--output</span> result.sexp</span></code></pre></div>
 </div>
 </div>
 <p>The launch selection takes precedence over environment variables, saved preferences, and a resumed conversation's model. It does not save a new default; use <code class="verbatim">(model ...)</code> to save a selection. Autolith loads executable initialization and the local provider catalog before validating the requested model, so providers registered in <code class="verbatim">init.lisp</code> are available. Startup does not fetch a remote catalog; use <code class="verbatim">autolith models</code> to list locally known IDs and <code class="verbatim">(models)</code> to refresh them.</p>
@@ -371,13 +371,13 @@ Shell
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb44" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gcloud</span> auth application-default login</span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GOOGLE_CLOUD_PROJECT</span><span class="op">=</span>your-project-id</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GOOGLE_CLOUD_LOCATION</span><span class="op">=</span>global</span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--model</span> vertex-gemini/gemini-3.5-flash</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Or:</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--model</span> vertex-anthropic/claude-sonnet-4-6</span></code></pre></div>
+<div class="sourceCode" id="cb35" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="ex">gcloud</span> auth application-default login</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GOOGLE_CLOUD_PROJECT</span><span class="op">=</span>your-project-id</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">GOOGLE_CLOUD_LOCATION</span><span class="op">=</span>global</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--model</span> vertex-gemini/gemini-3.5-flash</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Or:</span></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--model</span> vertex-anthropic/claude-sonnet-4-6</span></code></pre></div>
 </div>
 </div>
 <p>Enable billing and the Vertex AI API for that project. Your account needs <code class="verbatim">aiplatform.endpoints.predict</code> permission, such as the Vertex AI User role. For Claude, enable the model in Model Garden. Choose a location where the model is available; <code class="verbatim">global</code> is the default.</p>
@@ -390,7 +390,7 @@ Shell
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb45" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> auth nous</span></code></pre></div>
+<div class="sourceCode" id="cb36" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> auth nous</span></code></pre></div>
 </div>
 </div>
 <p>Nous models are discovered from the authenticated account. Run <code class="verbatim">(models)</code> after login to refresh the catalog. Model identifiers beginning with <code class="verbatim">anthropic/</code> use the native Anthropic Messages route; the rest use OpenAI-compatible Chat Completions. Hermes model identifiers are omitted from the catalog because they are not reliable for agentic tool calling.</p>
@@ -409,8 +409,8 @@ Shell
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb46" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> (config :openrouter-provider-routing)</span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">deepseek/deepseek-v4.1-flash</span><span class="sc">\&quot;</span><span class="st">:{</span><span class="sc">\&quot;</span><span class="st">order</span><span class="sc">\&quot;</span><span class="st">:[</span><span class="sc">\&quot;</span><span class="st">baseten</span><span class="sc">\&quot;</span><span class="st">,</span><span class="sc">\&quot;</span><span class="st">together</span><span class="sc">\&quot;</span><span class="st">],</span><span class="sc">\&quot;</span><span class="st">allow_fallbacks</span><span class="sc">\&quot;</span><span class="st">:true}}&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb37" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> (config :openrouter-provider-routing)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>      <span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">deepseek/deepseek-v4.1-flash</span><span class="sc">\&quot;</span><span class="st">:{</span><span class="sc">\&quot;</span><span class="st">order</span><span class="sc">\&quot;</span><span class="st">:[</span><span class="sc">\&quot;</span><span class="st">baseten</span><span class="sc">\&quot;</span><span class="st">,</span><span class="sc">\&quot;</span><span class="st">together</span><span class="sc">\&quot;</span><span class="st">],</span><span class="sc">\&quot;</span><span class="st">allow_fallbacks</span><span class="sc">\&quot;</span><span class="st">:true}}&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <p>You can also supply this JSON through <code class="verbatim">AUTOLITH_OPENROUTER_PROVIDER_ROUTING</code>. Supply an empty string to use OpenRouter's normal routing. Provider preference fields are sent as supplied, including <code class="verbatim">order</code>, <code class="verbatim">allow_fallbacks</code>, <code class="verbatim">only</code>, <code class="verbatim">ignore</code>, <code class="verbatim">sort</code>, and <code class="verbatim">max_price</code>.</p>
@@ -421,18 +421,18 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb47" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>(define-application-command my-version-command</span>
-<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>    (<span class="bu">:name</span>              <span class="st">&quot;my-version&quot;</span></span>
-<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>     :aliases           (<span class="st">&quot;local-version&quot;</span>)</span>
-<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>     :argument          <span class="st">&quot;[LABEL]&quot;</span></span>
-<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>     :description       <span class="st">&quot;show a labeled local integration version&quot;</span></span>
-<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>     :tip               <span class="st">&quot;shows the version supplied by init.lisp.&quot;</span></span>
-<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>     :busy-behavior     :execute</span>
-<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>     :terminal-behavior :shared</span>
-<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a>     :callable          <span class="kw">t</span>)</span>
-<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a>    (application <span class="op">&amp;optional</span> (label <span class="st">&quot;integration&quot;</span>))</span>
-<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a>  (application-present application (<span class="kw">format</span> <span class="kw">nil</span> <span class="st">&quot;~A 3&quot;</span> label))</span>
-<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>  :continue)</span></code></pre></div>
+<div class="sourceCode" id="cb38" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>(define-application-command my-version-command</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    (<span class="bu">:name</span>              <span class="st">&quot;my-version&quot;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>     :aliases           (<span class="st">&quot;local-version&quot;</span>)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>     :argument          <span class="st">&quot;[LABEL]&quot;</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>     :description       <span class="st">&quot;show a labeled local integration version&quot;</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>     :tip               <span class="st">&quot;shows the version supplied by init.lisp.&quot;</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>     :busy-behavior     :execute</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>     :terminal-behavior :shared</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>     :callable          <span class="kw">t</span>)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    (application <span class="op">&amp;optional</span> (label <span class="st">&quot;integration&quot;</span>))</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  (application-present application (<span class="kw">format</span> <span class="kw">nil</span> <span class="st">&quot;~A 3&quot;</span> label))</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  :continue)</span></code></pre></div>
 </div>
 </div>
 <ul>
@@ -451,7 +451,7 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb48" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>(fix-skipped-definitions <span class="st">&quot;Drop all of these. They were temporary development experiments.&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb39" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>(fix-skipped-definitions <span class="st">&quot;Drop all of these. They were temporary development experiments.&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <h2 id="refinement">Refinement</h2>
@@ -461,8 +461,8 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb49" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>(refine :assess <span class="st">&quot;PROPOSAL-ID&quot;</span> :revision <span class="dv">3</span> :verdict :passed</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>        :evidence <span class="st">&quot;Evidence from a separate task&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb40" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>(refine :assess <span class="st">&quot;PROPOSAL-ID&quot;</span> :revision <span class="dv">3</span> :verdict :passed</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>        :evidence <span class="st">&quot;Evidence from a separate task&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <p>Promote from session to project to global scope. Each step requires renewed evaluation and checks for intervening owner changes. If an operation was interrupted, use the recorded evidence to recover it explicitly. Replay does not repeat the operation.</p>
@@ -475,13 +475,13 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb50" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>(:skill-executable :format-version <span class="dv">1</span> :skill-version <span class="st">&quot;1.0.0&quot;</span></span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a> :system <span class="st">&quot;my-workflow&quot;</span> :system-version <span class="st">&quot;1.0.0&quot;</span></span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a> :entrypoint (<span class="st">&quot;MY-WORKFLOW&quot;</span> <span class="st">&quot;RUN&quot;</span>)</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a> :self-test (<span class="st">&quot;MY-WORKFLOW&quot;</span> <span class="st">&quot;SELF-TEST&quot;</span>)</span>
-<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a> :verify (<span class="st">&quot;MY-WORKFLOW&quot;</span> <span class="st">&quot;VERIFY&quot;</span>)</span>
-<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a> :capabilities (<span class="st">&quot;workspace-read&quot;</span>) :tools (<span class="st">&quot;resource.read&quot;</span>)</span>
-<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a> <span class="bu">:input</span> (<span class="bu">:type</span> :object) <span class="bu">:output</span> (<span class="bu">:type</span> :object))</span></code></pre></div>
+<div class="sourceCode" id="cb41" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>(:skill-executable :format-version <span class="dv">1</span> :skill-version <span class="st">&quot;1.0.0&quot;</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a> :system <span class="st">&quot;my-workflow&quot;</span> :system-version <span class="st">&quot;1.0.0&quot;</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a> :entrypoint (<span class="st">&quot;MY-WORKFLOW&quot;</span> <span class="st">&quot;RUN&quot;</span>)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a> :self-test (<span class="st">&quot;MY-WORKFLOW&quot;</span> <span class="st">&quot;SELF-TEST&quot;</span>)</span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a> :verify (<span class="st">&quot;MY-WORKFLOW&quot;</span> <span class="st">&quot;VERIFY&quot;</span>)</span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a> :capabilities (<span class="st">&quot;workspace-read&quot;</span>) :tools (<span class="st">&quot;resource.read&quot;</span>)</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a> <span class="bu">:input</span> (<span class="bu">:type</span> :object) <span class="bu">:output</span> (<span class="bu">:type</span> :object))</span></code></pre></div>
 </div>
 </div></li>
 <li><p>Define the entrypoint with <code class="verbatim">input &amp;key context</code>. Use <code class="verbatim">&amp;key context</code> for self-test and verification functions. Use portable JSON values such as <code class="verbatim">(:object ("status" "ready"))</code> for input and output.</p></li>
@@ -491,8 +491,8 @@ Common Lisp
 JSON
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb51"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span><span class="st">&quot;my-workflow&quot;</span><span class="fu">,</span><span class="dt">&quot;input&quot;</span><span class="fu">:{},</span></span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;asd&quot;</span><span class="fu">:</span><span class="st">&quot;.autolith/skills/my-workflow/my-workflow.asd&quot;</span><span class="fu">,</span><span class="dt">&quot;async&quot;</span><span class="fu">:</span><span class="kw">true</span><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;name&quot;</span><span class="fu">:</span><span class="st">&quot;my-workflow&quot;</span><span class="fu">,</span><span class="dt">&quot;input&quot;</span><span class="fu">:{},</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;asd&quot;</span><span class="fu">:</span><span class="st">&quot;.autolith/skills/my-workflow/my-workflow.asd&quot;</span><span class="fu">,</span><span class="dt">&quot;async&quot;</span><span class="fu">:</span><span class="kw">true</span><span class="fu">}</span></span></code></pre></div>
 </div>
 </div></li>
 </ol>
@@ -505,8 +505,8 @@ JSON
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb52" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>(redact <span class="st">&quot;Alice Smith lives in Amsterdam.&quot;</span>)</span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>(redact text :language <span class="st">&quot;en&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb43" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>(redact <span class="st">&quot;Alice Smith lives in Amsterdam.&quot;</span>)</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>(redact text :language <span class="st">&quot;en&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <p>Read both return values: the redacted string and <code class="verbatim">:ok</code> on success, or <code class="verbatim">nil</code> and a failure status. Autolith processes long prose in pieces. If any piece fails, you get no partial result. Inference runs locally. <em>Review the result</em> before sharing it because model redaction does not guarantee anonymity.</p>
@@ -518,8 +518,8 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb53" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>(autolith:worker-tool-call <span class="st">&quot;resource.read&quot;</span> <span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">uri</span><span class="sc">\&quot;</span><span class="st">:</span><span class="sc">\&quot;</span><span class="st">workspace:src/main.lisp</span><span class="sc">\&quot;</span><span class="st">}&quot;</span>)</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>(autolith:worker-tool-context)</span></code></pre></div>
+<div class="sourceCode" id="cb44" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>(autolith:worker-tool-call <span class="st">&quot;resource.read&quot;</span> <span class="st">&quot;{</span><span class="sc">\&quot;</span><span class="st">uri</span><span class="sc">\&quot;</span><span class="st">:</span><span class="sc">\&quot;</span><span class="st">workspace:src/main.lisp</span><span class="sc">\&quot;</span><span class="st">}&quot;</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>(autolith:worker-tool-context)</span></code></pre></div>
 </div>
 </div>
 <p>Read <code class="verbatim">:success-p</code>, <code class="verbatim">:content</code>, <code class="verbatim">:code</code> and <code class="verbatim">:details</code> from the result. The originating conversation, permissions and mission admission apply to every callback. Use a different REPL for nested worker calls. Omit <code class="verbatim">host-tools</code> if no callbacks are needed.</p>
@@ -529,8 +529,8 @@ Common Lisp
 JSON
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb54"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;host-tools&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="st">&quot;resource.read&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;forms&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="st">&quot;(let ((result (autolith:worker-tool-call </span><span class="ch">\&quot;</span><span class="st">resource.read</span><span class="ch">\&quot;</span><span class="st"> </span><span class="ch">\&quot;</span><span class="st">{</span><span class="ch">\\\&quot;</span><span class="st">uri</span><span class="ch">\\\&quot;</span><span class="st">:</span><span class="ch">\\\&quot;</span><span class="st">workspace:README.org</span><span class="ch">\\\&quot;</span><span class="st">}</span><span class="ch">\&quot;</span><span class="st">))) (if (getf result :success-p) (getf result :content) (getf result :code)))&quot;</span><span class="ot">]</span><span class="fu">}</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">{</span><span class="dt">&quot;host-tools&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="st">&quot;resource.read&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a> <span class="dt">&quot;forms&quot;</span><span class="fu">:</span><span class="ot">[</span><span class="st">&quot;(let ((result (autolith:worker-tool-call </span><span class="ch">\&quot;</span><span class="st">resource.read</span><span class="ch">\&quot;</span><span class="st"> </span><span class="ch">\&quot;</span><span class="st">{</span><span class="ch">\\\&quot;</span><span class="st">uri</span><span class="ch">\\\&quot;</span><span class="st">:</span><span class="ch">\\\&quot;</span><span class="st">workspace:README.org</span><span class="ch">\\\&quot;</span><span class="st">}</span><span class="ch">\&quot;</span><span class="st">))) (if (getf result :success-p) (getf result :content) (getf result :code)))&quot;</span><span class="ot">]</span><span class="fu">}</span></span></code></pre></div>
 </div>
 </div>
 <p>An interrupted callback is recorded as <code class="verbatim">unknown-outcome</code>. Inspect the effects before repeating a call that can change state.</p>
@@ -541,8 +541,8 @@ JSON
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb55" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>(asdf:load-system <span class="st">&quot;autolith/structural&quot;</span>)</span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> autolith:*structural-program* <span class="st">&quot;/path/to/ast-grep&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb46" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>(asdf:load-system <span class="st">&quot;autolith/structural&quot;</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> autolith:*structural-program* <span class="st">&quot;/path/to/ast-grep&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <ol>
@@ -558,9 +558,9 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb56" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>(asdf:load-system <span class="st">&quot;autolith/debug&quot;</span>)</span>
-<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> autolith:*debug-adapter-program* <span class="st">&quot;/path/to/debug-adapter&quot;</span></span>
-<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>      autolith:*debug-adapter-arguments* <span class="kw">nil</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb47" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>(asdf:load-system <span class="st">&quot;autolith/debug&quot;</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> autolith:*debug-adapter-program* <span class="st">&quot;/path/to/debug-adapter&quot;</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>      autolith:*debug-adapter-arguments* <span class="kw">nil</span>)</span></code></pre></div>
 </div>
 </div>
 <p>For an existing registry, call <code class="verbatim">debug-register-tools</code> with <code class="verbatim">:program</code> and literal <code class="verbatim">:arguments</code>. Adapter execution, launch, attach and evaluation require exact full-access command approval. Authorize source and program paths as usual.</p>
@@ -585,13 +585,13 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb57" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">:name</span>             <span class="st">&quot;reviewer&quot;</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a> :description      <span class="st">&quot;Review a change for regressions.&quot;</span></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a> :instructions     <span class="st">&quot;Report concrete, evidence-backed findings.&quot;</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a> :tools            (<span class="st">&quot;resource.read&quot;</span> <span class="st">&quot;search.*&quot;</span>)</span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a> :spawns           <span class="kw">nil</span></span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a> :models           (<span class="st">&quot;@parent&quot;</span>)</span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a> :reasoning-effort :high)</span></code></pre></div>
+<div class="sourceCode" id="cb48" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">:name</span>             <span class="st">&quot;reviewer&quot;</span></span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a> :description      <span class="st">&quot;Review a change for regressions.&quot;</span></span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a> :instructions     <span class="st">&quot;Report concrete, evidence-backed findings.&quot;</span></span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a> :tools            (<span class="st">&quot;resource.read&quot;</span> <span class="st">&quot;search.*&quot;</span>)</span>
+<span id="cb48-5"><a href="#cb48-5" aria-hidden="true" tabindex="-1"></a> :spawns           <span class="kw">nil</span></span>
+<span id="cb48-6"><a href="#cb48-6" aria-hidden="true" tabindex="-1"></a> :models           (<span class="st">&quot;@parent&quot;</span>)</span>
+<span id="cb48-7"><a href="#cb48-7" aria-hidden="true" tabindex="-1"></a> :reasoning-effort :high)</span></code></pre></div>
 </div>
 </div>
 <ul>
@@ -648,8 +648,9 @@ Common Lisp
 <p>On Windows, add existing read-only tool directories with <code class="verbatim">*win32-sandbox-read-roots*</code>. Sandboxed commands run serially while the helper applies temporary access rules. Use local directories without reparse points or hard-linked files. Unsupported scopes or a missing helper cause the command to fail.</p>
 <h2 id="retained-command-output">Retained command output</h2>
 <p><code class="verbatim">shell.run</code> returns the exit status and capture details with a short preview. Pass <code class="verbatim">separate-output: true</code> to capture stdout and stderr separately. Read the <code class="verbatim">shell-log:</code> references from the result or from job inspection after a restart or compaction. You do not need to rerun the command.</p>
-<p>Use <code class="verbatim">resource.read</code> with zero-based <code class="verbatim">byte-offset</code> and <code class="verbatim">byte-count</code> (default and maximum 4096). For a literal search, use <code class="verbatim">query</code> and optionally <code class="verbatim">max-results</code>. Continue at the returned offset. A search scans up to 1 MiB per page. The default is 20 excerpts and the maximum is 50. Text display replaces invalid UTF-8. The retained capture preserves the original bytes.</p>
-<p>Autolith restricts captures to the owning conversation and authorized task descendants. Defaults are 64 MiB per stream and 1 GiB overall. If a stream exceeds its limit, the result marks the capture incomplete. Eligible captures can be pruned after seven days or under byte pressure. Live captures, pending results and captures that support active structured facts receive pruning protection.</p>
+<p>Use <code class="verbatim">resource.read</code> with zero-based <code class="verbatim">byte-offset</code> and <code class="verbatim">byte-count</code> (default and maximum 4096 bytes). For a literal search, use <code class="verbatim">query</code> and optionally <code class="verbatim">max-results</code>. Continue at the returned offset. A search scans up to 1 MiB per page. The default is 20 excerpts and the maximum is 50. Text display replaces invalid UTF-8. The retained capture preserves the original bytes.</p>
+<p>Share the exact reference with another agent to give it access to range reads and searches, including across tasks or sessions.</p>
+<p>The defaults are 64 MiB per stream and 1 GiB overall. If a stream exceeds its limit, the result marks the capture incomplete. Eligible captures can be pruned after seven days or if the overall limit is reached. Live captures, pending results and captures that support active structured facts receive pruning protection.</p>
 <p>Adjust <code class="verbatim">*shell-log-capture-byte-limit*</code>, <code class="verbatim">*shell-log-retention-byte-limit*</code> and <code class="verbatim">*shell-log-retention-age*</code> in trusted configuration. Session export collects task metadata independently of local log storage.</p>
-<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/talk-to-autolith">Talk to Autolith</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/non-interactive-jobs">Non-interactive jobs</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/intro"><span class="toc-number">1</span>Intro</a></li><li><a href="/autolith/docs/terminal-diagrams"><span class="toc-number">2</span>Terminal diagrams</a></li><li><a href="/autolith/docs/command-arguments"><span class="toc-number">3</span>Command arguments</a></li><li><a href="/autolith/docs/onboarding"><span class="toc-number">4</span>Onboarding</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">5</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">6</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">7</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">8</span>Fullscreen terminal</a></li><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">9</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">10</span>Talk to Autolith</a></li><li><span class="toc-current"><span class="toc-number">11</span>Configure Autolith</span></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">12</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">13</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/talk-to-autolith">Talk to Autolith</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/goals-and-verified-missions">Goals and verified missions</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">1</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/first-session"><span class="toc-number">2</span>First session</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">3</span>Talk to Autolith</a></li><li><span class="toc-current"><span class="toc-number">4</span>Configure Autolith</span></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">5</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">6</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">7</span>Emacs and sly</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">8</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">9</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
 <footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 22 November 2026</p></div></footer></body></html>

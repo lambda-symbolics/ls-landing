@@ -30,7 +30,11 @@
 (defparameter *docs-favicon* "/logo/ls-favicon.svg")
 (defparameter *legacy-redirects*
   '( ("install" . "install-update-and-uninstall")
-     ("first-session" . "talk-to-autolith")
+     ("intro" . "first-session")
+     ("onboarding" . "first-session#onboarding")
+     ("command-arguments" . "talk-to-autolith#command-arguments")
+     ("fullscreen-terminal" . "talk-to-autolith#read-the-transcript")
+     ("terminal-diagrams" . "talk-to-autolith#terminal-diagrams")
      ("workspace" . "talk-to-autolith#managed-resources")
      ("tools" . "configure-autolith#worker-tool-calls")
      ("lisp-workers" . "configure-autolith#worker-tool-calls")

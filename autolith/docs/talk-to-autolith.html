@@ -13,9 +13,9 @@
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb17" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>(channel.send :text (read-file <span class="st">&quot;request.org&quot;</span>))</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>(channel.send :channel <span class="st">&quot;@test-review&quot;</span> :text <span class="st">&quot;Run the focused tests.&quot;</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>(channel.send :text <span class="st">&quot;Review this diagram&quot;</span> :images #(<span class="st">&quot;/tmp/diagram.png&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb6" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>(channel.send :text (read-file <span class="st">&quot;request.org&quot;</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>(channel.send :channel <span class="st">&quot;@test-review&quot;</span> :text <span class="st">&quot;Run the focused tests.&quot;</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>(channel.send :text <span class="st">&quot;Review this diagram&quot;</span> :images #(<span class="st">&quot;/tmp/diagram.png&quot;</span>))</span></code></pre></div>
 </div>
 </div>
 <ul>
@@ -29,13 +29,109 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb18" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>? <span class="va">*package*</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>? (<span class="kw">progn</span> (<span class="kw">sleep</span> <span class="dv">10</span>) (<span class="kw">values</span> :finished <span class="dv">42</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb7" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>? <span class="va">*package*</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>? (<span class="kw">progn</span> (<span class="kw">sleep</span> <span class="dv">10</span>) (<span class="kw">values</span> :finished <span class="dv">42</span>))</span></code></pre></div>
 </div>
 </div>
-<p>Use the printed <code class="verbatim">exec:N</code> ID to inspect, wait for, or cancel that job: <code class="verbatim">(job.get :id "exec:1")</code>, <code class="verbatim">(job.wait :id "exec:1")</code>, or <code class="verbatim">(job.cancel :id "exec:1")</code>. Replace <code class="verbatim">exec:1</code> with the ID you received. In fullscreen, click the printed cancellation form to insert it in the composer. The result and captured output go to the original conversation even if you switch channels. Background Lisp uses EOF for input and reports errors without an interactive restart picker. Submitting a form this way does not start a model turn.</p>
+<p>Use the printed <code class="verbatim">exec:N</code> ID to inspect, wait for, or cancel that job: <code class="verbatim">(job.get :id "exec:1")</code>, <code class="verbatim">(job.wait :id "exec:1")</code>, or <code class="verbatim">(job.cancel :id "exec:1")</code>. Replace <code class="verbatim">exec:1</code> with the ID you received. Click the printed cancellation form to insert it at the prompt. The result and captured output go to the original conversation even if you switch channels. Background Lisp uses EOF for input and reports errors without an interactive restart picker. Submitting a form this way does not start a model turn.</p>
 <p>When local Lisp or a command fails and the restart picker opens, choose <strong>Ask Autolith why this failed</strong> to diagnose it while the operation is suspended. Review the proposed recovery before choosing a restart or retry. A retry does not undo effects that happened before the error. Escape during diagnosis returns to the picker; Escape at the picker aborts the failed operation.</p>
 <p>During a model turn, Escape cancels that turn and lets queued steering proceed. Ctrl-C cancels the turn and pauses queued work until your next submission. A second Ctrl-C within the force-exit window exits the application. Use <code class="verbatim">(cwd)</code> to see the current workspace. If you submit <code class="verbatim">(cwd "../other-project")</code> during a turn, the relative path is resolved when that input reaches its place in the steering queue.</p>
+<h2 id="command-arguments">Command arguments</h2>
+<p>Pass Lisp values directly to commands:</p>
+<ul>
+<li>Use keywords for actions, such as <code class="verbatim">:refresh</code> in <code class="verbatim">(mcp :refresh)</code>.</li>
+<li>Use <code class="verbatim">t</code> to enable a setting and <code class="verbatim">nil</code> to disable it. Omit the value to inspect the setting.</li>
+<li>Use numbers for quantities and strings for text or identifiers. Pass pathnames and quoted Lisp data directly rather than spelling them out in strings.</li>
+</ul>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb8" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>(settings :boot-screen-seconds <span class="dv">2</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>(settings :reasoning-traces-p <span class="kw">t</span>)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>(settings :reasoning-traces-p <span class="kw">nil</span>)</span></code></pre></div>
+</div>
+</div>
+<h3 id="automatic-permissions">Automatic permissions</h3>
+<p>Choose a permission mode for the channel:</p>
+<ul>
+<li><code class="verbatim">(permissions :ask)</code> prompts for approval. Choose <code class="verbatim">once</code> for one operation or <code class="verbatim">always</code> to approve the exact operation for future calls.</li>
+<li><code class="verbatim">(permissions :auto)</code> classifies operations without an approval prompt. While Autolith classifies the call, look for <code class="verbatim">judging</code> in the status bar. Read the decision beside the tool call.</li>
+<li>Use <code class="verbatim">(permissions :sandbox)</code> for sandboxed execution on supported platforms.</li>
+<li>Use <code class="verbatim">(permissions :full)</code> to run with your full user privileges.</li>
+</ul>
+<p>The mode is stored locally and restored when you reopen a saved channel. This includes <strong>full</strong> access, even after a restart.</p>
+<h2 id="read-the-transcript">Read the transcript</h2>
+<p>The transcript is above the prompt. Look for <code class="verbatim">LIVE</code> in the modeline when following new output. Otherwise, read the range of rows that are visible.</p>
+<ul>
+<li>Use <code class="verbatim">PageUp</code> and <code class="verbatim">PageDown</code> to scroll one page, or use the mouse wheel to scroll a few rows.</li>
+<li>Use <code class="verbatim">Ctrl-PageUp</code> and <code class="verbatim">Ctrl-PageDown</code> to jump between user and assistant messages. The jump puts the end of the message above the composer, or puts the header at the top if the message is taller than the viewport.</li>
+<li>Use <code class="verbatim">Ctrl-Home</code> and <code class="verbatim">Ctrl-End</code> to jump to the oldest and newest retained transcript positions.</li>
+<li>In a hosted channel, press <code class="verbatim">Ctrl-S</code> to toggle the sidebar. Press <code class="verbatim">Ctrl-Space</code> to focus it. See <a href="#local-sessions">Local sessions</a>.</li>
+<li>Drag across the transcript to copy selected text on release. Use <code class="verbatim">Shift</code> and drag to select whole screen rows in the terminal emulator instead.</li>
+</ul>
+<p>Transcript history is separate from the scrollback of the terminal emulator. The viewport keeps about four million characters of recent output in memory. At the oldest retained row, the modeline shows <code class="verbatim">(history) loads earlier</code>. Run <code class="verbatim">(history)</code> to load a page of older output.</p>
+<p>When saved memories match your input, a dim <code class="verbatim">@ N relevant memories exist</code> line appears below your message. It shows how many memories were offered to the model for that request, followed by how many of them are stale or unverified (see the Memories section). Each input gets one notice across tool calls and provider retries.</p>
+<p>Input recall includes every user message, command, and Lisp submission in the conversation. Automatic messages and assistant output are excluded. On first use, the complete input-only sidecar is built from the conversation records; later submissions are appended to it. Resuming reads this sidecar instead of replaying archived transcript chunks. If cache storage is unavailable, recall streams the conversation records directly. The editor keeps the newest 500 inputs, up to a million characters, in memory. Moving past the oldest of them loads the next older page, and leaving history recall releases it again.</p>
+<p>Click a web address in the transcript to open it in your browser. Use <code class="verbatim">⧉ copy</code> below a code block to copy the source. If you connect over SSH, transcript copies can reach your local clipboard through OSC 52.</p>
+<p>Click a tool call header to insert its Lisp form at the cursor. Submit the form to repeat the call, edit the arguments to change the call, or add a question to ask the model about it. Arrays are spelled as <code class="verbatim">(vector ...)</code> and objects as <code class="verbatim">(dict ...)</code>, and argument names with uppercase letters keep their case as <code class="verbatim">:|filePath|</code> or a string key.</p>
+<p>Click a <code class="verbatim">lisp.eval</code> input block to expand the complete Lisp source with syntax highlighting. Click it again to collapse it. The selected view persists through resizing and tool completion.</p>
+<p>Lisp evaluation inputs, returned source, and values use rainbow parentheses: matching parentheses share a color, and nesting depths cycle through six colors. Strings, character literals, escaped symbols, and comments do not affect depth.</p>
+<p>Tool argument names emitted with underscores are matched to declared hyphenated names, including nested objects and array items. If both spellings are present, the declared spelling takes precedence.</p>
+<p>A pending tool call starts with <code class="verbatim">▸</code>. When it finishes, the same header shows a green <code class="verbatim">✓</code> for success or a red <code class="verbatim">!</code> for failure. Errors appear beneath the original invocation and arguments. Background handoffs keep <code class="verbatim">▸</code> until completion. Thanks to @rgbcube for suggesting these outcome markers.</p>
+<p>Autolith reports the session status over the interactive terminal using the <a href="https://www.superlogical.com/rex/docs/build/program-status">OSC 7501 Program Status Protocol</a> and <code class="verbatim">app=autolith</code>:</p>
+<div class="table-scroll">
+<table>
+<thead>
+<tr>
+<th>Status</th>
+<th>When reported</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code class="verbatim">idle</code></td>
+<td>At startup or after cancellation</td>
+</tr>
+<tr>
+<td><code class="verbatim">working</code></td>
+<td>During foreground input and resumed model turns</td>
+</tr>
+<tr>
+<td><code class="verbatim">done</code> or <code class="verbatim">error</code></td>
+<td>After success or failure, until the next input or model turn</td>
+</tr>
+<tr>
+<td><code class="verbatim">blocked</code></td>
+<td>For an input selector (<code class="verbatim">kind=question</code>), an approval (<code class="verbatim">kind=permission</code>), or authentication (<code class="verbatim">kind=auth</code>)</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Reports include the conversation title. Progress from children and background jobs appears in the transcript. Reports omit prompt text, assignments, results, credentials, and progress estimates.</p>
+<h3 id="terminal-diagrams">Terminal diagrams</h3>
+<p>Ask for a fenced <code class="verbatim">mermaid</code> block to see a diagram in the terminal. <a href="https://github.com/lambda-symbolics/clermaid">Clermaid</a> documents the supported syntax for:</p>
+<ul>
+<li>Flowcharts</li>
+<li>Sequence diagrams</li>
+<li>Flat state diagrams</li>
+<li>Class diagrams</li>
+<li>Entity relationship diagrams</li>
+</ul>
+<div class="window code-window">
+<div class="window-titlebar">
+markdown
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb9"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="in">```mermaid</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="in">flowchart LR</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="in">  A[Read] --&gt; B[Evaluate]</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="in">  B --&gt; C[Print]</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span></code></pre></div>
+</div>
+</div>
+<p>While the response streams, read the Mermaid source in the live tail. Use the <strong>copy</strong> action on the finished diagram to copy the source. If the syntax is unsupported or the diagram is too wide, read the source block instead.</p>
 <h2 id="parking-and-editing-queued-input">Parking and editing queued input</h2>
 <ol>
 <li>Run <code class="verbatim">(vault-store)</code> to park queued work and unconsumed steering. Work already in progress continues.</li>
@@ -47,10 +143,10 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb19" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>(vault-store)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>(vault-contents)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> (vault-contents <span class="dv">0</span>) &#39;(:message <span class="st">&quot;Run the unit tests first.&quot;</span>))</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>(vault-restore)</span></code></pre></div>
+<div class="sourceCode" id="cb10" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>(vault-store)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>(vault-contents)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> (vault-contents <span class="dv">0</span>) &#39;(:message <span class="st">&quot;Run the unit tests first.&quot;</span>))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>(vault-restore)</span></code></pre></div>
 </div>
 </div>
 <p>Use <code class="verbatim">(vault)</code> for a summary. To replace the entire list, set <code class="verbatim">(vault-contents)</code> without an index. Its entries may be <code class="verbatim">(:message INPUT)</code>, <code class="verbatim">(:command TEXT)</code>, <code class="verbatim">(:lisp SOURCE)</code> or, for scheduled wakeups, <code class="verbatim">(:native-lisp SOURCE)</code>. Set the list to <code class="verbatim">nil</code> to clear it.</p>
@@ -61,9 +157,9 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb20" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;workspace:README.md&quot;</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;channel:current&quot;</span> :query <span class="st">&quot;unit tests&quot;</span> :max-results <span class="dv">5</span>)</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;channel:current&quot;</span> :start-sequence <span class="dv">120</span> :record-count <span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;workspace:README.md&quot;</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;channel:current&quot;</span> :query <span class="st">&quot;unit tests&quot;</span> :max-results <span class="dv">5</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;channel:current&quot;</span> :start-sequence <span class="dv">120</span> :record-count <span class="dv">10</span>)</span></code></pre></div>
 </div>
 </div>
 <div class="table-scroll">
@@ -106,13 +202,13 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb21" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>(memories)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>(memories <span class="st">&quot;deploy&quot;</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>(memory <span class="st">&quot;3afbfa1a&quot;</span>)</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>(forget <span class="st">&quot;3afbfa1a&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb12" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>(memories)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>(memories <span class="st">&quot;deploy&quot;</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>(memory <span class="st">&quot;3afbfa1a&quot;</span>)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>(forget <span class="st">&quot;3afbfa1a&quot;</span>)</span></code></pre></div>
 </div>
 </div>
-<p>In fullscreen, <code class="verbatim">(memories)</code> opens the memory manager. Press <code class="verbatim">/</code> to search, Tab to choose between All, Notes, and Facts, and Shift-Tab to choose a scope. Press Enter to read the selected item on a narrow terminal. Use <code class="verbatim">n</code> to create a note, <code class="verbatim">e</code> to edit it, <code class="verbatim">d</code> to forget it or retract an asserted fact, and <code class="verbatim">r</code> to reload. In the note form, use Tab to move between fields, Space to choose a scope, Shift-Enter for a newline, and Enter to save. Outside fullscreen, the listing and explanation commands print text. Use a full ID or a unique ID prefix.</p>
+<p>Open the memory manager with <code class="verbatim">(memories)</code>. Press <code class="verbatim">/</code> to search, Tab to choose between All, Notes, and Facts, and Shift-Tab to choose a scope. Press Enter to read the selected item on a narrow terminal. Use <code class="verbatim">n</code> to create a note, <code class="verbatim">e</code> to edit it, <code class="verbatim">d</code> to forget it or retract an asserted fact, and <code class="verbatim">r</code> to reload. In the note form, use Tab to move between fields, Space to choose a scope, Shift-Enter for a newline, and Enter to save. Use a full ID or a unique ID prefix when you pass an ID to a command.</p>
 <p>A note can cite a file, a web page, your words, or another memory as a <em>premise</em>. A note is <em>stale</em> if a cited passage disappears from a file or a premise changes. Any notes derived from it become stale too. A note whose only cited files cannot be read is <em>unverified</em>. Inspect the evidence with <code class="verbatim">(memory "ID")</code>. Update the source or premise when you update what the note claims. Retagging a note does not refresh its evidence.</p>
 <p>For agent-written notes, the <code class="verbatim">memory-remember</code> and <code class="verbatim">memory-replace</code> operations accept <code class="verbatim">sources</code> and <code class="verbatim">premises</code>. Use <code class="verbatim">memory:id/ID</code> to inspect one note. Workspace file references inside that workspace are relative and can move with an export.</p>
 <h3 id="facts-and-rules">Facts and rules</h3>
@@ -128,11 +224,11 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb22" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>(rules)</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>(admit-rule <span class="st">&quot;departure&quot;</span>)</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>(what-changed)</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>(why <span class="st">&quot;c4dfffae&quot;</span>)</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>(retire-rule <span class="st">&quot;departure&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb13" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>(rules)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(admit-rule <span class="st">&quot;departure&quot;</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>(what-changed)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>(why <span class="st">&quot;c4dfffae&quot;</span>)</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>(retire-rule <span class="st">&quot;departure&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <p>Use <code class="verbatim">(why "ID")</code> to inspect the sources, rule and premises of a fact, or the evidence for a note. Use <code class="verbatim">(forget "ID")</code> to retract an asserted fact. If two facts disagree, both are shown as <em>conflicted</em>. A negated premise requires an explicit negative fact; missing information is unknown. Recheck evidence when a cited file changes. Web evidence expires after a week and tool output after a day; observe it again to renew it.</p>
@@ -143,7 +239,7 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb23" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>(knowledge-usage-report (application-conversation *active-application*))</span></code></pre></div>
+<div class="sourceCode" id="cb14" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>(knowledge-usage-report (application-conversation *active-application*))</span></code></pre></div>
 </div>
 </div>
 <h3 id="plans-methods-gates-and-contracts">Plans, methods, gates, and contracts</h3>
@@ -156,7 +252,7 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb24" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(:id <span class="st">&quot;departure-known&quot;</span> :kind :fact :pattern (<span class="st">&quot;event.departure&quot;</span> <span class="st">&quot;review&quot;</span> <span class="st">&quot;?t&quot;</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb15" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>(:id <span class="st">&quot;departure-known&quot;</span> :kind :fact :pattern (<span class="st">&quot;event.departure&quot;</span> <span class="st">&quot;review&quot;</span> <span class="st">&quot;?t&quot;</span>))</span></code></pre></div>
 </div>
 </div></li>
 <li><p>A tool <em>contract</em> can require facts before a call and record facts from its result. For example, require a verified destination before publishing a report. If the prerequisite fails, the tool is not called. A predicted effect only counts if the contract explicitly accepts it.</p></li>
@@ -169,10 +265,10 @@ Common Lisp
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb25" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>(procedures)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>(admit-procedure <span class="st">&quot;make-sales-report&quot;</span>)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>(run-procedure <span class="st">&quot;make-sales-report&quot;</span> :file <span class="st">&quot;q5&quot;</span>)</span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>(retire-procedure <span class="st">&quot;make-sales-report&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb16" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(procedures)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>(admit-procedure <span class="st">&quot;make-sales-report&quot;</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>(run-procedure <span class="st">&quot;make-sales-report&quot;</span> :file <span class="st">&quot;q5&quot;</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>(retire-procedure <span class="st">&quot;make-sales-report&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <p>Replace the name and parameters with those listed for your procedure. The first run normally asks you to admit the procedure, and its calls still follow tool approvals and contracts. An exact request pattern can run automatically once the admitted version has demonstrated savings on completed turns. An approximate match is only offered to the model. Two consecutive failed runs suspend the procedure; use <code class="verbatim">(admit-procedure "NAME")</code> after you check it. Use <code class="verbatim">(retire-procedure "NAME")</code> to prevent further runs and relearning. Agents inspect procedures at <code class="verbatim">memory:procedures</code> and invoke them with <code class="verbatim">procedure.run</code>. Learning and recall require active structured knowledge.</p>
@@ -186,8 +282,8 @@ Common Lisp
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb26" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> data export project.sexp <span class="at">--workspace</span> /home/al/code/project</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> data import project.sexp <span class="at">--workspace</span> /home/al/src/project</span></code></pre></div>
+<div class="sourceCode" id="cb17" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> data export project.sexp <span class="at">--workspace</span> /home/al/code/project</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> data import project.sexp <span class="at">--workspace</span> /home/al/src/project</span></code></pre></div>
 </div>
 </div>
 <p>Use the same archive format at the Autolith prompt:</p>
@@ -196,8 +292,8 @@ Shell
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb27" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>(data.<span class="kw">export</span> <span class="st">&quot;project.sexp&quot;</span> :workspace <span class="st">&quot;/home/al/code/project&quot;</span>)</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>(data.<span class="kw">import</span> <span class="st">&quot;project.sexp&quot;</span> :workspace <span class="st">&quot;/home/al/src/project&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb18" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>(data.<span class="kw">export</span> <span class="st">&quot;project.sexp&quot;</span> :workspace <span class="st">&quot;/home/al/code/project&quot;</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>(data.<span class="kw">import</span> <span class="st">&quot;project.sexp&quot;</span> :workspace <span class="st">&quot;/home/al/src/project&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <p>Export includes conversations, notes, facts, rules, agendas, plans, papercuts and related assets. Copy the repository separately. Credentials, configuration, images and caches are excluded. Omit <code class="verbatim">--workspace</code> to export all workspaces and global data, or pass <code class="verbatim">--all</code> explicitly (<code class="verbatim">:all t</code> in Lisp).</p>
@@ -226,11 +322,11 @@ Common Lisp
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb28" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> open</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> open researcher <span class="at">--read-only</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> open /researcher/reviewer</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> new /home/al/code/project</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> new /home/al/code/project <span class="at">--detached</span></span></code></pre></div>
+<div class="sourceCode" id="cb19" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> open</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> open researcher <span class="at">--read-only</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> open /researcher/reviewer</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> new /home/al/code/project</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> new /home/al/code/project <span class="at">--detached</span></span></code></pre></div>
 </div>
 </div>
 <p>Without a target, <code class="verbatim">autolith open</code> opens the last changed top-level channel in the current workspace or creates one if there is none. Use <code class="verbatim">autolith new</code> for a fresh channel; add <code class="verbatim">-d</code> or <code class="verbatim">--detached</code> to create it without attaching. To open it later, use the printed <code class="verbatim">autolith open ID</code> command. Only one terminal can control a channel. Use <code class="verbatim">--read-only</code> to observe from another terminal.</p>
@@ -241,7 +337,7 @@ Shell
 <p>If you lose a connection unexpectedly, press <code class="verbatim">r</code> or Enter to retry the same channel, enter an ID to switch, or press <code class="verbatim">q</code> to detach. Retrying does not resubmit your work.</p>
 <p>Use <code class="verbatim">--model</code>, <code class="verbatim">--permissions</code> or <code class="verbatim">--immutable</code> when creating a channel. Pair <code class="verbatim">--provider</code> with <code class="verbatim">--model</code>. When opening an existing channel, the only launch override you can pass is <code class="verbatim">--permissions</code>, and only when no terminal controls it. To choose a permission mode in the channel, run <code class="verbatim">(permissions)</code>.</p>
 <h3 id="channel-sidebar">Channel sidebar</h3>
-<p>In fullscreen, unfold <strong>home</strong> to find channels grouped by repository or workspace. Linked worktrees share a group when Autolith can identify their originating checkout. Independent clones have separate groups. Child channels are nested under their parent. Home shows the inbox and its unread count.</p>
+<p>Unfold <strong>home</strong> to find channels grouped by repository or workspace. Linked worktrees share a group when Autolith can identify their originating checkout. Independent clones have separate groups. Child channels are nested under their parent. Home shows the inbox and its unread count.</p>
 <ul>
 <li>Press Ctrl-S to toggle the sidebar. On a narrow terminal it opens as a drawer.</li>
 <li>Click the sidebar or press Ctrl-Space (Ctrl-Tab where supported) to focus it. Use the arrows to select or expand an entry, Enter to open it, or Delete to remove it after confirmation.</li>
@@ -283,11 +379,11 @@ Shell
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb29" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> start</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> tell researcher <span class="st">&#39;Review the failing unit test.&#39;</span></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> tell /researcher/reviewer <span class="st">&#39;(channel-id)&#39;</span></span>
-<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> pause researcher</span>
-<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> detach researcher</span></code></pre></div>
+<div class="sourceCode" id="cb20" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> start</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> tell researcher <span class="st">&#39;Review the failing unit test.&#39;</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> tell /researcher/reviewer <span class="st">&#39;(channel-id)&#39;</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> pause researcher</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> detach researcher</span></code></pre></div>
 </div>
 </div>
 <p>Use <code class="verbatim">start</code> to launch the server in the background, <code class="verbatim">tell</code> to submit input, <code class="verbatim">pause</code> to cancel active work and hold queued work, or <code class="verbatim">detach</code> to disconnect the client. You may omit the target from <code class="verbatim">pause</code> and <code class="verbatim">detach</code> when exactly one endpoint is reachable. Use <code class="verbatim">tell</code> for an unloaded channel too. Its agent is started without a terminal.</p>
@@ -339,14 +435,14 @@ Shell
 Common Lisp
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb30" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">open</span> <span class="st">&quot;inbox&quot;</span>)</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>(tell <span class="st">&quot;@researcher&quot;</span> <span class="st">&quot;Check the release notes.&quot;</span>)</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>(<span class="kw">open</span> <span class="st">&quot;/researcher/reviewer&quot;</span>)</span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>(rename <span class="st">&quot;/researcher/reviewer&quot;</span> <span class="st">&quot;critic&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>(<span class="kw">open</span> <span class="st">&quot;inbox&quot;</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>(tell <span class="st">&quot;@researcher&quot;</span> <span class="st">&quot;Check the release notes.&quot;</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>(<span class="kw">open</span> <span class="st">&quot;/researcher/reviewer&quot;</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>(rename <span class="st">&quot;/researcher/reviewer&quot;</span> <span class="st">&quot;critic&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <p>Address a channel by agent handle, exact path, full ID or unique ID fragment. For <code class="verbatim">autolith open</code>, a bare agent name works too. Use a full ID in a bookmark or script if the names may change. A path follows channel ancestry and can change when an agent is renamed. Copy the displayed path, including case and percent escapes. Find paths with <code class="verbatim">(open)</code> or <code class="verbatim">channel:list</code>. Use <code class="verbatim">(tell)</code> to pick a recipient and prepare a message. Use <code class="verbatim">(rename "WHO" "NAME")</code> to rename a participant. Handles accept letters, digits, hyphens and underscores and are matched without regard to case.</p>
 <p>Use a mention such as <code class="verbatim">@researcher please check this</code> to send a copy to a participant from your current conversation. A mention starts a word, so the <code class="verbatim">@</code> inside a mail address does not count. To send directly, use <code class="verbatim">(tell "ID" "text")</code>. Agents use <code class="verbatim">channel.send</code> and can follow other channels through <code class="verbatim">channel.subscribe</code> and <code class="verbatim">channel.unsubscribe</code>. Subscribers receive copies of messages and replies. An agent can use <code class="verbatim">@parent</code> to reach its nearest active ancestor or, if there is none, you.</p>
 <p>An idle agent starts work when it receives a message. A working agent receives it as steering. Messages for you go to the inbox. Open it with <code class="verbatim">(open "inbox")</code> and use the <code class="verbatim">open</code> form at the end of a notice to jump to its source. Read a child agent transcript at <code class="verbatim">channel:id/ID</code>, where <code class="verbatim">ID</code> is its execution ID. Child channels nest under the parent; <code class="verbatim">AUTOLITH_TASK_MAX_DEPTH</code> defaults to three levels below a top-level agent.</p>
-<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/install-update-and-uninstall">Install, update, and uninstall</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/configure-autolith">Configure Autolith</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/intro"><span class="toc-number">1</span>Intro</a></li><li><a href="/autolith/docs/terminal-diagrams"><span class="toc-number">2</span>Terminal diagrams</a></li><li><a href="/autolith/docs/command-arguments"><span class="toc-number">3</span>Command arguments</a></li><li><a href="/autolith/docs/onboarding"><span class="toc-number">4</span>Onboarding</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">5</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">6</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">7</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">8</span>Fullscreen terminal</a></li><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">9</span>Install, update, and uninstall</a></li><li><span class="toc-current"><span class="toc-number">10</span>Talk to Autolith</span></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">11</span>Configure Autolith</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">12</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">13</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/first-session">First session</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/configure-autolith">Configure Autolith</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">1</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/first-session"><span class="toc-number">2</span>First session</a></li><li><span class="toc-current"><span class="toc-number">3</span>Talk to Autolith</span></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">4</span>Configure Autolith</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">5</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">6</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">7</span>Emacs and sly</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">8</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">9</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
 <footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 22 November 2026</p></div></footer></body></html>

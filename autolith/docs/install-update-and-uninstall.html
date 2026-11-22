@@ -12,7 +12,7 @@
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb13" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix</span> run github:lambda-symbolics/autolith</span></code></pre></div>
+<div class="sourceCode" id="cb1" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="ex">nix</span> run github:lambda-symbolics/autolith</span></code></pre></div>
 </div>
 </div>
 <p>You can pass Autolith arguments after <code class="verbatim">--</code>. To get a command on your <code class="verbatim">PATH</code>, use <code class="verbatim">nix profile install github:lambda-symbolics/autolith</code>.</p>
@@ -24,7 +24,7 @@ Shell
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb14" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://sh.lambda-symbolics.com/autolith <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div>
+<div class="sourceCode" id="cb2" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="ex">curl</span> <span class="at">-fsSL</span> https://sh.lambda-symbolics.com/autolith <span class="kw">|</span> <span class="fu">sh</span></span></code></pre></div>
 </div>
 </div>
 <p>The shell installer selects a package for your operating system and CPU:</p>
@@ -41,7 +41,7 @@ Shell
 PowerShell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb15"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Invoke-RestMethod</span> https<span class="op">://</span>sh<span class="op">.</span><span class="fu">lambda</span><span class="op">-</span>symbolics<span class="op">.</span><span class="fu">com</span><span class="op">/</span>autolith<span class="op">.</span><span class="fu">ps1</span> <span class="op">|</span> <span class="fu">Invoke-Expression</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode powershell"><code class="sourceCode powershell"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Invoke-RestMethod</span> https<span class="op">://</span>sh<span class="op">.</span><span class="fu">lambda</span><span class="op">-</span>symbolics<span class="op">.</span><span class="fu">com</span><span class="op">/</span>autolith<span class="op">.</span><span class="fu">ps1</span> <span class="op">|</span> <span class="fu">Invoke-Expression</span></span></code></pre></div>
 </div>
 </div>
 <p>Restart Windows Terminal so that you can use the updated <code class="verbatim">PATH</code>. Sandboxed commands run in an AppContainer without network access. They can write to the workspace and a private temporary directory.</p>
@@ -62,8 +62,8 @@ PowerShell
 Shell
 </div>
 <div class="window-body">
-<div class="sourceCode" id="cb16" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./script/check</span> <span class="at">--suite</span> workspace-resource <span class="at">--suite</span> fixtures</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./script/check</span> <span class="at">--test</span> test-workspace-file-resources <span class="at">--jobs</span> 1</span></code></pre></div>
+<div class="sourceCode" id="cb4" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="ex">./script/check</span> <span class="at">--suite</span> workspace-resource <span class="at">--suite</span> fixtures</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ex">./script/check</span> <span class="at">--test</span> test-workspace-file-resources <span class="at">--jobs</span> 1</span></code></pre></div>
 </div>
 </div>
 <p>Use <code class="verbatim">--jobs</code> to set the number of workers and <code class="verbatim">--timeout</code> to set the time limit per worker in seconds. Selected runs skip the recovery checks.</p>
@@ -81,5 +81,5 @@ Shell
 <li>If you used Nix, remove Autolith from the flake or profile. If you built a checkout, delete the checkout separately.</li>
 </ol>
 <p>The installation, managed runtimes, built images, and caches are removed. Your conversations, memories, image commits, configuration, and credentials are kept.</p>
-<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/fullscreen-terminal">Fullscreen terminal</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/talk-to-autolith">Talk to Autolith</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/intro"><span class="toc-number">1</span>Intro</a></li><li><a href="/autolith/docs/terminal-diagrams"><span class="toc-number">2</span>Terminal diagrams</a></li><li><a href="/autolith/docs/command-arguments"><span class="toc-number">3</span>Command arguments</a></li><li><a href="/autolith/docs/onboarding"><span class="toc-number">4</span>Onboarding</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">5</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">6</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">7</span>Emacs and sly</a></li><li><a href="/autolith/docs/fullscreen-terminal"><span class="toc-number">8</span>Fullscreen terminal</a></li><li><span class="toc-current"><span class="toc-number">9</span>Install, update, and uninstall</span></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">10</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">11</span>Configure Autolith</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">12</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">13</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/first-session">First session</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><span class="toc-current"><span class="toc-number">1</span>Install, update, and uninstall</span></li><li><a href="/autolith/docs/first-session"><span class="toc-number">2</span>First session</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">3</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">4</span>Configure Autolith</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">5</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">6</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">7</span>Emacs and sly</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">8</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">9</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
 <footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 22 November 2026</p></div></footer></body></html>
