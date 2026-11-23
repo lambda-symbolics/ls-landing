@@ -41,14 +41,37 @@ Point Vercel at this repository/submodule and deploy as a static site.
 
 ## Autolith docs
 
-The site guide in `autolith/docs/` comes from `docs/guide.org` in the Autolith
-source repo. It covers development builds and links to the guide for the
-latest release. Before regenerating, update the revision date and release
-number in `tools/make-docs.lisp`. You need Pandoc, SBCL and `sha256sum`.
+The development guide uses Lisp data in `content/guide/`, one file per chapter.
+`index.sexp` lists the chapters in order. The published guide links to the Org
+manual for the corresponding Autolith release.
+
+For in-place copy editing, install SBCL and Quicklisp, then run:
 
 ```bash
-AUTOLITH_GUIDE=/path/to/autolith/docs/guide.org \
-  sbcl --non-interactive --load tools/make-docs.lisp --eval '(make-docs)'
+sbcl --script tools/edit-docs.lisp
+```
+
+Open `http://127.0.0.1:7778/autolith/docs` and choose a chapter. Edit headings,
+paragraphs, list text, and table cells directly. Click outside a field or press
+Ctrl+S to save to its `.sexp` file. Use Ctrl+B, Ctrl+I, or Ctrl+K for bold,
+italics, and links. Edit code samples and document structure in the chapter
+files. The editor writes to the checkout, so use loopback or a trusted private
+interface.
+
+Before publishing, regenerate `autolith/docs/` and `sitemap.xml`. Update the
+revision date and release number in `tools/make-docs.lisp` when appropriate,
+and commit the chapter files and their regenerated pages together.
+
+```bash
+sbcl --non-interactive --load tools/make-docs.lisp --eval '(make-docs)'
+```
+
+The site copy was imported from Autolith's `docs/guide.org` at `175b72a8`.
+To review a future upstream guide, use Pandoc and Python to import it into an
+empty directory, then merge the changes you want into `content/guide/`:
+
+```bash
+python3 tools/import-docs.py /path/to/autolith/docs/guide.org /path/to/new-import
 ```
 
 Check window shadow clearance at desktop and mobile widths with Chromium, and

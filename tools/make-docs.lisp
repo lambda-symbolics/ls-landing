@@ -1,9 +1,6 @@
-;;;; Generate the public Autolith manual from docs/guide.org.
+;;;; Generate the public Autolith manual from content/guide/*.sexp.
 ;;;
-;;; Usage:
-;;;   AUTOLITH_GUIDE=/path/to/autolith/docs/guide.org \
-;;;     sbcl --non-interactive --load tools/make-docs.lisp \
-;;;     --eval '(make-docs)'
+;;; sbcl --non-interactive --load tools/make-docs.lisp --eval '(make-docs)'
 
 (eval-when (:compile-toplevel :load-toplevel :execute)
   (require :asdf))
@@ -12,11 +9,7 @@
   (uiop:pathname-parent-directory-pathname
    (truename (or *load-pathname* *compile-file-pathname*))))
 (defparameter *docs-dir* (merge-pathnames "autolith/docs/" *site-root*))
-(defparameter *guide-path*
-  (pathname (or (uiop:getenv "AUTOLITH_GUIDE")
-                "~/common-lisp/autolith/docs/guide.org")))
-(defparameter *pandoc-filter*
-  (merge-pathnames "tools/pandoc-autolith.lua" *site-root*))
+(load (merge-pathnames "tools/docs-content.lisp" *site-root*))
 (defparameter *docs-revised* "22 November 2026")
 (defparameter *docs-release* "0.67.66")
 (defparameter *paper-css-url*
@@ -79,60 +72,32 @@
   (if (string= slug "") "/autolith/docs"
       (format nil "/autolith/docs/~A" slug)))
 
-(defun docs-guide-html ()
-  (unless (probe-file *guide-path*)
-    (error "Autolith guide not found: ~A" *guide-path*))
-  (uiop:run-program
-   (list "pandoc" "--from=org" "--to=html5" "--wrap=none"
-         "--highlight-style=pygments"
-         (format nil "--lua-filter=~A" (namestring *pandoc-filter*))
-         (namestring (truename *guide-path*)))
-   :output :string :error-output :string))
+(defun docs-chapters ()
+  "Read the guide chapters in manifest order."
+  (loop for slug in (docs-chapter-slugs)
+        for nodes = (docs-chapter-read (docs-chapter-path slug))
+        for heading = (first nodes)
+        collect
+        (progn
+          (unless (and (consp heading) (eq (first heading) :h1)
+                       (equal (getf (second heading) :id) slug))
+            (docs-invalid (format nil "Chapter ~A needs a matching top-level heading." slug)))
+          (list :slug slug :title (docs-render-title (cddr heading))
+                :description (docs-render-title (cddr heading) :attribute-p t)
+                :nodes nodes))))
 
-(defun docs-h1-positions (html)
-  (loop with positions = nil and start = 0
-        for found = (search "<h1 id=\"" html :start2 start)
-        while found do (push found positions) (setf start (1+ found))
-        finally (return (nreverse positions))))
-
-(defun docs-attribute (tag name)
-  (let* ((prefix (format nil "~A=\"" name))
-         (start (search prefix tag)))
-    (unless start (error "Missing ~A in ~A" name tag))
-    (let ((value-start (+ start (length prefix))))
-      (subseq tag value-start (position #\" tag :start value-start)))))
-
-(defun docs-strip-tags (text)
-  (with-output-to-string (out)
-    (loop with inside = nil for char across text
-          do (cond ((char= char #\<) (setf inside t))
-                   ((char= char #\>) (setf inside nil))
-                   ((not inside) (write-char char out))))))
-
-(defun docs-chapters (html)
-  (let ((positions (docs-h1-positions html)))
-    (unless positions (error "The guide has no top-level Org headings."))
-    (loop for position in positions
-          for next in (append (rest positions) (list (length html)))
-          collect
-          (let* ((tag-end (position #\> html :start position))
-                 (tag (subseq html position (1+ tag-end)))
-                 (title-end (search "</h1>" html :start2 (1+ tag-end)))
-                 (title (docs-strip-tags (subseq html (1+ tag-end) title-end))))
-            (list :slug (docs-attribute tag "id")
-                  :title title :body (subseq html position next))))))
-
-(defun docs-page (title body &key slug breadcrumb index-p)
+(defun docs-page (title body &key slug edit-p (description title))
   (format nil "<!DOCTYPE html>
 <html lang=\"en\"><head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
 <title>~A · Autolith docs · Lambda Symbolics OÜ</title><meta name=\"description\" content=\"~A\">
-<link rel=\"canonical\" href=\"~A\"><link rel=\"icon\" href=\"~A\" type=\"image/svg+xml\"><link rel=\"stylesheet\" href=\"~A\"></head>
+<link rel=\"canonical\" href=\"~A\"><link rel=\"icon\" href=\"~A\" type=\"image/svg+xml\"><link rel=\"stylesheet\" href=\"~A\">~A</head>
 <body><a class=\"skip-link\" href=\"#main-content\">Skip to content</a>
 <header class=\"shell\"><div class=\"letterhead\"><a class=\"wordmark\" href=\"/\"><img src=\"/logo/ls-wordmark.svg\" alt=\"Lambda Symbolics\" width=\"110\" height=\"31\"></a><nav class=\"site-nav\" aria-label=\"Primary\"><ul class=\"site-nav-list\"><li><a href=\"/autolith\">Autolith</a></li><li><a href=\"/autolith/docs\">Docs</a></li><li><a href=\"https://github.com/lambda-symbolics/autolith\">GitHub</a></li></ul></nav></div></header>
-<main id=\"main-content\" class=\"shell doc-page\">~A~A</main>
+<main id=\"main-content\" class=\"shell doc-page\">~A</main>
 <footer class=\"shell\"><div class=\"colophon\"><p>© 2026 Lambda Symbolics OÜ · <a href=\"/lukas\">me</a></p><p>Autolith docs · Revised ~A</p></div></footer></body></html>"
-          title title (docs-url (or slug "")) *docs-favicon* *paper-css-url*
-          (if index-p body breadcrumb) (if index-p "" body) *docs-revised*))
+          title description (docs-url (or slug "")) *docs-favicon* *paper-css-url*
+          (if edit-p "<link rel=\"stylesheet\" href=\"/edit/editor.css\"><script type=\"module\" src=\"/edit/editor.js\"></script>" "")
+          body *docs-revised*))
 
 (defun docs-toc (chapters current)
   (with-output-to-string (out)
@@ -159,20 +124,26 @@
   (format nil "<p class=\"docs-edition\">Development guide. For Autolith ~A, see the <a href=\"https://github.com/lambda-symbolics/autolith/blob/v~A/docs/guide.org\">release guide</a>.</p>"
           *docs-release* *docs-release*))
 
-(defun docs-write-chapter (chapters chapter index)
+(defun docs-chapter-page (chapters chapter index &key decorate)
+  "Render a chapter page using the same template for publishing and editing."
   (let* ((slug (getf chapter :slug))
          (body (format nil "<nav class=\"docs-path\" aria-label=\"Location\"><a href=\"/autolith/docs\">Docs</a> · ~A</nav>~A<div class=\"doc-body\"><div class=\"doc-content\">~A~A</div>~A</div>"
-                       (getf chapter :title) (docs-edition) (getf chapter :body)
+                       (getf chapter :title) (docs-edition)
+                       (docs-render-nodes (getf chapter :nodes) :decorate decorate)
                        (docs-pager chapters index) (docs-toc chapters slug))))
-    (docs-write (docs-file slug) (docs-page (getf chapter :title) body :slug slug :breadcrumb ""))))
+    (docs-page (getf chapter :title) body :slug slug :edit-p decorate
+               :description (getf chapter :description))))
 
-(defun docs-write-index (chapters)
+(defun docs-index-page (chapters &key edit-p)
+  "Render the chapter index, optionally identifying the editing session."
   (let ((body (with-output-to-string (out)
+                (when edit-p
+                  (write-string "<p class=\"docs-edition\">Docs editor. Open a chapter to edit its copy in place. Click outside a field or press Ctrl+S to save.</p>" out))
                 (format out "<section class=\"doc-content\"><h1>Autolith guide</h1>~A<p><a href=\"/autolith/docs/configure-autolith#run-a-local-model\">Set up local inference</a></p><ol>" (docs-edition))
                 (dolist (chapter chapters)
                   (format out "<li><a href=\"~A\">~A</a></li>" (docs-href (getf chapter :slug)) (getf chapter :title)))
                 (write-string "</ol></section>" out))))
-    (docs-write (docs-file "") (docs-page "Autolith guide" body :slug "" :index-p t))))
+    (docs-page "Autolith guide" body)))
 
 (defun docs-write-redirect (legacy target)
   (let ((url (docs-url target))
@@ -206,9 +177,10 @@
 
 (defun make-docs ()
   "Render every current guide chapter and redirect every retained legacy URL."
-  (let ((chapters (docs-chapters (docs-guide-html))))
-    (docs-write-index chapters)
-    (loop for chapter in chapters for index from 0 do (docs-write-chapter chapters chapter index))
+  (let ((chapters (docs-chapters)))
+    (docs-write (docs-file "") (docs-index-page chapters))
+    (loop for chapter in chapters for index from 0
+          do (docs-write (docs-file (getf chapter :slug)) (docs-chapter-page chapters chapter index)))
     (dolist (redirect *legacy-redirects*) (docs-write-redirect (car redirect) (cdr redirect)))
     (docs-write-sitemap chapters)
     (format t "Rendered ~D guide chapters and ~D legacy redirects.~%" (length chapters) (length *legacy-redirects*))))

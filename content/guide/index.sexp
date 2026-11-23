@@ -1,0 +1,11 @@
+(
+ "install-update-and-uninstall"
+ "first-session"
+ "talk-to-autolith"
+ "configure-autolith"
+ "goals-and-verified-missions"
+ "editor-sessions-over-acp"
+ "emacs-and-sly"
+ "non-interactive-jobs"
+ "generations-and-recovery"
+)
