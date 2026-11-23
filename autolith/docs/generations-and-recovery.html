@@ -5,13 +5,11 @@
 <body><a class="skip-link" href="#main-content">Skip to content</a>
 <header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
 <main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Generations and recovery</nav><p class="docs-edition">Development guide. For Autolith 0.67.66, see the <a href="https://github.com/lambda-symbolics/autolith/blob/v0.67.66/docs/guide.org">release guide</a>.</p><div class="doc-body"><div class="doc-content"><h1 id="generations-and-recovery">Generations and recovery</h1>
-<p>Use <code class="verbatim">(checkpoint)</code> to save the live image as a retained generation. The source checkout must be clean and pass <code class="verbatim">./script/check</code> on POSIX or <code class="verbatim">script\check.ps1</code> on Windows. To allow local changes, use <code class="verbatim">(checkpoint :allow-dirty t)</code>. Autolith marks the generation dirty because the recorded revision does not describe all of the source.</p>
-<ul>
-<li><strong>POSIX:</strong> You can keep using the active session while the image is saved.</li>
-<li><strong>Windows:</strong> Autolith saves the live heap and restarts through the stable launcher. It resumes the conversation after the saved image passes its probe.</li>
-<li><strong>World server:</strong> A checkpoint waits for running work and holds new turns. Use <code class="verbatim">(checkpoint-cancel)</code> to cancel a waiting checkpoint and release turns.</li>
-</ul>
-<p>Run <code class="verbatim">(generations)</code> to list retained images. Run <code class="verbatim">(rollback "GENERATION-ID")</code> to select a compatible image and exit through recovery. In the terminal, <code class="verbatim">(rollback)</code> opens the picker. From the command line:</p>
+<h2 id="save-a-generation">Save a generation</h2>
+<p>Use <code>(checkpoint)</code> to save the running image as a retained generation. The source checkout must be clean and pass the project checks. Use <code>(checkpoint :allow-dirty t)</code> to include uncommitted source changes.</p>
+<p>A checkpoint can wait for active work in other channels. Use <code>(checkpoint-cancel)</code> to cancel a waiting checkpoint.</p>
+<h2 id="restore-a-generation">Restore a generation</h2>
+<p>Run <code>(generations)</code> to find a retained image. Use <code>(rollback "GENERATION-ID")</code> to select it for startup, or launch it from the shell:</p>
 <div class="window code-window">
 <div class="window-titlebar">
 Shell
@@ -21,9 +19,8 @@ Shell
 <span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--recovery</span> <span class="at">--generation</span> GENERATION-ID</span></code></pre></div>
 </div>
 </div>
-<p>Pristine and retained-image sessions use separate world endpoints from the ordinary active image. A retained core must support world startup.</p>
-<p><strong>Automatic recovery</strong> uses a private clean checkout of the current committed source with <code class="verbatim">--pristine</code>. It uses a separate recovery core if valid and can fall back to source. Use explicit generation selection to return to an older compatible core.</p>
-<p>After a fatal active failure, Autolith restores the terminal and writes a private crash capsule. Recovery resumes the conversation without duplicating scrollback. With a valid capsule, it queues one read-only diagnosis before ordinary input. The turn can inspect bounded crash context, workspace and tracked source, indexed source and active state. It cannot use shell, MCP, hosted-provider or image tools. It asks before applying a repair.</p>
+<h2 id="recover-from-a-crash">Recover from a crash</h2>
+<p>If Autolith resumes after a crash, read the diagnosis before asking it to retry the interrupted work.</p>
 <p>To start a rescue session yourself, use:</p>
 <div class="window code-window">
 <div class="window-titlebar">
@@ -33,7 +30,7 @@ Shell
 <div class="sourceCode" id="cb64" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> open <span class="at">--pristine</span> <span class="at">--permissions</span> full</span></code></pre></div>
 </div>
 </div>
-<p>A manual pristine session skips private image replay, mutation journal reconstruction and executable user initialization. Autolith enables <code class="verbatim">--immutable</code> and leaves mutation and conversation data on disk. Crash diagnosis requires a valid crash capsule from a supervised recovery.</p>
+<p>A pristine session skips private replay and executable initialization. Use it to inspect a startup problem without changing the selected generation.</p>
 <p>Saved cores require the recorded SBCL version, OS build and architecture. To reconstruct without a core:</p>
 <ol>
 <li><p>Check out the revision in the generation manifest.</p></li>
@@ -50,5 +47,5 @@ Common Lisp
 </div>
 </div></li>
 </ol>
-<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/non-interactive-jobs">Non-interactive jobs</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">1</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/first-session"><span class="toc-number">2</span>First session</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">3</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">4</span>Configure Autolith</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">5</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">6</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">7</span>Emacs and sly</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">8</span>Non-interactive jobs</a></li><li><span class="toc-current"><span class="toc-number">9</span>Generations and recovery</span></li></ol></div></div></aside></div></main>
-<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 22 November 2026</p></div></footer></body></html>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/non-interactive-jobs">Non-interactive jobs</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">1</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/first-session"><span class="toc-number">2</span>First session</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">3</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">4</span>Configure Autolith</a></li><li><a href="/autolith/docs/models-and-providers"><span class="toc-number">5</span>Models and providers</a></li><li><a href="/autolith/docs/manage-context"><span class="toc-number">6</span>Manage context</a></li><li><a href="/autolith/docs/connect-development-tools"><span class="toc-number">7</span>Connect development tools</a></li><li><a href="/autolith/docs/customise-autolith"><span class="toc-number">8</span>Customise commands, skills and Lisp</a></li><li><a href="/autolith/docs/manage-tasks"><span class="toc-number">9</span>Manage delegated tasks and jobs</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">10</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">11</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">12</span>Emacs and sly</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">13</span>Non-interactive jobs</a></li><li><span class="toc-current"><span class="toc-number">14</span>Generations and recovery</span></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 23 November 2026</p></div></footer></body></html>

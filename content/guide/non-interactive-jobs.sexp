@@ -1,6 +1,8 @@
 (:h1 (:id "non-interactive-jobs") "Non-interactive jobs")
 
-(:p nil "Use " (:code (:class "verbatim") "run-job") " to run one child role from a script or CI. It uses the configured providers, MCP servers and role policies. Read the result from " (:code (:class "verbatim") "--output") ". Choose exactly one input form: " (:code (:class "verbatim") "--input FILE") " or " (:code (:class "verbatim") "--prompt TEXT") ".")
+(:p nil "Use " (:code nil "autolith run-job") " to run a child role from a script or CI. Use "
+ (:code nil "--input FILE") " for a job specification or " (:code nil "--prompt TEXT")
+ " for a single assignment. Read the result from the file you set with " (:code nil "--output") ".")
 
 (:div (:class "window code-window")
   "
@@ -74,9 +76,16 @@ Shell
   "
 ")
 
-(:p nil "Autolith atomically publishes an " (:code (:class "verbatim") "(:autolith-job-result :version 1 ...)") " artifact. Read " (:code (:class "verbatim") ":result") " for the response on " (:code (:class "verbatim") ":succeeded") ". Other terminal statuses are " (:code (:class "verbatim") ":failed") ", " (:code (:class "verbatim") ":cancelled") " and " (:code (:class "verbatim") ":timed-out") ". The result includes failure categories and any available trace and usage fields. Prompt read errors and oversized prompts produce a failure artifact too.")
+(:p nil "Check the status in the output file. If the status is " (:code nil ":succeeded") ", read "
+ (:code nil ":result") ". If the job failed, read the error in the same file.")
 
-(:p nil (:strong nil "Headless jobs cannot ask for approval.") " " (:code (:class "verbatim") "auto") " denies decisions that require a prompt. " (:code (:class "verbatim") "sandbox") " permits only sandboxed shell commands. " (:code (:class "verbatim") "full") " permits full command execution and external tools that otherwise require a prompt. The child role still controls which tools it can call.")
+(:p nil
+ "Choose the permission mode before you run the job. Headless jobs cannot prompt for approval.")
+
+(:ul nil (:li nil (:code nil "auto") " denies operations that require approval.")
+ (:li nil (:code nil "sandbox") " only permits sandboxed shell commands.")
+ (:li nil (:code nil "full")
+  " permits full command execution and external tools allowed by the role."))
 
 (:h2 (:id "live-s-expression-events") "Live S-expression events")
 
@@ -126,20 +135,5 @@ Common Lisp
   "
 ")
 
-(:ul nil
-  "
-"
-  (:li nil "Sequence numbers increase within one run. A new run starts at one with a new run ID. There is no replay or reconnect cursor.")
-  "
-"
-  (:li nil "Event kinds are " (:code (:class "verbatim") ":run-started") ", " (:code (:class "verbatim") ":job-started") ", " (:code (:class "verbatim") ":tool-started") ", " (:code (:class "verbatim") ":progress") ", " (:code (:class "verbatim") ":tool-finished") ", " (:code (:class "verbatim") ":job-finished") ", " (:code (:class "verbatim") ":usage") ", " (:code (:class "verbatim") ":warning") ", " (:code (:class "verbatim") ":progress-omitted") " and " (:code (:class "verbatim") ":run-finished") ". Ignore unknown kinds. Events report registered tool names and bounded metadata, without prompts, tool payloads or output.")
-  "
-"
-  (:li nil "Root " (:code (:class "verbatim") ":job-finished") " and final " (:code (:class "verbatim") ":run-finished") " follow result publication. Published job events carry " (:code (:class "verbatim") ":result-uri") ". The final event reports " (:code (:class "verbatim") ":status") " and " (:code (:class "verbatim") ":published-p") ". It includes " (:code (:class "verbatim") ":output-path") " on publication. A write failure reports " (:code (:class "verbatim") ":category :result-publication-failed") " and exits nonzero.")
-  "
-"
-  (:li nil "A slow reader can miss events. " (:code (:class "verbatim") ":progress-omitted") " counts omitted progress, and a " (:code (:class "verbatim") ":warning") " with " (:code (:class "verbatim") ":code :queue-full") " reports lifecycle overflow. Execution and result publication continue even if the stream disconnects.")
-  "
-")
-
-(:p nil "From Lisp, pass " (:code (:class "verbatim") ":events :sexp") " and " (:code (:class "verbatim") ":event-output STREAM") " to " (:code (:class "verbatim") "run-job-run") ". Read records with " (:code (:class "verbatim") "run-job-event-read-stream") ", which returns " (:code (:class "verbatim") "nil") " at EOF. The reader accepts bounded data forms of up to 16 KiB of UTF-8 per record. Use UTF-8 for character streams. Binary streams receive UTF-8 octets.")
+(:p nil
+ "Use the output file to check the final status. A slow or disconnected event reader can miss events.")

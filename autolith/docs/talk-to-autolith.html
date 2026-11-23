@@ -18,12 +18,9 @@ Common Lisp
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>(channel.send :text <span class="st">&quot;Review this diagram&quot;</span> :images #(<span class="st">&quot;/tmp/diagram.png&quot;</span>))</span></code></pre></div>
 </div>
 </div>
-<ul>
-<li>Run <code class="verbatim">(help)</code> for an overview or <code class="verbatim">(help :commands)</code> for the command list.</li>
-<li>Use a keyword for a topic, as in <code class="verbatim">(help :conversations)</code>. Use a quoted command or a tool name for its arguments, as in <code class="verbatim">(help 'open)</code> or <code class="verbatim">(help "lisp.eval")</code>. Browse a namespace with <code class="verbatim">(help :lisp)</code> or use <code class="verbatim">(help :all)</code> for the full reference.</li>
-<li>Press Tab after =(help = to complete a topic or operation. For command options, press Tab after a command name and a space. For example, complete <code class="verbatim">(ste t)</code> to request Simple Technical English and <code class="verbatim">(ste nil)</code> to turn it off.</li>
-</ul>
-<p>Use <code class="verbatim">?</code> followed by whitespace to evaluate one Lisp form in the background. This also works for a bare variable. Input such as <code class="verbatim">?text</code> or <code class="verbatim">??</code> is plain text.</p>
+<ul><li>Run <code>(help)</code> for an overview, or <code>(help :commands)</code> for a list of commands.</li><li>Use <code>(help :conversations)</code> for a topic, or <code>(help 'open)</code> for the arguments of a command.</li><li>Press Tab after a command name and a space to complete an argument.</li></ul>
+<h3 id="background-lisp">Run Lisp in the background</h3>
+<p>Type <code>?</code>, a space, and one Lisp form. This runs the form without starting a model turn.</p>
 <div class="window code-window">
 <div class="window-titlebar">
 Common Lisp
@@ -33,9 +30,12 @@ Common Lisp
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>? (<span class="kw">progn</span> (<span class="kw">sleep</span> <span class="dv">10</span>) (<span class="kw">values</span> :finished <span class="dv">42</span>))</span></code></pre></div>
 </div>
 </div>
-<p>Use the printed <code class="verbatim">exec:N</code> ID to inspect, wait for, or cancel that job: <code class="verbatim">(job.get :id "exec:1")</code>, <code class="verbatim">(job.wait :id "exec:1")</code>, or <code class="verbatim">(job.cancel :id "exec:1")</code>. Replace <code class="verbatim">exec:1</code> with the ID you received. Click the printed cancellation form to insert it at the prompt. The result and captured output go to the original conversation even if you switch channels. Background Lisp uses EOF for input and reports errors without an interactive restart picker. Submitting a form this way does not start a model turn.</p>
-<p>When local Lisp or a command fails and the restart picker opens, choose <strong>Ask Autolith why this failed</strong> to diagnose it while the operation is suspended. Review the proposed recovery before choosing a restart or retry. A retry does not undo effects that happened before the error. Escape during diagnosis returns to the picker; Escape at the picker aborts the failed operation.</p>
-<p>During a model turn, Escape cancels that turn and lets queued steering proceed. Ctrl-C cancels the turn and pauses queued work until your next submission. A second Ctrl-C within the force-exit window exits the application. Use <code class="verbatim">(cwd)</code> to see the current workspace. If you submit <code class="verbatim">(cwd "../other-project")</code> during a turn, the relative path is resolved when that input reaches its place in the steering queue.</p>
+<p>Replace <code>exec:1</code> in these examples with the job ID you receive:</p>
+<ul><li>Inspect it with <code>(job.get :id "exec:1")</code>.</li><li>Wait for it with <code>(job.wait :id "exec:1")</code>.</li><li>Cancel it with <code>(job.cancel :id "exec:1")</code>.</li></ul>
+<h3 id="command-errors">Recover from a command error</h3>
+<ol><li>Choose <strong>Ask Autolith why this failed</strong> in the restart picker.</li><li>Review the proposed recovery before you choose a restart. A retry does not undo earlier effects.</li><li>Press Escape to return to the picker from diagnosis. Press Escape in the picker to abort the operation.</li></ol>
+<h3 id="interrupt-a-turn">Interrupt a turn</h3>
+<ul><li>Press Escape to cancel the turn and allow queued input to proceed.</li><li>Press Ctrl-C to cancel the turn and pause queued work until you submit new input.</li></ul>
 <h2 id="command-arguments">Command arguments</h2>
 <p>Pass Lisp values directly to commands:</p>
 <ul>
@@ -63,53 +63,12 @@ Common Lisp
 </ul>
 <p>The mode is stored locally and restored when you reopen a saved channel. This includes <strong>full</strong> access, even after a restart.</p>
 <h2 id="read-the-transcript">Read the transcript</h2>
-<p>The transcript is above the prompt. Look for <code class="verbatim">LIVE</code> in the modeline when following new output. Otherwise, read the range of rows that are visible.</p>
-<ul>
-<li>Use <code class="verbatim">PageUp</code> and <code class="verbatim">PageDown</code> to scroll one page, or use the mouse wheel to scroll a few rows.</li>
-<li>Use <code class="verbatim">Ctrl-PageUp</code> and <code class="verbatim">Ctrl-PageDown</code> to jump between user and assistant messages. The jump puts the end of the message above the composer, or puts the header at the top if the message is taller than the viewport.</li>
-<li>Use <code class="verbatim">Ctrl-Home</code> and <code class="verbatim">Ctrl-End</code> to jump to the oldest and newest retained transcript positions.</li>
-<li>In a hosted channel, press <code class="verbatim">Ctrl-S</code> to toggle the sidebar. Press <code class="verbatim">Ctrl-Space</code> to focus it. See <a href="#local-sessions">Local sessions</a>.</li>
-<li>Drag across the transcript to copy selected text on release. Use <code class="verbatim">Shift</code> and drag to select whole screen rows in the terminal emulator instead.</li>
-</ul>
-<p>Transcript history is separate from the scrollback of the terminal emulator. The viewport keeps about four million characters of recent output in memory. At the oldest retained row, the modeline shows <code class="verbatim">(history) loads earlier</code>. Run <code class="verbatim">(history)</code> to load a page of older output.</p>
-<p>When saved memories match your input, a dim <code class="verbatim">@ N relevant memories exist</code> line appears below your message. It shows how many memories were offered to the model for that request, followed by how many of them are stale or unverified (see the Memories section). Each input gets one notice across tool calls and provider retries.</p>
-<p>Input recall includes every user message, command, and Lisp submission in the conversation. Automatic messages and assistant output are excluded. On first use, the complete input-only sidecar is built from the conversation records; later submissions are appended to it. Resuming reads this sidecar instead of replaying archived transcript chunks. If cache storage is unavailable, recall streams the conversation records directly. The editor keeps the newest 500 inputs, up to a million characters, in memory. Moving past the oldest of them loads the next older page, and leaving history recall releases it again.</p>
-<p>Click a web address in the transcript to open it in your browser. Use <code class="verbatim">⧉ copy</code> below a code block to copy the source. If you connect over SSH, transcript copies can reach your local clipboard through OSC 52.</p>
-<p>Click a tool call header to insert its Lisp form at the cursor. Submit the form to repeat the call, edit the arguments to change the call, or add a question to ask the model about it. Arrays are spelled as <code class="verbatim">(vector ...)</code> and objects as <code class="verbatim">(dict ...)</code>, and argument names with uppercase letters keep their case as <code class="verbatim">:|filePath|</code> or a string key.</p>
-<p>Click a <code class="verbatim">lisp.eval</code> input block to expand the complete Lisp source with syntax highlighting. Click it again to collapse it. The selected view persists through resizing and tool completion.</p>
-<p>Lisp evaluation inputs, returned source, and values use rainbow parentheses: matching parentheses share a color, and nesting depths cycle through six colors. Strings, character literals, escaped symbols, and comments do not affect depth.</p>
-<p>Tool argument names emitted with underscores are matched to declared hyphenated names, including nested objects and array items. If both spellings are present, the declared spelling takes precedence.</p>
-<p>A pending tool call starts with <code class="verbatim">▸</code>. When it finishes, the same header shows a green <code class="verbatim">✓</code> for success or a red <code class="verbatim">!</code> for failure. Errors appear beneath the original invocation and arguments. Background handoffs keep <code class="verbatim">▸</code> until completion. Thanks to @rgbcube for suggesting these outcome markers.</p>
-<p>Autolith reports the session status over the interactive terminal using the <a href="https://www.superlogical.com/rex/docs/build/program-status">OSC 7501 Program Status Protocol</a> and <code class="verbatim">app=autolith</code>:</p>
-<div class="table-scroll">
-<table>
-<thead>
-<tr>
-<th>Status</th>
-<th>When reported</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code class="verbatim">idle</code></td>
-<td>At startup or after cancellation</td>
-</tr>
-<tr>
-<td><code class="verbatim">working</code></td>
-<td>During foreground input and resumed model turns</td>
-</tr>
-<tr>
-<td><code class="verbatim">done</code> or <code class="verbatim">error</code></td>
-<td>After success or failure, until the next input or model turn</td>
-</tr>
-<tr>
-<td><code class="verbatim">blocked</code></td>
-<td>For an input selector (<code class="verbatim">kind=question</code>), an approval (<code class="verbatim">kind=permission</code>), or authentication (<code class="verbatim">kind=auth</code>)</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Reports include the conversation title. Progress from children and background jobs appears in the transcript. Reports omit prompt text, assignments, results, credentials, and progress estimates.</p>
+<p>Read the transcript above the prompt. The status line shows <code>LIVE</code> if you are following new output.</p>
+<ul><li>Press PageUp or PageDown to scroll by a page.</li><li>Use Ctrl-PageUp or Ctrl-PageDown to jump between messages.</li><li>Use Ctrl-Home or Ctrl-End to jump to the oldest or newest position in the loaded transcript.</li></ul>
+<p>Run <code>(history)</code> to load earlier messages if you have reached the top of the loaded transcript.</p>
+<h3 id="transcript-actions">Recall input and copy text</h3>
+<ul><li>Use input history to recall your own messages, commands and Lisp forms.</li><li>Drag across the transcript to copy text. Hold Shift while dragging to select rows in the terminal emulator instead.</li><li>Use <strong>⧉ copy</strong> below a code block to copy the source.</li><li>Click a tool call to insert the Lisp form at the prompt. Edit the arguments before you submit the form if you want a different call.</li><li>Click a <code>lisp.eval</code> input block to expand or collapse the source.</li></ul>
+<p>Look for ▸ while a tool call is pending, ✓ after success, and ! after failure. Read any error below the call. Thanks to @rgbcube for suggesting these markers.</p>
 <h3 id="terminal-diagrams">Terminal diagrams</h3>
 <p>Ask for a fenced <code class="verbatim">mermaid</code> block to see a diagram in the terminal. <a href="https://github.com/lambda-symbolics/clermaid">Clermaid</a> documents the supported syntax for:</p>
 <ul>
@@ -151,7 +110,7 @@ Common Lisp
 </div>
 <p>Use <code class="verbatim">(vault)</code> for a summary. To replace the entire list, set <code class="verbatim">(vault-contents)</code> without an index. Its entries may be <code class="verbatim">(:message INPUT)</code>, <code class="verbatim">(:command TEXT)</code>, <code class="verbatim">(:lisp SOURCE)</code> or, for scheduled wakeups, <code class="verbatim">(:native-lisp SOURCE)</code>. Set the list to <code class="verbatim">nil</code> to clear it.</p>
 <h2 id="managed-resources">Managed resources</h2>
-<p>Use <code class="verbatim">resource.read</code> to read a file or another resource. For an edit, pass the revision from that read as <code class="verbatim">:base-revision</code> to <code class="verbatim">resource.edit</code>. If the resource changed, read it again before editing. For a multi-file <code class="verbatim">cl-resources</code> change, Autolith checks every staged revision before publishing. If publication fails partway through, Autolith restores the earlier files unless an external change requires manual recovery.</p>
+<ol><li>Read the resource with <code>resource.read</code>.</li><li>Pass the revision from the read as <code>:base-revision</code> to <code>resource.edit</code>.</li><li>If the edit was rejected because the resource changed, read it again and check the new contents before editing.</li></ol>
 <div class="window code-window">
 <div class="window-titlebar">
 Common Lisp
@@ -194,9 +153,9 @@ Common Lisp
 </tbody>
 </table>
 </div>
-<p>History searches are limited to one channel and match all the search terms. Page by sequence number or read a long record on its own. Use <code class="verbatim">(papercuts)</code> to list reports, <code class="verbatim">(papercut "ID")</code> to inspect one, or <code class="verbatim">(papercut-close "ID")</code> to close it. Agents can report a harness defect with <code class="verbatim">papercut.report</code> or assess and close a report through its resource where authorized. Put project bugs and test failures in the plan or agenda rather than the harness reports.</p>
+<p>Search within a single channel. If you have a sequence number, pass it as <code>:start-sequence</code> to read from that point.</p>
 <h2 id="memories">Memories</h2>
-<p>Use a <strong>note</strong> for a preference or convention and a <strong>fact</strong> for a value you want to reuse with its evidence. An agent can edit its own notes through <code class="verbatim">memory:personal</code>. That scope follows the agent across channels and restarts. Top-level agents can also write shared workspace and global memories. Their children can read those shared memories.</p>
+<p>Use a <strong>note</strong> for preferences or conventions. Use a <strong>fact</strong> to record a value and the evidence for it.</p>
 <div class="window code-window">
 <div class="window-titlebar">
 Common Lisp
@@ -208,58 +167,17 @@ Common Lisp
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>(forget <span class="st">&quot;3afbfa1a&quot;</span>)</span></code></pre></div>
 </div>
 </div>
-<p>Open the memory manager with <code class="verbatim">(memories)</code>. Press <code class="verbatim">/</code> to search, Tab to choose between All, Notes, and Facts, and Shift-Tab to choose a scope. Press Enter to read the selected item on a narrow terminal. Use <code class="verbatim">n</code> to create a note, <code class="verbatim">e</code> to edit it, <code class="verbatim">d</code> to forget it or retract an asserted fact, and <code class="verbatim">r</code> to reload. In the note form, use Tab to move between fields, Space to choose a scope, Shift-Enter for a newline, and Enter to save. Use a full ID or a unique ID prefix when you pass an ID to a command.</p>
-<p>A note can cite a file, a web page, your words, or another memory as a <em>premise</em>. A note is <em>stale</em> if a cited passage disappears from a file or a premise changes. Any notes derived from it become stale too. A note whose only cited files cannot be read is <em>unverified</em>. Inspect the evidence with <code class="verbatim">(memory "ID")</code>. Update the source or premise when you update what the note claims. Retagging a note does not refresh its evidence.</p>
-<p>For agent-written notes, the <code class="verbatim">memory-remember</code> and <code class="verbatim">memory-replace</code> operations accept <code class="verbatim">sources</code> and <code class="verbatim">premises</code>. Use <code class="verbatim">memory:id/ID</code> to inspect one note. Workspace file references inside that workspace are relative and can move with an export.</p>
+<p>Open the memory manager with <code>(memories)</code>.</p>
+<ul><li>Press / to search.</li><li>Use Tab to switch between All, Notes and Facts. Use Shift-Tab to choose a scope.</li><li>Press n to create a note, e to edit one or d to forget the selected entry.</li></ul>
+<p>Use <code>(memory "ID")</code> to see the evidence. If a source changes, check it before relying on a note marked stale.</p>
 <h3 id="facts-and-rules">Facts and rules</h3>
-<p>A fact records a typed value and what supports it. For instance, the assertion <code class="verbatim">event.start review 2026-10-22T13:00:00Z</code> can come from your message or a calendar file. The two sources are kept separately. A derived fact keeps the basis of its premises: a calculation based on an assumption is still an assumption.</p>
-<p>For an example, ask the agent to use the <code class="verbatim">appointments</code> recipe:</p>
-<ol>
-<li>Give it the start time of the review, 30 minutes of travel, and a 10-minute buffer.</li>
-<li>Admit the proposed departure rule. Run <code class="verbatim">(rules)</code> to get its name or ID.</li>
-<li>Change the start from 13:00 to 13:15. The derived departure changes from 12:20 to 12:35 without another model request to run the rule. Run <code class="verbatim">(what-changed)</code> to see the change and its cause.</li>
-</ol>
-<div class="window code-window">
-<div class="window-titlebar">
-Common Lisp
-</div>
-<div class="window-body">
-<div class="sourceCode" id="cb13" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>(rules)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(admit-rule <span class="st">&quot;departure&quot;</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>(what-changed)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>(why <span class="st">&quot;c4dfffae&quot;</span>)</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>(retire-rule <span class="st">&quot;departure&quot;</span>)</span></code></pre></div>
-</div>
-</div>
-<p>Use <code class="verbatim">(why "ID")</code> to inspect the sources, rule and premises of a fact, or the evidence for a note. Use <code class="verbatim">(forget "ID")</code> to retract an asserted fact. If two facts disagree, both are shown as <em>conflicted</em>. A negated premise requires an explicit negative fact; missing information is unknown. Recheck evidence when a cited file changes. Web evidence expires after a week and tool output after a day; observe it again to renew it.</p>
-<p>Agents can inspect <code class="verbatim">memory:facts</code>, <code class="verbatim">memory:claim/ID</code>, <code class="verbatim">memory:predicates</code>, <code class="verbatim">memory:rules</code> and <code class="verbatim">memory:changes</code>. The <code class="verbatim">memory:recipes</code> resource lists <code class="verbatim">appointments</code> and <code class="verbatim">service-dependencies</code>. Use <code class="verbatim">recipe-use</code> on <code class="verbatim">memory:facts</code> to define the predicates and propose the rules. The same resource accepts <code class="verbatim">predicate-define</code>, <code class="verbatim">fact-assert</code>, <code class="verbatim">fact-retract</code>, and <code class="verbatim">rule-propose</code>.</p>
-<p>Set <code class="verbatim">knowledge-mode</code> in <code class="verbatim">(settings)</code> or through <code class="verbatim">AUTOLITH_KNOWLEDGE</code>. Use <code class="verbatim">active</code> to record and recall knowledge, <code class="verbatim">passive</code> to record without giving facts to the model, or <code class="verbatim">off</code> to stop recording. The default is <code class="verbatim">active</code>. To inspect how much of the current conversation was spent on structured knowledge, use:</p>
-<div class="window code-window">
-<div class="window-titlebar">
-Common Lisp
-</div>
-<div class="window-body">
-<div class="sourceCode" id="cb14" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>(knowledge-usage-report (application-conversation *active-application*))</span></code></pre></div>
-</div>
-</div>
+<p>Facts record values and their sources. Rules derive new facts from those values. For example, a rule can mark a pull request ready for review after the required checks pass.</p>
+<ul><li>Use <code>(why "ID")</code> to inspect the sources and rules behind a fact.</li><li>Use <code>(what-changed)</code> to see which facts changed and why.</li><li>Use <code>(forget "ID")</code> to retract an assertion.</li></ul>
 <h3 id="plans-methods-gates-and-contracts">Plans, methods, gates, and contracts</h3>
-<p>Use facts when a plan or action depends on something you can check. For the review example, a plan step can say <code class="verbatim">Leave at {?leave}</code> and require <code class="verbatim">event.departure review ?leave</code>. Before the departure is known, the step is <em>blocked</em>. When the time changes, the displayed step follows it. A completed step is flagged if its recorded facts later stop holding.</p>
-<ul>
-<li><p>A <em>method</em> describes how to do a task under stated conditions. Ask the agent to run <code class="verbatim">plan.expand</code> to expand a task into ordered steps. Inspect definitions in <code class="verbatim">memory:methods</code>.</p></li>
-<li><p>A <em>fact gate</em> checks a mission against accepted evidence. By default it requires an undisputed observation or a statement from you. For example:</p>
-<div class="window code-window">
-<div class="window-titlebar">
-Common Lisp
-</div>
-<div class="window-body">
-<div class="sourceCode" id="cb15" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>(:id <span class="st">&quot;departure-known&quot;</span> :kind :fact :pattern (<span class="st">&quot;event.departure&quot;</span> <span class="st">&quot;review&quot;</span> <span class="st">&quot;?t&quot;</span>))</span></code></pre></div>
-</div>
-</div></li>
-<li><p>A tool <em>contract</em> can require facts before a call and record facts from its result. For example, require a verified destination before publishing a report. If the prerequisite fails, the tool is not called. A predicted effect only counts if the contract explicitly accepts it.</p></li>
-</ul>
-<p>Agents propose methods and contracts with <code class="verbatim">method-define</code> and <code class="verbatim">contract-define</code> on <code class="verbatim">memory:facts</code>. Inspect contracts in <code class="verbatim">memory:contracts</code>. Review the complete <code class="verbatim">contract.admit</code> request before enabling a new version. Imported contracts also need local approval. A tool result marked <code class="verbatim">externalSuccess: true</code> and <code class="verbatim">contractRecording: "failed"</code> means the action succeeded and only the evidence recording failed. Check the result before retrying. If damaged contracts block ordinary calls, ask the agent to call <code class="verbatim">contracts.reset</code>. This archives the original log and clears all contracts and saved diagnoses without clearing facts or notes.</p>
+<p>Use facts for work that depends on evidence you can check, such as whether a pull request can be merged.</p>
+<ul><li>A method describes how to do a task. Ask Autolith to use <code>plan.expand</code> to turn a task into steps.</li><li>A fact gate checks a claim before mission acceptance. Use one to require evidence that the reviewed changes passed CI.</li><li>A tool contract defines what must be true before a tool runs, or what the result establishes.</li></ul>
 <h3 id="learned-procedures">Learned procedures</h3>
-<p>When three successful turns in a workspace repeat a sequence of tool calls, Autolith can learn a <em>procedure</em> locally. For example, after repeated requests such as <code class="verbatim">Make the sales report for q5.</code>, a notice may name <code class="verbatim">make-sales-report</code> and offer it for later requests with another file. Use <code class="verbatim">(procedures)</code> to see its calls, parameters, status and measured savings in model requests and tokens.</p>
+<p>Autolith can learn a procedure from repeated work. Run <code>(procedures)</code> to see the calls, inputs and status of learned procedures.</p>
 <div class="window code-window">
 <div class="window-titlebar">
 Common Lisp
@@ -271,10 +189,9 @@ Common Lisp
 <span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>(retire-procedure <span class="st">&quot;make-sales-report&quot;</span>)</span></code></pre></div>
 </div>
 </div>
-<p>Replace the name and parameters with those listed for your procedure. The first run normally asks you to admit the procedure, and its calls still follow tool approvals and contracts. An exact request pattern can run automatically once the admitted version has demonstrated savings on completed turns. An approximate match is only offered to the model. Two consecutive failed runs suspend the procedure; use <code class="verbatim">(admit-procedure "NAME")</code> after you check it. Use <code class="verbatim">(retire-procedure "NAME")</code> to prevent further runs and relearning. Agents inspect procedures at <code class="verbatim">memory:procedures</code> and invoke them with <code class="verbatim">procedure.run</code>. Learning and recall require active structured knowledge.</p>
+<ul><li>Review and admit a procedure before reuse. Tool approvals still apply.</li><li>Use <code>(retire-procedure "NAME")</code> to prevent further runs.</li></ul>
 <h3 id="diagnosis">Diagnosis</h3>
-<p>Ask Autolith to diagnose a failure when more than one cause fits. With structured knowledge active, the agent can use <code class="verbatim">diagnosis.run</code> to compare up to four hypotheses with existing facts and up to three tool probes. Each probe needs a contract that records what the result establishes. An observation can rule out a cause; missing evidence leaves the case open.</p>
-<p>For example, if a report fails to reach a service, check whether the service is reachable and whether the configured endpoint is current. A successful reachability probe rules out an outage; a stale endpoint gives you a specific setting to fix. Use <code class="verbatim">(diagnoses)</code> to review the evidence and saved diagnoses. Disable probes in <code class="verbatim">(settings)</code> or with <code class="verbatim">AUTOLITH_DIAGNOSIS=0</code>.</p>
+<p>Ask Autolith to compare possible causes of a failure. With structured knowledge enabled, it can use <code>diagnosis.run</code> to compare hypotheses with recorded facts and tool results.</p>
 <h2 id="exporting-and-importing-data">Exporting and importing data</h2>
 <p>Export a workspace from the OS shell, then import it at its new path:</p>
 <div class="window code-window">
@@ -296,16 +213,16 @@ Common Lisp
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>(data.<span class="kw">import</span> <span class="st">&quot;project.sexp&quot;</span> :workspace <span class="st">&quot;/home/al/src/project&quot;</span>)</span></code></pre></div>
 </div>
 </div>
-<p>Export includes conversations, notes, facts, rules, agendas, plans, papercuts and related assets. Copy the repository separately. Credentials, configuration, images and caches are excluded. Omit <code class="verbatim">--workspace</code> to export all workspaces and global data, or pass <code class="verbatim">--all</code> explicitly (<code class="verbatim">:all t</code> in Lisp).</p>
-<p>Pick a new filename for export. Import merges data by stable ID, skips identical records and stops before publication on an ID conflict. Use <code class="verbatim">--workspace</code> on import to relocate a single-workspace archive. Without it, the original paths are preserved. Run <code class="verbatim">autolith data export --help</code> or <code class="verbatim">autolith data import --help</code> for options. CLI exit codes are 0 for success, 64 for invalid arguments and 1 for a transfer failure.</p>
+<p>Use export to move conversations and workspace knowledge together. Copy the archive if you are moving to another machine.</p>
+<p>Choose a new file for each export. If the import reports a conflict, review the conflicting record before retrying.</p>
 <h2 id="session-titles-and-resume">Session titles and resume</h2>
-<p>A channel gets a local title from your first prompt or image. Autolith can ask the model to refine the title after the third user turn and name the agent after three user turns or 25 tool calls. Use <code class="verbatim">(rename "NAME")</code> to name the current agent yourself. That name takes precedence over automatic naming. Inspect or change the setting with <code class="verbatim">(settings :session-title-generation-p)</code> or <code class="verbatim">(settings :session-title-generation-p nil)</code>.</p>
+<p>Autolith starts a channel title from your first message. Run <code>(rename "NAME")</code> to name the current agent yourself.</p>
 <ul>
 <li>Run <code class="verbatim">(channel-id)</code> to find the stable ID of the current channel.</li>
 <li>Run <code class="verbatim">(open)</code> to pick a channel or <code class="verbatim">(open "ID")</code> to open it directly.</li>
 <li>Run <code class="verbatim">(delete)</code> to remove the displayed channel, or <code class="verbatim">(delete "ID")</code> to choose another. Confirm only if you intend to remove its history and child channels. The subtree must be idle and free of other attached clients.</li>
 </ul>
-<p>Reopening a live channel gives you its jobs and history. If Autolith needs to serve the conversation in a new process, the history is available, but old background jobs and Lisp worker state are gone. Durable child task results can still be read with <code class="verbatim">job.get</code>.</p>
+<p>Open an existing channel to return to the transcript and any retained jobs.</p>
 <h2 id="usage">Usage</h2>
 <p>Run <code class="verbatim">(status)</code> or its alias <code class="verbatim">(usage)</code> <strong>at the Autolith prompt</strong> for model usage:</p>
 <ul>
@@ -313,7 +230,7 @@ Common Lisp
 <li><strong>Context</strong> is the current space used in the model window, not the sum of tokens sent over the conversation.</li>
 <li><strong>Cost</strong> covers recorded requests in this process. Review any unpriced request count before treating the total as a bill. Subscription rate limits are shown when available.</li>
 </ul>
-<p>From the OS shell, run <code class="verbatim">autolith usage</code> for stored conversation and knowledge counts, logical disk usage, and resident memory (RSS) of reachable processes. The disk total counts overlapping roots and hard links only once. RSS can count shared pages once per process. Run <code class="verbatim">autolith status</code> instead to inspect running channels and the server. Set <code class="verbatim">NO_COLOR</code> for plain output in a terminal.</p>
+<p>Run <code>autolith usage</code> from the shell to inspect stored conversations and disk usage.</p>
 <h2 id="local-sessions">Local sessions</h2>
 <h3 id="starting-and-switching-channels">Starting and switching channels</h3>
 <p>An interactive <code class="verbatim">autolith</code> launch starts the background server if needed and serves the inbox. Use the following shell commands to work on a channel:</p>
@@ -331,13 +248,12 @@ Shell
 </div>
 <p>Without a target, <code class="verbatim">autolith open</code> opens the last changed top-level channel in the current workspace or creates one if there is none. Use <code class="verbatim">autolith new</code> for a fresh channel; add <code class="verbatim">-d</code> or <code class="verbatim">--detached</code> to create it without attaching. To open it later, use the printed <code class="verbatim">autolith open ID</code> command. Only one terminal can control a channel. Use <code class="verbatim">--read-only</code> to observe from another terminal.</p>
 <p>Inside Autolith, use <code class="verbatim">(open "ID")</code> to switch channels. Use <code class="verbatim">(detach)</code> or Ctrl-Z to disconnect the terminal and leave work running. Use <code class="verbatim">(exit)</code> to end the channel. To stop <strong>all</strong> channels and their server, use <code class="verbatim">autolith stop</code> from the OS shell or <code class="verbatim">(stop-server)</code> from Autolith. Updating or rolling back also stops the shared server.</p>
-<p>An idle channel can unload after <code class="verbatim">(config :channel-idle-minutes)</code> minutes (30 by default) if nothing is running or queued and no terminal shows it. Open it again or send its agent a message to serve it again. If you pipe a script into <code class="verbatim">autolith</code> or <code class="verbatim">autolith open ID</code>, submissions run in order and the transcript goes to standard output. A script cannot answer interactive approvals. The channel closes when input ends.</p>
 <h3 id="checkpoints-and-launch-options">Checkpoints and launch options</h3>
 <p>Run <code class="verbatim">(checkpoint)</code> to save the shared process. Work already in progress finishes first, across all channels. New turns wait until after the save. Terminals reconnect automatically, and the requesting channel receives the generation ID. On Windows, the launcher restarts the server from the saved heap.</p>
 <p>If you lose a connection unexpectedly, press <code class="verbatim">r</code> or Enter to retry the same channel, enter an ID to switch, or press <code class="verbatim">q</code> to detach. Retrying does not resubmit your work.</p>
 <p>Use <code class="verbatim">--model</code>, <code class="verbatim">--permissions</code> or <code class="verbatim">--immutable</code> when creating a channel. Pair <code class="verbatim">--provider</code> with <code class="verbatim">--model</code>. When opening an existing channel, the only launch override you can pass is <code class="verbatim">--permissions</code>, and only when no terminal controls it. To choose a permission mode in the channel, run <code class="verbatim">(permissions)</code>.</p>
 <h3 id="channel-sidebar">Channel sidebar</h3>
-<p>Unfold <strong>home</strong> to find channels grouped by repository or workspace. Linked worktrees share a group when Autolith can identify their originating checkout. Independent clones have separate groups. Child channels are nested under their parent. Home shows the inbox and its unread count.</p>
+<p>Expand <strong>home</strong> to see channels by repository or workspace.</p>
 <ul>
 <li>Press Ctrl-S to toggle the sidebar. On a narrow terminal it opens as a drawer.</li>
 <li>Click the sidebar or press Ctrl-Space (Ctrl-Tab where supported) to focus it. Use the arrows to select or expand an entry, Enter to open it, or Delete to remove it after confirmation.</li>
@@ -373,7 +289,7 @@ Shell
 </div>
 <p>A yellow number counts messages received since this terminal last viewed the channel. <code class="verbatim">@</code> counts mentions, and <code class="verbatim">N pending</code> counts deliveries waiting for a channel that is not loaded.</p>
 <h3 id="session-endpoints">Session endpoints</h3>
-<p>Run <code class="verbatim">autolith status</code> to list live sessions or <code class="verbatim">autolith status --sexp</code> for use in Lisp scripts. The controlling terminal has its own PID, distinct from the server PID. In the S-expression, use <code class="verbatim">:terminal-client-pid</code> for the controller, <code class="verbatim">:observer-client-pids</code> for read-only clients and <code class="verbatim">:pid</code> for the host.</p>
+<p>Run <code>autolith status</code> to list active local sessions. Add <code>--sexp</code> if you need to read the output from Lisp.</p>
 <div class="window code-window">
 <div class="window-titlebar">
 Shell
@@ -386,8 +302,8 @@ Shell
 <span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> detach researcher</span></code></pre></div>
 </div>
 </div>
-<p>Use <code class="verbatim">start</code> to launch the server in the background, <code class="verbatim">tell</code> to submit input, <code class="verbatim">pause</code> to cancel active work and hold queued work, or <code class="verbatim">detach</code> to disconnect the client. You may omit the target from <code class="verbatim">pause</code> and <code class="verbatim">detach</code> when exactly one endpoint is reachable. Use <code class="verbatim">tell</code> for an unloaded channel too. Its agent is started without a terminal.</p>
-<p>A message beginning with <code class="verbatim">(</code> is evaluated as Lisp in the target. Supply all arguments and read the result or error in the target transcript. The shell command acknowledges routing and does not wait for the result. Interactive pickers and confirmations are unavailable through <code class="verbatim">autolith tell</code>.</p>
+<ul><li>Use <code>autolith start</code> to start the server in the background.</li><li>Send input to another channel with <code>autolith tell</code>.</li><li>Use <code>autolith pause</code> to cancel active work and pause queued work, or <code>autolith detach</code> to disconnect the terminal.</li></ul>
+<p>With <code>autolith tell</code>, input that begins with <code>(</code> is evaluated as Lisp. Supply the arguments in the input and read the result in the target transcript.</p>
 <p>For local backups or diagnostics, these are the default roots. An absolute value for the corresponding XDG variable overrides each default.</p>
 <div class="table-scroll">
 <table>
@@ -427,7 +343,6 @@ Shell
 </tbody>
 </table>
 </div>
-<p>Endpoint records, leases and recovery state are under the state root. The management REPL socket defaults to <code class="verbatim">management/repl.sock</code> there on platforms with filesystem sockets. Channel clients use private authenticated loopback connections.</p>
 <h2 id="channels">Channels</h2>
 <p>A channel has its own history and workspace. Each agent resides in one channel and can subscribe to others. You reside in <code class="verbatim">/inbox</code>, also shown as <strong>home</strong> in the sidebar. Viewing or controlling another channel does not move you there. Typing ordinary text in the inbox starts no agent turn.</p>
 <div class="window code-window">
@@ -441,8 +356,8 @@ Common Lisp
 <span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>(rename <span class="st">&quot;/researcher/reviewer&quot;</span> <span class="st">&quot;critic&quot;</span>)</span></code></pre></div>
 </div>
 </div>
-<p>Address a channel by agent handle, exact path, full ID or unique ID fragment. For <code class="verbatim">autolith open</code>, a bare agent name works too. Use a full ID in a bookmark or script if the names may change. A path follows channel ancestry and can change when an agent is renamed. Copy the displayed path, including case and percent escapes. Find paths with <code class="verbatim">(open)</code> or <code class="verbatim">channel:list</code>. Use <code class="verbatim">(tell)</code> to pick a recipient and prepare a message. Use <code class="verbatim">(rename "WHO" "NAME")</code> to rename a participant. Handles accept letters, digits, hyphens and underscores and are matched without regard to case.</p>
-<p>Use a mention such as <code class="verbatim">@researcher please check this</code> to send a copy to a participant from your current conversation. A mention starts a word, so the <code class="verbatim">@</code> inside a mail address does not count. To send directly, use <code class="verbatim">(tell "ID" "text")</code>. Agents use <code class="verbatim">channel.send</code> and can follow other channels through <code class="verbatim">channel.subscribe</code> and <code class="verbatim">channel.unsubscribe</code>. Subscribers receive copies of messages and replies. An agent can use <code class="verbatim">@parent</code> to reach its nearest active ancestor or, if there is none, you.</p>
-<p>An idle agent starts work when it receives a message. A working agent receives it as steering. Messages for you go to the inbox. Open it with <code class="verbatim">(open "inbox")</code> and use the <code class="verbatim">open</code> form at the end of a notice to jump to its source. Read a child agent transcript at <code class="verbatim">channel:id/ID</code>, where <code class="verbatim">ID</code> is its execution ID. Child channels nest under the parent; <code class="verbatim">AUTOLITH_TASK_MAX_DEPTH</code> defaults to three levels below a top-level agent.</p>
-<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/first-session">First session</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/configure-autolith">Configure Autolith</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">1</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/first-session"><span class="toc-number">2</span>First session</a></li><li><span class="toc-current"><span class="toc-number">3</span>Talk to Autolith</span></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">4</span>Configure Autolith</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">5</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">6</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">7</span>Emacs and sly</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">8</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">9</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
-<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 22 November 2026</p></div></footer></body></html>
+<p>Use <code>(open)</code> to find a channel by handle, path or ID. Use the full ID in scripts if the name may change.</p>
+<ul><li>Type <code>@researcher please check this</code> to send a copy of a message to that participant.</li><li>Use <code>(tell "ID" "text")</code> to send a message directly.</li></ul>
+<p>Open <code>(open "inbox")</code> to read messages addressed to you. Use the link in a notice to jump to the source channel.</p>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/first-session">First session</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/configure-autolith">Configure Autolith</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">1</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/first-session"><span class="toc-number">2</span>First session</a></li><li><span class="toc-current"><span class="toc-number">3</span>Talk to Autolith</span></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">4</span>Configure Autolith</a></li><li><a href="/autolith/docs/models-and-providers"><span class="toc-number">5</span>Models and providers</a></li><li><a href="/autolith/docs/manage-context"><span class="toc-number">6</span>Manage context</a></li><li><a href="/autolith/docs/connect-development-tools"><span class="toc-number">7</span>Connect development tools</a></li><li><a href="/autolith/docs/customise-autolith"><span class="toc-number">8</span>Customise commands, skills and Lisp</a></li><li><a href="/autolith/docs/manage-tasks"><span class="toc-number">9</span>Manage delegated tasks and jobs</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">10</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">11</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">12</span>Emacs and sly</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">13</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">14</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 23 November 2026</p></div></footer></body></html>

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customise commands, skills and Lisp · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Customise commands, skills and Lisp">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/customise-autolith"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=a524626cb296ba6b0f43766519117ea1cfb3848f0958b44b014e6f0b7f3ba3d1"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Customise commands, skills and Lisp</nav><p class="docs-edition">Development guide. For Autolith 0.67.66, see the <a href="https://github.com/lambda-symbolics/autolith/blob/v0.67.66/docs/guide.org">release guide</a>.</p><div class="doc-body"><div class="doc-content"><h1 id="customise-autolith">Customise commands, skills and Lisp</h1>
+<h2 id="commands">Write a command</h2>
+<p>Define commands in <code>init.lisp</code> with <code>define-application-command</code>. This example adds <code>(my-version)</code> and accepts an optional label:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb38" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>(define-application-command my-version-command</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>    (<span class="bu">:name</span>              <span class="st">&quot;my-version&quot;</span></span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>     :aliases           (<span class="st">&quot;local-version&quot;</span>)</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>     :argument          <span class="st">&quot;[LABEL]&quot;</span></span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>     :description       <span class="st">&quot;show a labeled local integration version&quot;</span></span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>     :tip               <span class="st">&quot;shows the version supplied by init.lisp.&quot;</span></span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>     :busy-behavior     :execute</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>     :terminal-behavior :shared</span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>     :callable          <span class="kw">t</span>)</span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>    (application <span class="op">&amp;optional</span> (label <span class="st">&quot;integration&quot;</span>))</span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  (application-present application (<span class="kw">format</span> <span class="kw">nil</span> <span class="st">&quot;~A 3&quot;</span> label))</span>
+<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a>  :continue)</span></code></pre></div>
+</div>
+</div>
+<p>After restarting, run <code>(help 'my-version)</code> to check the help for the command.</p>
+<h2 id="executable-skills">Load a skill</h2>
+<p>Ask Autolith to load a skill by name, or use <code>skill.load</code> with the exact name. Read <code>skill:NAME</code> with <code>resource.read</code> to see the catalog entry.</p>
+<h2 id="live-definitions">Change a live definition</h2>
+<ol><li>Use <code>self.define</code> to add or replace a definition in the running image. Qualify the symbol if it belongs to another package.</li><li>Test the change in the active image and review it with <code>self.diff</code>.</li><li>Save the change with <code>self.commit</code> or undo it with <code>self.discard</code>.</li></ol>
+<p>If an update skips an override because the tracked definition changed, run <code>(fix-skipped-definitions)</code> to review and rebuild the overrides you still need. See <a href="/autolith/docs/generations-and-recovery">Generations and recovery</a> for restore commands.</p>
+<h2 id="local-text-redaction">Redact text locally</h2>
+<p>Use <code>(redact text)</code> at the Lisp prompt or <code>autolith:redact</code> in a worker. Check the second return value for <code>:ok</code>. Review the redacted text before sharing it.</p>
+<h2 id="active-image-management-endpoint">Connect to the running Lisp image</h2>
+<ol><li>Put a nonempty token in <code>${XDG_CONFIG_HOME:-~/.config}/autolith/management-repl.token</code>. Own the file and set the permissions to <code>0600</code>.</li><li>Connect from a trusted local Lisp client with <code>eval-connect</code> from <code>image-daemon</code>. On Unix, the default socket is <code>${XDG_STATE_HOME:-~/.local/state}/autolith/management/repl.sock</code>. On Windows, use <code>127.0.0.1:4141</code>.</li><li>Use <code>eval-call</code> to evaluate a form in the running image. Review the result before sharing it because it may contain secrets.</li></ol>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/connect-development-tools">Connect development tools</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/manage-tasks">Manage delegated tasks and jobs</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">1</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/first-session"><span class="toc-number">2</span>First session</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">3</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">4</span>Configure Autolith</a></li><li><a href="/autolith/docs/models-and-providers"><span class="toc-number">5</span>Models and providers</a></li><li><a href="/autolith/docs/manage-context"><span class="toc-number">6</span>Manage context</a></li><li><a href="/autolith/docs/connect-development-tools"><span class="toc-number">7</span>Connect development tools</a></li><li><span class="toc-current"><span class="toc-number">8</span>Customise commands, skills and Lisp</span></li><li><a href="/autolith/docs/manage-tasks"><span class="toc-number">9</span>Manage delegated tasks and jobs</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">10</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">11</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">12</span>Emacs and sly</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">13</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">14</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 23 November 2026</p></div></footer></body></html>

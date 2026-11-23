@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Connect development tools · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Connect development tools">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/connect-development-tools"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=a524626cb296ba6b0f43766519117ea1cfb3848f0958b44b014e6f0b7f3ba3d1"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Connect development tools</nav><p class="docs-edition">Development guide. For Autolith 0.67.66, see the <a href="https://github.com/lambda-symbolics/autolith/blob/v0.67.66/docs/guide.org">release guide</a>.</p><div class="doc-body"><div class="doc-content"><h1 id="connect-development-tools">Connect development tools</h1>
+<h2 id="language-servers">Set up a language server</h2>
+<ol><li>Install a language server that you trust. Autolith runs it with your privileges.</li><li><p>Create <code>lsp.sexp</code> beside <code>init.lisp</code>. For C and C++, you can start with this example for clangd:</p><div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb22" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>(<span class="bu">:version</span> <span class="dv">1</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a> :servers ((<span class="bu">:name</span> <span class="st">&quot;clangd&quot;</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>            :command <span class="st">&quot;clangd&quot;</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>            :arguments (<span class="st">&quot;--background-index&quot;</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>            :extensions (<span class="st">&quot;.c&quot;</span> <span class="st">&quot;.h&quot;</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>            :language-id <span class="st">&quot;c&quot;</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>            :root-markers (<span class="st">&quot;compile_commands.json&quot;</span> <span class="st">&quot;.git&quot;</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>            :timeout-seconds <span class="dv">30</span>)))</span></code></pre></div>
+</div>
+</div></li><li>Ask Autolith to run <code>lsp.status</code> to check the configuration. After editing the file, use <code>lsp.restart</code> to reload it.</li></ol>
+<ul><li>Use <code>lsp.query</code> to find definitions or references.</li><li>Use <code>lsp.diagnostics</code> to check a file for errors.</li><li>Ask Autolith to propose a rename or code action with <code>lsp.semantic</code>. Review the proposal before applying it. If the file changes, request a new proposal.</li></ul>
+<h2 id="structural-code-edits">Make structural edits</h2>
+<p>Install ast-grep and put this in <code>init.lisp</code> with the path to the executable:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb46" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>(asdf:load-system <span class="st">&quot;autolith/structural&quot;</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> autolith:*structural-program* <span class="st">&quot;/path/to/ast-grep&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<ol><li>Ask Autolith to find matching code with <code>structural.query</code>.</li><li>Review the preview from <code>structural.rewrite</code>.</li><li>Apply the proposed change with <code>structural.apply</code>.</li></ol>
+<h2 id="debug-adapter-sessions">Connect a debugger</h2>
+<p>Install a debug adapter for the language you use. Add the following to <code>init.lisp</code> and set the path to the adapter:</p>
+<div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb47" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>(asdf:load-system <span class="st">&quot;autolith/debug&quot;</span>)</span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>(<span class="kw">setf</span> autolith:*debug-adapter-program* <span class="st">&quot;/path/to/debug-adapter&quot;</span></span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>      autolith:*debug-adapter-arguments* <span class="kw">nil</span>)</span></code></pre></div>
+</div>
+</div>
+<ol><li>Ask Autolith to launch the program with <code>debug.launch</code> or attach to a running process with <code>debug.attach</code>. Approve the debugger command if you trust it.</li><li>Set breakpoints with <code>debug.breakpoints</code>. Use <code>debug.continue</code> to run to a breakpoint or <code>debug.step</code> to step through code.</li><li>Inspect the stack with <code>debug.stack</code> or values with <code>debug.variables</code>.</li><li>End the debug session with <code>debug.terminate</code>.</li></ol>
+<h2 id="connect-mcp">Connect an MCP server</h2>
+<ol><li>Create <code>mcp.sexp</code> beside <code>init.lisp</code>. Follow the <a href="https://github.com/lambda-symbolics/autolith/blob/v0.67.66/docs/mcp.org">MCP setup examples</a> for your transport.</li><li>Run <code>(mcp :refresh)</code> after editing the file. Use <code>(mcp)</code> to inspect the connection.</li></ol>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/manage-context">Manage context</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/customise-autolith">Customise commands, skills and Lisp</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">1</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/first-session"><span class="toc-number">2</span>First session</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">3</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">4</span>Configure Autolith</a></li><li><a href="/autolith/docs/models-and-providers"><span class="toc-number">5</span>Models and providers</a></li><li><a href="/autolith/docs/manage-context"><span class="toc-number">6</span>Manage context</a></li><li><span class="toc-current"><span class="toc-number">7</span>Connect development tools</span></li><li><a href="/autolith/docs/customise-autolith"><span class="toc-number">8</span>Customise commands, skills and Lisp</a></li><li><a href="/autolith/docs/manage-tasks"><span class="toc-number">9</span>Manage delegated tasks and jobs</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">10</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">11</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">12</span>Emacs and sly</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">13</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">14</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 23 November 2026</p></div></footer></body></html>

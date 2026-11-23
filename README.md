@@ -45,6 +45,12 @@ The development guide uses Lisp data in `content/guide/`, one file per chapter.
 `index.sexp` lists the chapters in order. The published guide links to the Org
 manual for the corresponding Autolith release.
 
+Write for people using Autolith. Explain what they can do, what they need to
+set, and how to check the result. Leave out internal protocols and storage
+details unless the reader needs them for a task. Use sections for separate
+questions, bullets for related items, and numbered lists for steps in order.
+Follow `/root/ai-slop-rules.org` when editing the copy.
+
 For in-place copy editing, install SBCL and Quicklisp, then run:
 
 ```bash

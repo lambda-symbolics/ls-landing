@@ -1,21 +1,18 @@
 (:h1 (:id "generations-and-recovery") "Generations and recovery")
 
-(:p nil "Use " (:code (:class "verbatim") "(checkpoint)") " to save the live image as a retained generation. The source checkout must be clean and pass " (:code (:class "verbatim") "./script/check") " on POSIX or " (:code (:class "verbatim") "script\\check.ps1") " on Windows. To allow local changes, use " (:code (:class "verbatim") "(checkpoint :allow-dirty t)") ". Autolith marks the generation dirty because the recorded revision does not describe all of the source.")
+(:h2 (:id "save-a-generation") "Save a generation")
 
-(:ul nil
-  "
-"
-  (:li nil (:strong nil "POSIX:") " You can keep using the active session while the image is saved.")
-  "
-"
-  (:li nil (:strong nil "Windows:") " Autolith saves the live heap and restarts through the stable launcher. It resumes the conversation after the saved image passes its probe.")
-  "
-"
-  (:li nil (:strong nil "World server:") " A checkpoint waits for running work and holds new turns. Use " (:code (:class "verbatim") "(checkpoint-cancel)") " to cancel a waiting checkpoint and release turns.")
-  "
-")
+(:p nil "Use " (:code nil "(checkpoint)")
+ " to save the running image as a retained generation. The source checkout must be clean and pass the project checks. Use "
+ (:code nil "(checkpoint :allow-dirty t)") " to include uncommitted source changes.")
 
-(:p nil "Run " (:code (:class "verbatim") "(generations)") " to list retained images. Run " (:code (:class "verbatim") "(rollback \"GENERATION-ID\")") " to select a compatible image and exit through recovery. In the terminal, " (:code (:class "verbatim") "(rollback)") " opens the picker. From the command line:")
+(:p nil "A checkpoint can wait for active work in other channels. Use "
+ (:code nil "(checkpoint-cancel)") " to cancel a waiting checkpoint.")
+
+(:h2 (:id "restore-a-generation") "Restore a generation")
+
+(:p nil "Run " (:code nil "(generations)") " to find a retained image. Use "
+ (:code nil "(rollback \"GENERATION-ID\")") " to select it for startup, or launch it from the shell:")
 
 (:div (:class "window code-window")
   "
@@ -37,11 +34,10 @@ Shell
   "
 ")
 
-(:p nil "Pristine and retained-image sessions use separate world endpoints from the ordinary active image. A retained core must support world startup.")
+(:h2 (:id "recover-from-a-crash") "Recover from a crash")
 
-(:p nil (:strong nil "Automatic recovery") " uses a private clean checkout of the current committed source with " (:code (:class "verbatim") "--pristine") ". It uses a separate recovery core if valid and can fall back to source. Use explicit generation selection to return to an older compatible core.")
-
-(:p nil "After a fatal active failure, Autolith restores the terminal and writes a private crash capsule. Recovery resumes the conversation without duplicating scrollback. With a valid capsule, it queues one read-only diagnosis before ordinary input. The turn can inspect bounded crash context, workspace and tracked source, indexed source and active state. It cannot use shell, MCP, hosted-provider or image tools. It asks before applying a repair.")
+(:p nil
+ "If Autolith resumes after a crash, read the diagnosis before asking it to retry the interrupted work.")
 
 (:p nil "To start a rescue session yourself, use:")
 
@@ -64,7 +60,8 @@ Shell
   "
 ")
 
-(:p nil "A manual pristine session skips private image replay, mutation journal reconstruction and executable user initialization. Autolith enables " (:code (:class "verbatim") "--immutable") " and leaves mutation and conversation data on disk. Crash diagnosis requires a valid crash capsule from a supervised recovery.")
+(:p nil
+ "A pristine session skips private replay and executable initialization. Use it to inspect a startup problem without changing the selected generation.")
 
 (:p nil "Saved cores require the recorded SBCL version, OS build and architecture. To reconstruct without a core:")
 
