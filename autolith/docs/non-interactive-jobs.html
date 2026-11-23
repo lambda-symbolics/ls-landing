@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Non-interactive jobs · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Non-interactive jobs">
-<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/non-interactive-jobs"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=fd446f1e069831d49af3a697dc19d7128ee35c23f22431a3502f72798a8967d4"></head>
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/non-interactive-jobs"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=440a96d1ca3ba927ea48ec4cfa5015e8c6bcf1cfcf34c163c92ee8394871a8f4"></head>
 <body><a class="skip-link" href="#main-content">Skip to content</a>
 <header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
 <main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Non-interactive jobs</nav><div class="doc-body"><div class="doc-content"><h1 id="non-interactive-jobs">Non-interactive jobs</h1>
-<p>Use <code>autolith run-job</code> to run a child role from a script or CI. Use <code>--input FILE</code> for a job specification or <code>--prompt TEXT</code> for a single assignment. Read the result from the file you set with <code>--output</code>.</p>
+<p>Use <code>autolith run-job</code> to run an assignment from a script or CI. Pass either <code>--input FILE</code> or <code>--prompt TEXT</code>. Set the path for the result with <code>--output</code>.</p>
 <div class="window code-window">
 <div class="window-titlebar">
 Shell
@@ -25,13 +25,11 @@ Common Lisp
 <div class="sourceCode" id="cb59" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>(:autolith-job</span>
 <span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a> <span class="bu">:version</span> <span class="dv">1</span></span>
 <span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a> :id <span class="st">&quot;job-identifier&quot;</span></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a> :role <span class="st">&quot;project-role&quot;</span></span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a> :prompt <span class="st">&quot;Perform the assigned work.&quot;</span></span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a> <span class="bu">:input</span> (:caller-owned <span class="st">&quot;opaque data&quot;</span>)</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a> :timeout-seconds <span class="dv">900</span>)</span></code></pre></div>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a> :prompt <span class="st">&quot;Perform the assigned work.&quot;</span></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a> <span class="bu">:input</span> (:caller-owned <span class="st">&quot;opaque data&quot;</span>))</span></code></pre></div>
 </div>
 </div>
-<p>For an inline assignment, pass <code class="verbatim">--prompt TEXT</code> or use <code class="verbatim">--prompt -</code> to read standard input. The defaults are role <code class="verbatim">task</code>, 86,400 seconds and a generated ID.</p>
+<p>Pass <code>--prompt TEXT</code> for a prompt on the command line or <code>--prompt -</code> to read it from standard input. If you omit <code>--id</code>, Autolith generates a job ID.</p>
 <div class="window code-window">
 <div class="window-titlebar">
 Shell
@@ -39,13 +37,13 @@ Shell
 <div class="window-body">
 <div class="sourceCode" id="cb60" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--permissions</span> auto run-job <span class="dt">\</span></span>
 <span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">--prompt</span> <span class="st">&quot;Review the current change and report the result.&quot;</span> <span class="dt">\</span></span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--role</span> task <span class="at">--timeout-seconds</span> 900 <span class="at">--id</span> review-change <span class="dt">\</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">--id</span> review-change <span class="dt">\</span></span>
 <span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">--output</span> /path/to/result.sexp</span></code></pre></div>
 </div>
 </div>
 <p>Check the status in the output file. If the status is <code>:succeeded</code>, read <code>:result</code>. If the job failed, read the error in the same file.</p>
 <p>Choose the permission mode before you run the job. Headless jobs cannot prompt for approval.</p>
-<ul><li><code>auto</code> denies operations that require approval.</li><li><code>sandbox</code> only permits sandboxed shell commands.</li><li><code>full</code> permits full command execution and external tools allowed by the role.</li></ul>
+<ul><li><code>auto</code> denies operations that require approval.</li><li><code>sandbox</code> only permits sandboxed shell commands.</li><li><code>full</code> permits commands and external tools that would otherwise require approval.</li></ul>
 <h2 id="live-s-expression-events">Live S-expression events</h2>
 <p>Add <code class="verbatim">--events sexp</code> to observe progress on stdout. Send diagnostics to a separate stream, and use the artifact for the authoritative result:</p>
 <div class="window code-window">

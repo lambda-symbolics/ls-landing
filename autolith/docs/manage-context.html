@@ -1,33 +1,16 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Manage context · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Manage context">
-<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/manage-context"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=fd446f1e069831d49af3a697dc19d7128ee35c23f22431a3502f72798a8967d4"></head>
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/manage-context"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=440a96d1ca3ba927ea48ec4cfa5015e8c6bcf1cfcf34c163c92ee8394871a8f4"></head>
 <body><a class="skip-link" href="#main-content">Skip to content</a>
 <header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
 <main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Manage context</nav><div class="doc-body"><div class="doc-content"><h1 id="manage-context">Manage context</h1>
 <h2 id="compaction">Compact a long conversation</h2>
 <p>Autolith compacts long conversations into a checkpoint and keeps recent turns. The context meter shows the token count. The <code>|</code> marks the automatic compaction point.</p>
 <ul><li>Run <code>(compact)</code> to make a checkpoint now. If a turn is active, Autolith waits until the turn ends.</li><li>Use <code>(settings :compaction-threshold-percent)</code> to inspect the threshold. The default is 80% of the context window.</li><li>Read the transcript if you need the exact text of earlier messages or tool results.</li></ul>
-<h2 id="context">Add guidance for a project</h2>
-<p>Context rules add instructions to model requests that match conditions you specify. Run <code>(context)</code> to see the guidance in use.</p>
-<h3 id="save-a-correction">Save a correction</h3>
+<h2 id="context">Save a recurring correction</h2>
+<p>If you find yourself giving Autolith the same correction, save it for later conversations.</p>
 <ol><li>Run <code>(complain "Your explanations are too long. Give the result first.")</code>.</li><li>Review the suggested instruction and the text that triggers it. Edit either one if needed.</li><li>Save it for the current workspace or for all workspaces.</li></ol>
-<h3 id="write-a-context-rule">Write a rule in Lisp</h3>
-<p>Put this example in <code>init.lisp</code> to add a reminder after successful tools run on Common Lisp files under <code>src/</code>:</p>
-<div class="window code-window">
-<div class="window-titlebar">
-Common Lisp
-</div>
-<div class="window-body">
-<div class="sourceCode" id="cb28" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(register-context-rule</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a> &#39;(:id <span class="st">&quot;lisp-edits&quot;</span></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>   :when (:paths (<span class="st">&quot;src/&quot;</span>) :languages (<span class="st">&quot;common-lisp&quot;</span>)</span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>          :events (<span class="st">&quot;tool-success&quot;</span>))</span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>   :instruction <span class="st">&quot;Check the changed declarations before committing.&quot;</span></span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>   :priority <span class="dv">30</span> :lifetime :while-relevant))</span></code></pre></div>
-</div>
-</div>
-<p>Add an absolute <code>:workspace</code> directory to restrict the rule to one project. Use <code>context-status</code> to check whether the rule was used and <code>unregister-context-rule</code> with the rule ID to remove it.</p>
 <h2 id="output-limits-and-admission">Set token limits</h2>
 <p>Inspect the effective limits with <code>(status)</code>. Use <code>(settings)</code> to find settings for the active model.</p>
 <ul><li><strong>Context window.</strong> Set <code>AUTOLITH_CONTEXT_WINDOW</code> for one launch if you need to override the window.</li><li><strong>Reply length.</strong> Set <code>(settings :max-output-tokens N)</code> to cap the tokens requested for one reply. Use <code>nil</code> to clear the override.</li></ul>

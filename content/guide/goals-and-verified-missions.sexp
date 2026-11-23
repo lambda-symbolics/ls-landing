@@ -1,16 +1,14 @@
 (:h1 (:id "goals-and-verified-missions") "Goals and verified missions")
 
-(:p nil "Use a " (:strong nil "goal") " for work that can continue between messages. Use a " (:strong nil "mission") " if you want to define acceptance criteria, checks, and a budget before work begins.")
+(:p nil "Use a " (:strong nil "goal") " for work that can continue between messages without a set budget. Start a "
+ (:strong nil "mission") " if you want to set acceptance criteria, checks, or a budget before work begins.")
 
 (:h2 (:id "goals") "Set a goal")
 
 (:ol nil (:li nil "Run " (:code nil "(goal \"OBJECTIVE\")") " to set the objective.")
- (:li nil "Run " (:code nil "(goal)") " to check progress. Use " (:code nil "(goal :pause)")
-  " to pause, or " (:code nil "(goal :resume)") " to continue."))
-
-(:p nil
- "By default, a goal pauses after eight automatic turns without a new message from you. Change this limit with "
- (:code nil "(settings :goal-continuation-limit N)") ".")
+ (:li nil "Run " (:code nil "(goal)") " to check progress.")
+ (:li nil "Run " (:code nil "(goal :pause)") " to pause, " (:code nil "(goal :resume)")
+  " to continue, or " (:code nil "(goal :clear)") " to clear the goal."))
 
 (:h2 (:id "start-a-mission") "Start and verify a mission")
 
@@ -70,11 +68,12 @@ Common Lisp
 "))
   "
 "
-  (:li nil (:p nil "Request verification with " (:code (:class "verbatim") "(mission :verify)") ". The model can also request it with its completion marker. A mission is verified only if every gate passes and every criterion is satisfied."))
+  (:li nil (:p nil "Run " (:code nil "(mission :verify)") " to check the result. All checks must pass and all criteria must be met before the mission is marked as verified."))
   "
 ")
 
-(:p nil "Give each criterion a unique " (:code (:class "verbatim") ":id") " and a " (:code (:class "verbatim") ":description") ". Use " (:code (:class "verbatim") ":gates") " to list the checks that count as evidence for that criterion. The model cannot weaken the criteria or accept results on your behalf. Only the primary agent can use the " (:code (:class "verbatim") "mission.status") ", " (:code (:class "verbatim") "mission.verify") ", " (:code (:class "verbatim") "mission.stop") ", and " (:code (:class "verbatim") "mission.invalidate") " tools.")
+(:p nil "Give each criterion a unique " (:code nil ":id") " and a " (:code nil ":description")
+ ". Use " (:code nil ":gates") " to list the checks for that criterion. For criteria that require your review, accept the result yourself.")
 
 (:h2 (:id "mission-budgets") "Set a budget")
 
@@ -91,7 +90,7 @@ Common Lisp
  " at the start of the mission if you want work to continue with those gaps recorded.")
 
 (:ul nil
- (:li nil "Pause with " (:code nil "(goal :pause)") " and resume with "
+ (:li nil "Pause with " (:code nil "(mission :pause)") " and resume with "
   (:code nil "(mission :resume)") ". These commands do not reset the budget.")
  (:li nil "Cancel with " (:code nil "(mission :cancel)") "."))
 
@@ -140,93 +139,10 @@ Common Lisp
 
 (:p nil "Invalidating a check allows it to run again if there are attempts left in the budget.")
 
-(:h2 (:id "independent-review-checkpoints") "Independent review checkpoints")
+(:h2 (:id "independent-review-checkpoints") "Ask for an independent review")
 
-(:p nil "Attach a reviewer to an active mission with " (:code (:class "verbatim") "mission-review.configure") ", or evaluate:")
+(:p nil "You can require a separate review before final verification. Tell Autolith which files to review and what the reviewer should check. Read the findings and resolve them before you accept the result.")
 
-(:div (:class "window code-window")
-  "
-"
-  (:div (:class "window-titlebar")
-    "
-Common Lisp
-")
-  "
-"
-  (:div (:class "window-body")
-    "
-"
-    (:div (:class "sourceCode" :id "cb53" :data-org-language "lisp")
-      (:pre (:class "sourceCode commonlisp") (:code (:class "sourceCode commonlisp") (:span (:id "cb53-1") (:a (:href "#cb53-1" :aria-hidden "true" :tabindex "-1")) "(application-mission-review-configure") "
-" (:span (:id "cb53-2") (:a (:href "#cb53-2" :aria-hidden "true" :tabindex "-1")) " *active-application*") "
-" (:span (:id "cb53-3") (:a (:href "#cb53-3" :aria-hidden "true" :tabindex "-1")) " '(:id " (:span (:class "st") "\"release-review\"") " :phase :final-acceptance") "
-" (:span (:id "cb53-4") (:a (:href "#cb53-4" :aria-hidden "true" :tabindex "-1")) "   :inputs (" (:span (:class "st") "\"src/main.lisp\"") " " (:span (:class "st") "\"tests/main-tests.lisp\"") ")") "
-" (:span (:id "cb53-5") (:a (:href "#cb53-5" :aria-hidden "true" :tabindex "-1")) "   :context " (:span (:class "st") "\"Review the changed behavior and test coverage. Report concrete findings.\"")) "
-" (:span (:id "cb53-6") (:a (:href "#cb53-6" :aria-hidden "true" :tabindex "-1")) "   :turn-limit " (:span (:class "dv") "4") " :token-limit " (:span (:class "dv") "16000") " :run-limit " (:span (:class "dv") "3") "))"))))
-    "
-")
-  "
-")
+(:h2 (:id "scheduled-mission-continuations") "Schedule a follow-up")
 
-(:p nil "List the files that the reviewer should inspect in " (:code nil ":inputs") ". Set "
- (:code nil ":run-limit") " to cap the number of changed snapshots reviewed.")
-
-(:ul nil
- (:li nil "Run a checkpoint with " (:code nil "mission-review.trigger") " and the checkpoint ID.")
- (:li nil "Read the findings with " (:code nil "mission-review.inspect") ".")
- (:li nil "Use " (:code nil "mission-review.decide")
-  " to resolve or reject each finding. Give evidence for the decision."))
-
-(:p nil
- "Final verification runs the checkpoints configured for final acceptance. Resolve outstanding findings and retry interrupted reviews before acceptance.")
-
-(:h2 (:id "scheduled-mission-continuations") "Scheduled mission continuations")
-
-(:p nil "Use " (:code nil "mission-schedule.add")
- " to schedule a continuation. Give the schedule a unique ID and say what Autolith should do. Choose one trigger:")
-
-(:ul nil (:li nil (:code nil ":at") " sets a date and time in Common Lisp universal time.")
- (:li nil (:code nil ":interval") " sets an interval in seconds.")
- (:li nil (:code nil ":event") " names an external event."))
-
-(:div (:class "window code-window")
-  "
-"
-  (:div (:class "window-titlebar")
-    "
-Common Lisp
-")
-  "
-"
-  (:div (:class "window-body")
-    "
-"
-    (:div (:class "sourceCode" :id "cb54" :data-org-language "lisp")
-      (:pre (:class "sourceCode commonlisp") (:code (:class "sourceCode commonlisp") (:span (:id "cb54-1") (:a (:href "#cb54-1" :aria-hidden "true" :tabindex "-1")) "(application-mission-schedule-add") "
-" (:span (:id "cb54-2") (:a (:href "#cb54-2" :aria-hidden "true" :tabindex "-1")) " *active-application* :id " (:span (:class "st") "\"build-followup\"")) "
-" (:span (:id "cb54-3") (:a (:href "#cb54-3" :aria-hidden "true" :tabindex "-1")) " :content " (:span (:class "st") "\"Check the pending build and continue the mission.\"")) "
-" (:span (:id "cb54-4") (:a (:href "#cb54-4" :aria-hidden "true" :tabindex "-1")) " :at (" (:span (:class "op") "+") " (" (:span (:class "kw") "get-universal-time") ") " (:span (:class "dv") "300") ") :missed-policy :latest)"))))
-    "
-")
-  "
-")
-
-(:p nil "For recurring schedules, select a missed policy:")
-
-(:ul nil (:li nil (:code nil "latest") " runs the newest missed occurrence. This is the default.")
- (:li nil (:code nil "all") " runs every missed occurrence.")
- (:li nil (:code nil "skip") " skips missed occurrences."))
-
-(:p nil
- "A time schedule pauses automatic goal turns between occurrences. You can still send a message. Scheduled work uses the existing mission budget.")
-
-(:p nil
- "Occurrences that come due while the mission is paused or blocked are skipped. After you resume, the next occurrence runs at the scheduled time.")
-
-(:ul nil
- (:li nil "Use " (:code nil "mission-schedule.inspect") " to see pending or skipped occurrences.")
- (:li nil "Use " (:code nil "mission-schedule.cancel")
-  " with the schedule ID to cancel future work."))
-
-(:p nil "If scheduled work stopped partway through, check what it did before you retry. Use "
- (:code nil "mission-schedule.resolve") " to record the outcome or request a retry.")
+(:p nil "Tell Autolith what to do next and when to do it. For example, ask it to check a pending build in five minutes and continue the mission if the build passes. Scheduled work uses the same mission budget. If you pause a mission, any follow-ups due during the pause are skipped.")

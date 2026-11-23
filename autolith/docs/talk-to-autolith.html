@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Talk to Autolith · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Talk to Autolith">
-<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/talk-to-autolith"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=fd446f1e069831d49af3a697dc19d7128ee35c23f22431a3502f72798a8967d4"></head>
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/talk-to-autolith"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=440a96d1ca3ba927ea48ec4cfa5015e8c6bcf1cfcf34c163c92ee8394871a8f4"></head>
 <body><a class="skip-link" href="#main-content">Skip to content</a>
 <header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
 <main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Talk to Autolith</nav><div class="doc-body"><div class="doc-content"><h1 id="talk-to-autolith">Talk to Autolith</h1>
@@ -108,92 +108,9 @@ Common Lisp
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>(vault-restore)</span></code></pre></div>
 </div>
 </div>
-<p>Use <code class="verbatim">(vault)</code> for a summary. To replace the entire list, set <code class="verbatim">(vault-contents)</code> without an index. Its entries may be <code class="verbatim">(:message INPUT)</code>, <code class="verbatim">(:command TEXT)</code>, <code class="verbatim">(:lisp SOURCE)</code> or, for scheduled wakeups, <code class="verbatim">(:native-lisp SOURCE)</code>. Set the list to <code class="verbatim">nil</code> to clear it.</p>
-<h2 id="managed-resources">Managed resources</h2>
-<ol><li>Read the resource with <code>resource.read</code>.</li><li>Pass the revision from the read as <code>:base-revision</code> to <code>resource.edit</code>.</li><li>If the edit was rejected because the resource changed, read it again and check the new contents before editing.</li></ol>
-<div class="window code-window">
-<div class="window-titlebar">
-Common Lisp
-</div>
-<div class="window-body">
-<div class="sourceCode" id="cb11" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;workspace:README.md&quot;</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;channel:current&quot;</span> :query <span class="st">&quot;unit tests&quot;</span> :max-results <span class="dv">5</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;channel:current&quot;</span> :start-sequence <span class="dv">120</span> :record-count <span class="dv">10</span>)</span></code></pre></div>
-</div>
-</div>
-<div class="table-scroll">
-<table>
-<thead>
-<tr>
-<th>Resource</th>
-<th>Use</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code class="verbatim">channel:current</code></td>
-<td>Read recent history, including records from before compaction.</td>
-</tr>
-<tr>
-<td><code class="verbatim">channel:id/ID</code></td>
-<td>Read the history of one other channel.</td>
-</tr>
-<tr>
-<td><code class="verbatim">channel:list</code></td>
-<td>Find channels and their participants. Reading does not subscribe you.</td>
-</tr>
-<tr>
-<td><code class="verbatim">papercut:current</code></td>
-<td>List active reports about the running Autolith harness or its tools.</td>
-</tr>
-<tr>
-<td><code class="verbatim">papercut:id/ID</code></td>
-<td>Read one papercut. Percent-encode the stable ID if necessary.</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>Search within a single channel. If you have a sequence number, pass it as <code>:start-sequence</code> to read from that point.</p>
-<h2 id="memories">Memories</h2>
-<p>Use a <strong>note</strong> for preferences or conventions. Use a <strong>fact</strong> to record a value and the evidence for it.</p>
-<div class="window code-window">
-<div class="window-titlebar">
-Common Lisp
-</div>
-<div class="window-body">
-<div class="sourceCode" id="cb12" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>(memories)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>(memories <span class="st">&quot;deploy&quot;</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>(memory <span class="st">&quot;3afbfa1a&quot;</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>(forget <span class="st">&quot;3afbfa1a&quot;</span>)</span></code></pre></div>
-</div>
-</div>
-<p>Open the memory manager with <code>(memories)</code>.</p>
-<ul><li>Press / to search.</li><li>Use Tab to switch between All, Notes and Facts. Use Shift-Tab to choose a scope.</li><li>Press n to create a note, e to edit one or d to forget the selected entry.</li></ul>
-<p>Use <code>(memory "ID")</code> to see the evidence. If a source changes, check it before relying on a note marked stale.</p>
-<h3 id="facts-and-rules">Facts and rules</h3>
-<p>Facts record values and their sources. Rules derive new facts from those values. For example, a rule can mark a pull request ready for review after the required checks pass.</p>
-<ul><li>Use <code>(why "ID")</code> to inspect the sources and rules behind a fact.</li><li>Use <code>(what-changed)</code> to see which facts changed and why.</li><li>Use <code>(forget "ID")</code> to retract an assertion.</li></ul>
-<h3 id="plans-methods-gates-and-contracts">Plans, methods, gates, and contracts</h3>
-<p>Use facts for work that depends on evidence you can check, such as whether a pull request can be merged.</p>
-<ul><li>A method describes how to do a task. Ask Autolith to use <code>plan.expand</code> to turn a task into steps.</li><li>A fact gate checks a claim before mission acceptance. Use one to require evidence that the reviewed changes passed CI.</li><li>A tool contract defines what must be true before a tool runs, or what the result establishes.</li></ul>
-<h3 id="learned-procedures">Learned procedures</h3>
-<p>Autolith can learn a procedure from repeated work. Run <code>(procedures)</code> to see the calls, inputs and status of learned procedures.</p>
-<div class="window code-window">
-<div class="window-titlebar">
-Common Lisp
-</div>
-<div class="window-body">
-<div class="sourceCode" id="cb16" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>(procedures)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>(admit-procedure <span class="st">&quot;make-sales-report&quot;</span>)</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>(run-procedure <span class="st">&quot;make-sales-report&quot;</span> :file <span class="st">&quot;q5&quot;</span>)</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>(retire-procedure <span class="st">&quot;make-sales-report&quot;</span>)</span></code></pre></div>
-</div>
-</div>
-<ul><li>Review and admit a procedure before reuse. Tool approvals still apply.</li><li>Use <code>(retire-procedure "NAME")</code> to prevent further runs.</li></ul>
-<h3 id="diagnosis">Diagnosis</h3>
-<p>Ask Autolith to compare possible causes of a failure. With structured knowledge enabled, it can use <code>diagnosis.run</code> to compare hypotheses with recorded facts and tool results.</p>
-<h2 id="exporting-and-importing-data">Exporting and importing data</h2>
-<p>Export a workspace from the OS shell, then import it at its new path:</p>
+<p>Run <code>(vault)</code> for a summary of parked input.</p>
+<h2 id="exporting-and-importing-data">Move a workspace to another directory</h2>
+<p>To take your conversations with you, export the workspace from the shell and import the archive at the new path:</p>
 <div class="window code-window">
 <div class="window-titlebar">
 Shell
@@ -213,8 +130,7 @@ Common Lisp
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>(data.<span class="kw">import</span> <span class="st">&quot;project.sexp&quot;</span> :workspace <span class="st">&quot;/home/al/src/project&quot;</span>)</span></code></pre></div>
 </div>
 </div>
-<p>Use export to move conversations and workspace knowledge together. Copy the archive if you are moving to another machine.</p>
-<p>Choose a new file for each export. If the import reports a conflict, review the conflicting record before retrying.</p>
+<p>Copy the archive to the destination if you are moving to another machine. Choose a new file for each export. If the import reports a conflict, review it before retrying.</p>
 <h2 id="session-titles-and-resume">Session titles and resume</h2>
 <p>Autolith starts a channel title from your first message. Run <code>(rename "NAME")</code> to name the current agent yourself.</p>
 <ul>

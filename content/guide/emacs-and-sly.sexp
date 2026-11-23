@@ -40,35 +40,19 @@ Emacs Lisp
 (:ul nil
   "
 "
-  (:li nil (:code (:class "verbatim") "AUTOLITH_SLYNK_DIRECTORY") " is your sly's own " (:code (:class "verbatim") "slynk/") " directory, so the server speaks exactly your client's protocol. Autolith loads that " (:code (:class "verbatim") "slynk.asd") " by path and compiles it into the ASDF cache on first use.")
+  (:li nil "Set " (:code nil "AUTOLITH_SLYNK_DIRECTORY") " to the " (:code nil "slynk/") " directory from your sly installation.")
   "
 "
   (:li nil (:code (:class "verbatim") "AUTOLITH_SLYNK_PORT_FILE") " receives the loopback port once Slynk listens, or " (:code (:class "verbatim") "error: REASON") " when it cannot start. " (:code (:class "verbatim") "autolith-ide") " waits for it, up to " (:code (:class "verbatim") "autolith-slynk-timeout") " seconds, and connects sly.")
   "
 "
-  (:li nil (:code (:class "verbatim") "AUTOLITH_EMACS_SERVER") " is this Emacs's server socket and enables the " (:code (:class "verbatim") "emacs:") " resources and " (:code (:class "verbatim") "emacs.*") " tools.")
+  (:li nil "Set " (:code nil "AUTOLITH_EMACS_SERVER") " to the server socket for the Emacs instance you want Autolith to access.")
   "
 ")
 
 (:p nil (:code (:class "verbatim") "M-x autolith-agent-shell") " starts only the conversation, with Emacs access and without Slynk. The same variables, or the " (:code (:class "verbatim") ":slynk-directory") ", " (:code (:class "verbatim") ":slynk-port-file") " and " (:code (:class "verbatim") ":emacs-server-socket") " settings, work outside Emacs. In the terminal, " (:code (:class "verbatim") "(slynk)") " starts Slynk and shows the port for " (:code (:class "verbatim") "M-x sly-connect") ", and " (:code (:class "verbatim") "(slynk :stop)") " closes it.")
 
-(:p nil "The agent reaches your definitions with " (:code (:class "verbatim") "lisp.describe") ", " (:code (:class "verbatim") "lisp.source") " and " (:code (:class "verbatim") "lisp.apropos") " using target " (:code (:class "verbatim") "self") ", or with " (:code (:class "verbatim") "self.eval") ". While Slynk serves, a context note tells it so. Your Emacs appears to the agent only while the configured server socket exists:")
-
-(:ul nil
-  "
-"
-  (:li nil (:code (:class "verbatim") "emacs:current") ", read with " (:code (:class "verbatim") "resource.read") ", lists authorized visible windows with point, the active region and open file buffers, each by its " (:code (:class "verbatim") "emacs:buffer/NAME") " URI. Outside-root files and non-file buffers require full-access approval; denied buffers are omitted from this snapshot.")
-  "
-"
-  (:li nil (:code (:class "verbatim") "emacs:buffer/NAME") " is a live buffer's text, unsaved edits included, with the buffer name percent-encoded. " (:code (:class "verbatim") "resource.edit") " applies line operations to the buffer itself: the change stays unsaved and undoable, and is refused as stale if you have edited the buffer since the agent read it. A buffer visiting a file outside the workspace and source roots asks the same permission as that path.")
-  "
-"
-  (:li nil (:code (:class "verbatim") "emacs.visit") " shows a file position in a file window of the selected frame.")
-  "
-"
-  (:li nil (:code (:class "verbatim") "emacs.eval") " evaluates Emacs Lisp. It asks command authorization for " (:code (:class "verbatim") "emacs.eval -- FORM") " and runs only with full access.")
-  "
-")
+(:p nil "If you enable Emacs access, you can ask Autolith to review the selected region or edit an open buffer, including unsaved text. Review the edits in Emacs and save or undo them there. Access outside the workspace and source roots requires approval.")
 
 (:p nil "Slynk listens on " (:code (:class "verbatim") "127.0.0.1") " only. Like ordinary sly, it has no authentication beyond the optional " (:code (:class "verbatim") "~/.sly-secret") ". Anyone who can reach loopback on this machine can evaluate in the image. Your code shares the agent's heap: a fatal error or " (:code (:class "verbatim") "(sb-ext:exit)") " ends the session, which recovers like any crash.")
 

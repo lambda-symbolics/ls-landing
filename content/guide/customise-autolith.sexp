@@ -78,18 +78,14 @@ Common Lisp
 
 (:h2 (:id "executable-skills") "Load a skill")
 
-(:p nil "Ask Autolith to load a skill by name, or use " (:code nil "skill.load")
- " with the exact name. Read " (:code nil "skill:NAME") " with " (:code nil "resource.read")
- " to see the catalog entry.")
+(:p nil "If you have a skill that you want to use, ask Autolith to load it by name. Include the task you want to do with it.")
 
 (:h2 (:id "live-definitions") "Change a live definition")
 
 (:ol nil
- (:li nil "Use " (:code nil "self.define")
-  " to add or replace a definition in the running image. Qualify the symbol if it belongs to another package.")
- (:li nil "Test the change in the active image and review it with " (:code nil "self.diff") ".")
- (:li nil "Save the change with " (:code nil "self.commit") " or undo it with "
-  (:code nil "self.discard") "."))
+ (:li nil "Tell Autolith which definition you want to change in the running image.")
+ (:li nil "Ask for a test and review the diff before saving the change.")
+ (:li nil "Ask Autolith to commit the definition to your private image or discard it."))
 
 (:p nil "If an update skips an override because the tracked definition changed, run "
  (:code nil "(fix-skipped-definitions)") " to review and rebuild the overrides you still need. See "
@@ -98,9 +94,8 @@ Common Lisp
 
 (:h2 (:id "local-text-redaction") "Redact text locally")
 
-(:p nil "Use " (:code nil "(redact text)") " at the Lisp prompt or " (:code nil "autolith:redact")
- " in a worker. Check the second return value for " (:code nil ":ok")
- ". Review the redacted text before sharing it.")
+(:p nil "Enter " (:code nil "(redact text)") " at the Lisp prompt to redact text locally. Check that the second return value is "
+ (:code nil ":ok") ". Review the redacted text before sharing it.")
 
 (:h2 (:id "active-image-management-endpoint") "Connect to the running Lisp image")
 

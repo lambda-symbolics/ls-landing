@@ -27,7 +27,7 @@
      ("command-arguments" . "talk-to-autolith#command-arguments")
      ("fullscreen-terminal" . "talk-to-autolith#read-the-transcript")
      ("terminal-diagrams" . "talk-to-autolith#terminal-diagrams")
-     ("workspace" . "talk-to-autolith#managed-resources")
+     ("workspace" . "talk-to-autolith#exporting-and-importing-data")
      ("tools" . "connect-development-tools")
      ("lisp-workers" . "customise-autolith")
      ("live-image" . "generations-and-recovery")

@@ -54,14 +54,9 @@ Common Lisp
 ")
    "
 "))
- (:li nil "Ask Autolith to run " (:code nil "lsp.status")
-  " to check the configuration. After editing the file, use " (:code nil "lsp.restart")
-  " to reload it."))
+ (:li nil "Ask Autolith to check that the language server is running. After editing the configuration, ask Autolith to restart the server."))
 
-(:ul nil (:li nil "Use " (:code nil "lsp.query") " to find definitions or references.")
- (:li nil "Use " (:code nil "lsp.diagnostics") " to check a file for errors.")
- (:li nil "Ask Autolith to propose a rename or code action with " (:code nil "lsp.semantic")
-  ". Review the proposal before applying it. If the file changes, request a new proposal."))
+(:p nil "Try asking where a function is defined, where it is used, or why the language server reports an error in a file. If you ask for a rename, review the proposed edits before approving them.")
 
 (:h2 (:id "structural-code-edits") "Make structural edits")
 
@@ -92,9 +87,9 @@ Common Lisp
  "
 ")
 
-(:ol nil (:li nil "Ask Autolith to find matching code with " (:code nil "structural.query") ".")
- (:li nil "Review the preview from " (:code nil "structural.rewrite") ".")
- (:li nil "Apply the proposed change with " (:code nil "structural.apply") "."))
+(:ol nil (:li nil "Ask Autolith to find calls to a function or another pattern in your code.")
+ (:li nil "Describe the change and ask to see a preview of the edits.")
+ (:li nil "Review the preview before you ask Autolith to apply the edits."))
 
 (:h2 (:id "debug-adapter-sessions") "Connect a debugger")
 
@@ -130,15 +125,10 @@ Common Lisp
 ")
 
 (:ol nil
- (:li nil "Ask Autolith to launch the program with " (:code nil "debug.launch")
-  " or attach to a running process with " (:code nil "debug.attach")
-  ". Approve the debugger command if you trust it.")
- (:li nil "Set breakpoints with " (:code nil "debug.breakpoints") ". Use "
-  (:code nil "debug.continue") " to run to a breakpoint or " (:code nil "debug.step")
-  " to step through code.")
- (:li nil "Inspect the stack with " (:code nil "debug.stack") " or values with "
-  (:code nil "debug.variables") ".")
- (:li nil "End the debug session with " (:code nil "debug.terminate") "."))
+ (:li nil "Ask Autolith to launch the program under the debugger or attach to a running process. Approve the debugger command if you trust it.")
+ (:li nil "Ask Autolith to set a breakpoint at a line or function, then run to the breakpoint.")
+ (:li nil "Ask to see the call stack or the value of a variable before you step through the code.")
+ (:li nil "Ask Autolith to end the debug session when you are done."))
 
 (:h2 (:id "connect-mcp") "Connect an MCP server")
 

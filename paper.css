@@ -1573,6 +1573,10 @@ button.button {
   overflow-wrap: normal;
 }
 
+.doc-content .table-scroll {
+  margin-bottom: 16px;
+}
+
 /* -- Contents window for serial documents -- */
 
 .doc-body {

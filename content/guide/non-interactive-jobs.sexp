@@ -1,8 +1,8 @@
 (:h1 (:id "non-interactive-jobs") "Non-interactive jobs")
 
-(:p nil "Use " (:code nil "autolith run-job") " to run a child role from a script or CI. Use "
- (:code nil "--input FILE") " for a job specification or " (:code nil "--prompt TEXT")
- " for a single assignment. Read the result from the file you set with " (:code nil "--output") ".")
+(:p nil "Use " (:code nil "autolith run-job") " to run an assignment from a script or CI. Pass either "
+ (:code nil "--input FILE") " or " (:code nil "--prompt TEXT") ". Set the path for the result with "
+ (:code nil "--output") ".")
 
 (:div (:class "window code-window")
   "
@@ -43,16 +43,15 @@ Common Lisp
       (:pre (:class "sourceCode commonlisp") (:code (:class "sourceCode commonlisp") (:span (:id "cb59-1") (:a (:href "#cb59-1" :aria-hidden "true" :tabindex "-1")) "(:autolith-job") "
 " (:span (:id "cb59-2") (:a (:href "#cb59-2" :aria-hidden "true" :tabindex "-1")) " " (:span (:class "bu") ":version") " " (:span (:class "dv") "1")) "
 " (:span (:id "cb59-3") (:a (:href "#cb59-3" :aria-hidden "true" :tabindex "-1")) " :id " (:span (:class "st") "\"job-identifier\"")) "
-" (:span (:id "cb59-4") (:a (:href "#cb59-4" :aria-hidden "true" :tabindex "-1")) " :role " (:span (:class "st") "\"project-role\"")) "
-" (:span (:id "cb59-5") (:a (:href "#cb59-5" :aria-hidden "true" :tabindex "-1")) " :prompt " (:span (:class "st") "\"Perform the assigned work.\"")) "
-" (:span (:id "cb59-6") (:a (:href "#cb59-6" :aria-hidden "true" :tabindex "-1")) " " (:span (:class "bu") ":input") " (:caller-owned " (:span (:class "st") "\"opaque data\"") ")") "
-" (:span (:id "cb59-7") (:a (:href "#cb59-7" :aria-hidden "true" :tabindex "-1")) " :timeout-seconds " (:span (:class "dv") "900") ")"))))
+" (:span (:id "cb59-4") (:a (:href "#cb59-4" :aria-hidden "true" :tabindex "-1")) " :prompt " (:span (:class "st") "\"Perform the assigned work.\"")) "
+" (:span (:id "cb59-5") (:a (:href "#cb59-5" :aria-hidden "true" :tabindex "-1")) " " (:span (:class "bu") ":input") " (:caller-owned " (:span (:class "st") "\"opaque data\"") "))"))))
     "
 ")
   "
 ")
 
-(:p nil "For an inline assignment, pass " (:code (:class "verbatim") "--prompt TEXT") " or use " (:code (:class "verbatim") "--prompt -") " to read standard input. The defaults are role " (:code (:class "verbatim") "task") ", 86,400 seconds and a generated ID.")
+(:p nil "Pass " (:code nil "--prompt TEXT") " for a prompt on the command line or " (:code nil "--prompt -")
+ " to read it from standard input. If you omit " (:code nil "--id") ", Autolith generates a job ID.")
 
 (:div (:class "window code-window")
   "
@@ -69,7 +68,7 @@ Shell
     (:div (:class "sourceCode" :id "cb60" :data-org-language "sh")
       (:pre (:class "sourceCode bash") (:code (:class "sourceCode bash") (:span (:id "cb60-1") (:a (:href "#cb60-1" :aria-hidden "true" :tabindex "-1")) (:span (:class "ex") "autolith") " " (:span (:class "at") "--permissions") " auto run-job " (:span (:class "dt") "\\")) "
 " (:span (:id "cb60-2") (:a (:href "#cb60-2" :aria-hidden "true" :tabindex "-1")) "  " (:span (:class "at") "--prompt") " " (:span (:class "st") "\"Review the current change and report the result.\"") " " (:span (:class "dt") "\\")) "
-" (:span (:id "cb60-3") (:a (:href "#cb60-3" :aria-hidden "true" :tabindex "-1")) "  " (:span (:class "at") "--role") " task " (:span (:class "at") "--timeout-seconds") " 900 " (:span (:class "at") "--id") " review-change " (:span (:class "dt") "\\")) "
+" (:span (:id "cb60-3") (:a (:href "#cb60-3" :aria-hidden "true" :tabindex "-1")) "  " (:span (:class "at") "--id") " review-change " (:span (:class "dt") "\\")) "
 " (:span (:id "cb60-4") (:a (:href "#cb60-4" :aria-hidden "true" :tabindex "-1")) "  " (:span (:class "at") "--output") " /path/to/result.sexp"))))
     "
 ")
@@ -84,8 +83,7 @@ Shell
 
 (:ul nil (:li nil (:code nil "auto") " denies operations that require approval.")
  (:li nil (:code nil "sandbox") " only permits sandboxed shell commands.")
- (:li nil (:code nil "full")
-  " permits full command execution and external tools allowed by the role."))
+ (:li nil (:code nil "full") " permits commands and external tools that would otherwise require approval."))
 
 (:h2 (:id "live-s-expression-events") "Live S-expression events")
 

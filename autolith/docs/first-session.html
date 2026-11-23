@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>First session · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="First session">
-<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/first-session"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=fd446f1e069831d49af3a697dc19d7128ee35c23f22431a3502f72798a8967d4"></head>
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/first-session"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=440a96d1ca3ba927ea48ec4cfa5015e8c6bcf1cfcf34c163c92ee8394871a8f4"></head>
 <body><a class="skip-link" href="#main-content">Skip to content</a>
 <header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
 <main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · First session</nav><div class="doc-body"><div class="doc-content"><h1 id="first-session">First session</h1>
@@ -10,15 +10,7 @@
 <li><strong>Open a channel.</strong> Run <code class="verbatim">autolith</code> or <code class="verbatim">nix run github:lambda-symbolics/autolith</code> in the directory where you want to work. Select <code class="verbatim">inbox</code> or another channel in the sidebar. Use <code class="verbatim">autolith open</code> to reopen the most recent top-level channel in the workspace, or <code class="verbatim">autolith open ID</code> to open a specific channel.</li>
 <li><strong>Send your first request.</strong> Try <em>List the files in this workspace and tell me where to start.</em> To see commands, enter <code class="verbatim">(help)</code> in the same prompt.</li>
 </ol>
-<p>Write requests in plain text and enter Lisp commands as parenthesized forms. For example, you can inspect the workspace directly:</p>
-<div class="window code-window">
-<div class="window-titlebar">
-Common Lisp
-</div>
-<div class="window-body">
-<div class="sourceCode" id="cb5" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(resource.<span class="kw">read</span> :uri <span class="st">&quot;workspace:.&quot;</span>)</span></code></pre></div>
-</div>
-</div>
+<p>At the same prompt, try <code>(+ 2 3)</code> to evaluate a Lisp expression.</p>
 <ul>
 <li>Type an opening parenthesis, bracket, or brace to insert a pair. Type the closing delimiter to move past it, or press Backspace inside an empty pair to delete both delimiters.</li>
 <li>Press Tab to complete a command, option, path, or <code class="verbatim">@</code> mention. If you complete a mention, press Tab again to cycle through candidates. Use Shift-Tab to cycle backward.</li>

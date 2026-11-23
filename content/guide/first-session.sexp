@@ -13,26 +13,7 @@
   "
 ")
 
-(:p nil "Write requests in plain text and enter Lisp commands as parenthesized forms. For example, you can inspect the workspace directly:")
-
-(:div (:class "window code-window")
-  "
-"
-  (:div (:class "window-titlebar")
-    "
-Common Lisp
-")
-  "
-"
-  (:div (:class "window-body")
-    "
-"
-    (:div (:class "sourceCode" :id "cb5" :data-org-language "lisp")
-      (:pre (:class "sourceCode commonlisp") (:code (:class "sourceCode commonlisp") (:span (:id "cb5-1") (:a (:href "#cb5-1" :aria-hidden "true" :tabindex "-1")) "(resource." (:span (:class "kw") "read") " :uri " (:span (:class "st") "\"workspace:.\"") ")"))))
-    "
-")
-  "
-")
+(:p nil "At the same prompt, try " (:code nil "(+ 2 3)") " to evaluate a Lisp expression.")
 
 (:ul nil
   "

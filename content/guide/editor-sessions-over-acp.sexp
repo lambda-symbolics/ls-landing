@@ -29,12 +29,11 @@ Shell
 "))
   "
 "
-  (:li nil (:p nil "Open a session in the editor. ACP uses UTF-8 JSON-RPC on stdin and stdout. Diagnostics go to stderr."))
+  (:li nil (:p nil "Open a session in the editor in the directory where you want to work."))
   "
 ")
 
-(:p nil
- "Open an editor session in the directory where you want to work. To resume it, reopen the same session ID in the editor or use "
+(:p nil "To resume the conversation, reopen the same session ID in the editor or use "
  (:code nil "autolith open ID") " in a terminal.")
 
 (:h2 (:id "approvals-and-session-control") "Manage the editor session")

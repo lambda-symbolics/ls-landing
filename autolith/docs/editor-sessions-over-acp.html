@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Editor sessions over ACP · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Editor sessions over ACP">
-<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/editor-sessions-over-acp"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=fd446f1e069831d49af3a697dc19d7128ee35c23f22431a3502f72798a8967d4"></head>
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/editor-sessions-over-acp"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=440a96d1ca3ba927ea48ec4cfa5015e8c6bcf1cfcf34c163c92ee8394871a8f4"></head>
 <body><a class="skip-link" href="#main-content">Skip to content</a>
 <header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
 <main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Editor sessions over ACP</nav><div class="doc-body"><div class="doc-content"><h1 id="editor-sessions-over-acp">Editor sessions over ACP</h1>
@@ -17,9 +17,9 @@ Shell
 <div class="sourceCode" id="cb55" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> acp</span></code></pre></div>
 </div>
 </div></li>
-<li><p>Open a session in the editor. ACP uses UTF-8 JSON-RPC on stdin and stdout. Diagnostics go to stderr.</p></li>
+<li><p>Open a session in the editor in the directory where you want to work.</p></li>
 </ol>
-<p>Open an editor session in the directory where you want to work. To resume it, reopen the same session ID in the editor or use <code>autolith open ID</code> in a terminal.</p>
+<p>To resume the conversation, reopen the same session ID in the editor or use <code>autolith open ID</code> in a terminal.</p>
 <h2 id="approvals-and-session-control">Manage the editor session</h2>
 <ul><li><strong>Approvals.</strong> Answer prompts in the editor or terminal. To change the default behavior, choose a permission mode in the editor or launch ACP with <code>--permissions auto|sandbox|full</code>.</li><li><strong>MCP servers.</strong> Supply servers before opening a new session. To change the list of servers supplied by the editor, open a new session.</li><li><strong>Closing.</strong> Cancel the prompt to stop the current turn. Close the session to disconnect the editor.</li></ul>
 <h2 id="remote-clients">Remote clients</h2>

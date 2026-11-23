@@ -83,6 +83,4 @@
    (:li (:id "active-image-management-endpoint")
     (:div nil
      (:a (:href "/autolith/docs/customise-autolith#active-image-management-endpoint")
-      "Connect to the running Lisp image")))))
- (:li (:id "child-roles")
-  (:div nil (:a (:href "/autolith/docs/manage-tasks") "Manage delegated tasks and jobs"))))
+      "Connect to the running Lisp image"))))))

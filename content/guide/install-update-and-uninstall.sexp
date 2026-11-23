@@ -175,4 +175,4 @@ Shell
   "
 ")
 
-(:p nil "The installation, managed runtimes, built images, and caches are removed. Your conversations, memories, image commits, configuration, and credentials are kept.")
+(:p nil "Uninstalling removes the program and the files it needs to run. Your conversation history, settings, credentials, and private image commits are kept.")
