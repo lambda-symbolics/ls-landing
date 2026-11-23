@@ -41,9 +41,8 @@ Point Vercel at this repository/submodule and deploy as a static site.
 
 ## Autolith docs
 
-The development guide uses Lisp data in `content/guide/`, one file per chapter.
-`index.sexp` lists the chapters in order. The published guide links to the Org
-manual for the corresponding Autolith release.
+The guide uses Lisp data in `content/guide/`, one file per chapter.
+`index.sexp` lists the chapters in order.
 
 Write for people using Autolith. Explain what they can do, what they need to
 set, and how to check the result. Leave out internal protocols and storage
@@ -65,8 +64,8 @@ files. The editor writes to the checkout, so use loopback or a trusted private
 interface.
 
 Before publishing, regenerate `autolith/docs/` and `sitemap.xml`. Update the
-revision date and release number in `tools/make-docs.lisp` when appropriate,
-and commit the chapter files and their regenerated pages together.
+revision date in `tools/make-docs.lisp` when appropriate. Commit the chapter
+files and their regenerated pages together.
 
 ```bash
 sbcl --non-interactive --load tools/make-docs.lisp --eval '(make-docs)'

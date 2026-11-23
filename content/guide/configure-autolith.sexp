@@ -45,13 +45,12 @@
     (:div nil
      (:a (:href "/autolith/docs/models-and-providers#model-catalogs-and-sign-in")
       "Sign in and choose a model")))
-   (:li (:id "run-a-local-model")
-    (:div nil
-     (:a (:href "/autolith/docs/models-and-providers#run-a-local-model") "Run a local model")))
    (:li (:id "add-another-openai-compatible-provider")
     (:div nil
      (:a (:href "/autolith/docs/models-and-providers#add-another-openai-compatible-provider")
       "Add a provider")))))
+ (:li (:id "run-a-local-model")
+  (:div nil (:a (:href "/autolith/docs/run-a-local-model") "Run a local model with Ollama")))
  (:li (:id "context") (:div nil (:a (:href "/autolith/docs/manage-context") "Manage context"))
   (:ul nil
    (:li (:id "compaction")

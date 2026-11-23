@@ -4,6 +4,7 @@
  "talk-to-autolith"
  "configure-autolith"
  "models-and-providers"
+ "run-a-local-model"
  "manage-context"
  "connect-development-tools"
  "customise-autolith"

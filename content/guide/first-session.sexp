@@ -3,7 +3,7 @@
 (:ol nil
   "
 "
-  (:li nil (:strong nil "Connect a model provider.") " To use ChatGPT, run " (:code (:class "verbatim") "autolith auth chatgpt") " and follow the prompts. If you use " (:code (:class "verbatim") "nix run") ", run " (:code (:class "verbatim") "nix run github:lambda-symbolics/autolith -- auth chatgpt") " instead. To use a local model, see " (:a (:href "/autolith/docs/models-and-providers#run-a-local-model") "Set up local inference") ".")
+  (:li nil (:strong nil "Connect a model provider.") " To use ChatGPT, run " (:code (:class "verbatim") "autolith auth chatgpt") " and follow the prompts. If you use " (:code (:class "verbatim") "nix run") ", run " (:code (:class "verbatim") "nix run github:lambda-symbolics/autolith -- auth chatgpt") " instead. You can also " (:a (:href "/autolith/docs/run-a-local-model") "run a local model with Ollama") ".")
   "
 "
   (:li nil (:strong nil "Open a channel.") " Run " (:code (:class "verbatim") "autolith") " or " (:code (:class "verbatim") "nix run github:lambda-symbolics/autolith") " in the directory where you want to work. Select " (:code (:class "verbatim") "inbox") " or another channel in the sidebar. Use " (:code (:class "verbatim") "autolith open") " to reopen the most recent top-level channel in the workspace, or " (:code (:class "verbatim") "autolith open ID") " to open a specific channel.")

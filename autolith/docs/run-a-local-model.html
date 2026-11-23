@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Run a local model with Ollama · Autolith docs · Lambda Symbolics OÜ</title><meta name="description" content="Run a local model with Ollama">
+<link rel="canonical" href="https://lambda-symbolics.com/autolith/docs/run-a-local-model"><link rel="icon" href="/logo/ls-favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/paper.css?v=fd446f1e069831d49af3a697dc19d7128ee35c23f22431a3502f72798a8967d4"></head>
+<body><a class="skip-link" href="#main-content">Skip to content</a>
+<header class="shell"><div class="letterhead"><a class="wordmark" href="/"><img src="/logo/ls-wordmark.svg" alt="Lambda Symbolics" width="110" height="31"></a><nav class="site-nav" aria-label="Primary"><ul class="site-nav-list"><li><a href="/autolith">Autolith</a></li><li><a href="/autolith/docs">Docs</a></li><li><a href="https://github.com/lambda-symbolics/autolith">GitHub</a></li></ul></nav></div></header>
+<main id="main-content" class="shell doc-page"><nav class="docs-path" aria-label="Location"><a href="/autolith/docs">Docs</a> · Run a local model with Ollama</nav><div class="doc-body"><div class="doc-content"><h1 id="run-a-local-model">Run a local model with Ollama</h1>
+<p>Use a model that supports tool calls if you want Autolith to read files or run commands.</p>
+<ol><li><p>Start <code>ollama serve</code> if Ollama is not running. Download the model in another terminal:</p><div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb31" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="ex">ollama</span> pull qwen3:8b</span></code></pre></div>
+</div>
+</div></li><li><p>Add this form to <code>${XDG_CONFIG_HOME:-~/.config}/autolith/init.lisp</code>:</p><div class="window code-window">
+<div class="window-titlebar">
+Common Lisp
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb32" data-org-language="lisp"><pre class="sourceCode commonlisp"><code class="sourceCode commonlisp"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>(register-openai-compatible-provider</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a> <span class="bu">:name</span>                         <span class="st">&quot;local-ollama&quot;</span></span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a> :endpoint                     <span class="st">&quot;http://127.0.0.1:11434/v1/chat/completions&quot;</span></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a> :models                       &#39;(<span class="st">&quot;qwen3:8b&quot;</span>)</span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a> :api-key-environment-variable <span class="st">&quot;AUTOLITH_OLLAMA_KEY&quot;</span></span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a> :stream-usage-p               <span class="kw">nil</span>)</span></code></pre></div>
+</div>
+</div></li><li><p>Set a nonempty key and start Autolith. Local Ollama ignores the key, so you can use <code>ollama</code> as the value.</p><div class="window code-window">
+<div class="window-titlebar">
+Shell
+</div>
+<div class="window-body">
+<div class="sourceCode" id="cb33" data-org-language="sh"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">export</span> <span class="va">AUTOLITH_OLLAMA_KEY</span><span class="op">=</span>ollama</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> models <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-Fx</span> <span class="st">&#39;local-ollama/qwen3:8b&#39;</span></span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="ex">autolith</span> <span class="at">--provider</span> local-ollama <span class="at">--model</span> qwen3:8b</span></code></pre></div>
+</div>
+</div></li><li>Send a short prompt to check that the reply streams. Ask Autolith to list the files in the current directory to check tool calls.</li></ol>
+<h2 id="ollama-troubleshooting">Troubleshoot Ollama</h2>
+<ul><li><strong>Unknown model.</strong> Run <code>ollama list</code> and copy the exact ID into <code>:models</code>.</li><li><strong>Rejected stream options.</strong> Set <code>:stream-usage-p nil</code> as shown above.</li><li><strong>Context limit is too small.</strong> Raise the limit on the server first. Then set <code>:models</code> to a list such as <code>'((:name "qwen3:8b" :context-window 32768))</code>, using the limit you set on the server.</li></ul>
+<nav class="docs-pager" aria-label="Guide chapters"><div class="docs-pager-cell"><span class="docs-pager-label">Previous</span><a href="/autolith/docs/models-and-providers">Models and providers</a></div><div class="docs-pager-cell docs-pager-cell--next"><span class="docs-pager-label">Next</span><a href="/autolith/docs/manage-context">Manage context</a></div></nav></div><aside class="doc-contents"><div class="window"><div class="window-titlebar">Contents</div><div class="window-body"><ol class="toc-list"><li><a href="/autolith/docs/install-update-and-uninstall"><span class="toc-number">1</span>Install, update, and uninstall</a></li><li><a href="/autolith/docs/first-session"><span class="toc-number">2</span>First session</a></li><li><a href="/autolith/docs/talk-to-autolith"><span class="toc-number">3</span>Talk to Autolith</a></li><li><a href="/autolith/docs/configure-autolith"><span class="toc-number">4</span>Configure Autolith</a></li><li><a href="/autolith/docs/models-and-providers"><span class="toc-number">5</span>Models and providers</a></li><li><span class="toc-current"><span class="toc-number">6</span>Run a local model with Ollama</span></li><li><a href="/autolith/docs/manage-context"><span class="toc-number">7</span>Manage context</a></li><li><a href="/autolith/docs/connect-development-tools"><span class="toc-number">8</span>Connect development tools</a></li><li><a href="/autolith/docs/customise-autolith"><span class="toc-number">9</span>Customise commands, skills and Lisp</a></li><li><a href="/autolith/docs/manage-tasks"><span class="toc-number">10</span>Manage delegated tasks and jobs</a></li><li><a href="/autolith/docs/goals-and-verified-missions"><span class="toc-number">11</span>Goals and verified missions</a></li><li><a href="/autolith/docs/editor-sessions-over-acp"><span class="toc-number">12</span>Editor sessions over ACP</a></li><li><a href="/autolith/docs/emacs-and-sly"><span class="toc-number">13</span>Emacs and sly</a></li><li><a href="/autolith/docs/non-interactive-jobs"><span class="toc-number">14</span>Non-interactive jobs</a></li><li><a href="/autolith/docs/generations-and-recovery"><span class="toc-number">15</span>Generations and recovery</a></li></ol></div></div></aside></div></main>
+<footer class="shell"><div class="colophon"><p>© 2026 Lambda Symbolics OÜ · <a href="/lukas">me</a></p><p>Autolith docs · Revised 23 November 2026</p></div></footer></body></html>

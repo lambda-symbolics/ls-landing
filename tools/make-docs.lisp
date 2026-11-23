@@ -11,7 +11,6 @@
 (defparameter *docs-dir* (merge-pathnames "autolith/docs/" *site-root*))
 (load (merge-pathnames "tools/docs-content.lisp" *site-root*))
 (defparameter *docs-revised* "23 November 2026")
-(defparameter *docs-release* "0.67.66")
 (defparameter *paper-css-url*
   (format nil "/paper.css?v=~A"
           (subseq (uiop:run-program
@@ -120,26 +119,20 @@
         (format out "<div class=\"docs-pager-cell docs-pager-cell--next\"><span class=\"docs-pager-label\">Next</span><a href=\"~A\">~A</a></div>" (docs-href (getf chapter :slug)) (getf chapter :title))))
     (write-string "</nav>" out)))
 
-(defun docs-edition ()
-  (format nil "<p class=\"docs-edition\">Development guide. For Autolith ~A, see the <a href=\"https://github.com/lambda-symbolics/autolith/blob/v~A/docs/guide.org\">release guide</a>.</p>"
-          *docs-release* *docs-release*))
-
 (defun docs-chapter-page (chapters chapter index &key decorate)
   "Render a chapter page using the same template for publishing and editing."
   (let* ((slug (getf chapter :slug))
-         (body (format nil "<nav class=\"docs-path\" aria-label=\"Location\"><a href=\"/autolith/docs\">Docs</a> · ~A</nav>~A<div class=\"doc-body\"><div class=\"doc-content\">~A~A</div>~A</div>"
-                       (getf chapter :title) (docs-edition)
+         (body (format nil "<nav class=\"docs-path\" aria-label=\"Location\"><a href=\"/autolith/docs\">Docs</a> · ~A</nav><div class=\"doc-body\"><div class=\"doc-content\">~A~A</div>~A</div>"
+                       (getf chapter :title)
                        (docs-render-nodes (getf chapter :nodes) :decorate decorate)
                        (docs-pager chapters index) (docs-toc chapters slug))))
     (docs-page (getf chapter :title) body :slug slug :edit-p decorate
                :description (getf chapter :description))))
 
 (defun docs-index-page (chapters &key edit-p)
-  "Render the chapter index, optionally identifying the editing session."
+  "Render the chapter index."
   (let ((body (with-output-to-string (out)
-                (when edit-p
-                  (write-string "<p class=\"docs-edition\">Docs editor. Open a chapter to edit its copy in place. Click outside a field or press Ctrl+S to save.</p>" out))
-                (format out "<section class=\"doc-content\"><h1>Autolith guide</h1>~A<p><a href=\"/autolith/docs/models-and-providers#run-a-local-model\">Set up local inference</a></p><ul>" (docs-edition))
+                (write-string "<section class=\"doc-content\"><h1>Autolith guide</h1><ul>" out)
                 (dolist (chapter chapters)
                   (format out "<li><a href=\"~A\">~A</a></li>" (docs-href (getf chapter :slug)) (getf chapter :title)))
                 (write-string "</ul></section>" out))))

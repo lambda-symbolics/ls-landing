@@ -1573,11 +1573,6 @@ button.button {
   overflow-wrap: normal;
 }
 
-.docs-edition {
-  font-size: 16px;
-  margin-bottom: 16px;
-}
-
 /* -- Contents window for serial documents -- */
 
 .doc-body {
